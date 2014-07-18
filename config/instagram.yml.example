@@ -1,0 +1,4 @@
+# see http://instagram.com/developer/authentication/
+client_id: 'CLIENT ID'
+client_secret: 'CLIENT SECRET'
+access_token: 'ACCESS TOKEN'

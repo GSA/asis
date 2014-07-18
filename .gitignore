@@ -1,0 +1,7 @@
+/.bundle
+/log/*.log
+/tmp
+.ruby-version
+.ruby-gemset
+config/instagram.yml
+config/flickr.yml
