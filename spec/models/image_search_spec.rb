@@ -8,8 +8,6 @@ describe ImageSearch do
       FlickrPhoto.refresh_index!
       InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(tag1 tag2), caption: 'first photo of earth', taken_at: Date.current, popularity: 101, url: "http://photo2", thumbnail_url: "http://photo_thumbnail2")
       InstagramPhoto.refresh_index!
-      expect(FlickrPhoto.count).to eq(1)
-      expect(InstagramPhoto.count).to eq(1)
     end
 
     it 'should return results from both indexes' do

@@ -4,6 +4,7 @@ module ElasticSettings
 
   COMMON = {
     index: {
+      number_of_shards: 1,
       analysis: {
         char_filter: {
           ignore_chars: { type: "mapping", mappings: ["'=>", "’=>", "`=>"] }
