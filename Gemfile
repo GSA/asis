@@ -24,4 +24,5 @@ end
 group :test do
   gem 'rspec-sidekiq', github: 'yelled3/rspec-sidekiq', branch: 'rspec3-beta'
   gem 'simplecov', '~> 0.7.1'
+  gem "codeclimate-test-reporter", require: nil
 end

@@ -49,6 +49,8 @@ GEM
     celluloid (0.15.2)
       timers (~> 1.1.0)
     chronic (0.10.2)
+    codeclimate-test-reporter (0.3.0)
+      simplecov (>= 0.7.1, < 1.0.0)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     colorize (0.7.3)
@@ -228,6 +230,7 @@ PLATFORMS
 
 DEPENDENCIES
   capistrano
+  codeclimate-test-reporter
   elasticsearch-persistence
   flickraw
   grape

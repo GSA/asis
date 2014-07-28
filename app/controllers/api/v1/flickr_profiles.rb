@@ -7,7 +7,7 @@ module API
       resource :flickr_profiles do
         desc "Return list of indexed Flickr profiles"
         get do
-          FlickrProfile.all
+          FlickrProfile.all(sort: :name)
         end
 
         desc "Create a Flickr profile and enqueue backfilling photos."

@@ -8,3 +8,6 @@ services:
 before_script:
   - cp -p config/flickr.yml.example config/flickr.yml
   - cp -p config/instagram.yml.example config/instagram.yml
+addons:
+  code_climate:
+    repo_token: dd3e9b170ff47be380f205b8c83d4beb37f216bcb95c0681930b1b7c65d923bd

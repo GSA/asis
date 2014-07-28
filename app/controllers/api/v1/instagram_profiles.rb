@@ -7,7 +7,7 @@ module API
       resource :instagram_profiles do
         desc "Return list of indexed Instagram profiles"
         get do
-          InstagramProfile.all
+          InstagramProfile.all(sort: :username)
         end
 
         desc "Create an Instagram profile and enqueue backfilling photos."
