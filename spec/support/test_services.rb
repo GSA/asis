@@ -5,7 +5,10 @@ module TestServices
     puts "Creating Elasticsearch test indexes...."
     Dir[Rails.root.join('app', 'models', '*.rb')].map do |f|
       klass = File.basename(f, '.*').camelize.constantize
-      klass.create_index!(force:true) if klass.respond_to?(:create_index!)
+      if klass.respond_to?(:create_index!)
+        puts "     (Re)creating index #{klass.to_s}"
+        klass.create_index!(force: true)
+      end
     end
   end
 
