@@ -5,9 +5,11 @@ describe ImageSearch do
   context 'when relevant results exist in both Instagram and Flickr indexes' do
     before do
       FlickrPhoto.create(id: "photo1", owner: "owner1", profile_type: 'user', tags: [], title: "title1 earth", description: "desc 1", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1")
+      FlickrPhoto.refresh_index!
       InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(tag1 tag2), caption: 'first photo of earth', taken_at: Date.current, popularity: 101, url: "http://photo2", thumbnail_url: "http://photo_thumbnail2")
       InstagramPhoto.refresh_index!
-      FlickrPhoto.refresh_index!
+      expect(FlickrPhoto.count).to eq(1)
+      expect(InstagramPhoto.count).to eq(1)
     end
 
     it 'should return results from both indexes' do
