@@ -2,6 +2,7 @@ OASIS Server
 ==============
 
 [![Build Status](https://travis-ci.org/GSA/oasis.png)](https://travis-ci.org/GSA/oasis)
+[![Code Climate](https://codeclimate.com/github/GSA/oasis.png)](https://codeclimate.com/github/GSA/oasis)
 
 Federated image search across Flickr/Instagram/....
 
