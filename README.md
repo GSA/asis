@@ -38,6 +38,11 @@ We're using [ElasticSearch](http://www.elasticsearch.org/) (>= 1.3.0) for fullte
 
 Otherwise, follow the [instructions](http://www.elasticsearch.org/download/) to download and run it.
 
+
+### Redis
+
+Sidekiq (see below) uses Redis, so make sure you have that installed and running.
+
 ### Seed some image data
 
 You can bootstrap the system with some government Flickr/Instagram profiles to see the system working.

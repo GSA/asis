@@ -43,15 +43,11 @@ RSpec.configure do |config|
 
 
   config.before(:suite) do
-    # unless ENV['TRAVIS']
-    #   TestServices::start_redis
-    # end
     TestServices::create_es_indexes
   end
 
   config.after(:suite) do
     TestServices::delete_es_indexes
-    # TestServices::stop_redis unless ENV['TRAVIS']
   end
 end
 

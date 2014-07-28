@@ -3,7 +3,6 @@ bundler_args: --without development
 rvm:
   - 2.1.2
 services:
-  - redis-server
   - elasticsearch
 before_script:
   - cp -p config/flickr.yml.example config/flickr.yml
