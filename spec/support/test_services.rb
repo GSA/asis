@@ -3,10 +3,10 @@ module TestServices
 
   def create_es_indexes
     puts "Creating Elasticsearch test indexes...."
-    puts "#{Rails.env}-oasis-flickr_photos before create:"
+    puts "#{InstagramPhoto.index_name} before create:"
     begin
-      puts Elasticsearch::Persistence.client.indices.get_mapping(index: "#{Rails.env}-oasis-flickr_photos")
-      puts Elasticsearch::Persistence.client.indices.get_settings(index: "#{Rails.env}-oasis-flickr_photos")
+      puts Elasticsearch::Persistence.client.indices.get_mapping(index: InstagramPhoto.index_name)
+      puts Elasticsearch::Persistence.client.indices.get_settings(index: InstagramPhoto.index_name)
     rescue Elasticsearch::Transport::Transport::Errors::NotFound => i
       puts "#{Rails.env}-oasis-flickr_photos does not yet exist"
     end
@@ -17,10 +17,10 @@ module TestServices
         klass.create_index!(force: true)
       end
     end
-    puts "#{Rails.env}-oasis-flickr_photos mapping after create:"
-    puts Elasticsearch::Persistence.client.indices.get_mapping(index: "#{Rails.env}-oasis-flickr_photos")
+    puts "#{InstagramPhoto.index_name} mapping after create:"
+    puts Elasticsearch::Persistence.client.indices.get_mapping(index: InstagramPhoto.index_name)
     puts "Settings:"
-    puts Elasticsearch::Persistence.client.indices.get_settings(index: "#{Rails.env}-oasis-flickr_photos")
+    puts Elasticsearch::Persistence.client.indices.get_settings(index: InstagramPhoto.index_name)
   end
 
   def delete_es_indexes
