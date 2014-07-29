@@ -1,6 +1,6 @@
 yaml = YAML.load_file("#{Rails.root}/config/elasticsearch.yml")
 
-Elasticsearch::Persistence.client = Elasticsearch::Client.new(log: Rails.env.development?, hosts: yaml['hosts'])
+Elasticsearch::Persistence.client = Elasticsearch::Client.new(log: true, hosts: yaml['hosts'])
 
 if Rails.env.development?
   logger = ActiveSupport::Logger.new(STDERR)
