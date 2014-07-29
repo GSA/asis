@@ -4,21 +4,10 @@ describe ImageSearch do
 
   context 'when relevant results exist in both Instagram and Flickr indexes' do
     before do
-      puts "***** #{InstagramPhoto.index_name} mapping before test:"
-      puts Elasticsearch::Persistence.client.indices.get_mapping(index: InstagramPhoto.index_name)
-      puts "Settings:"
-      puts Elasticsearch::Persistence.client.indices.get_settings(index: InstagramPhoto.index_name)
-
       FlickrPhoto.create(id: "photo1", owner: "owner1", profile_type: 'user', tags: [], title: "title1 earth", description: "desc 1", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1")
       FlickrPhoto.refresh_index!
       InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(tag1 tag2), caption: 'first photo of earth', taken_at: Date.current, popularity: 101, url: "http://photo2", thumbnail_url: "http://photo_thumbnail2")
       InstagramPhoto.refresh_index!
-      puts "***** #{InstagramPhoto.index_name} documents after setup:"
-      puts InstagramPhoto.all
-      puts "Full info on instagram doc for this test: #{InstagramPhoto.find("123456")}"
-      puts "***** #{FlickrPhoto.index_name} documents after setup:"
-      puts FlickrPhoto.all
-      puts "Full info on flickr doc for this test: #{FlickrPhoto.find("photo1")}"
     end
 
     it 'should return results from both indexes' do
