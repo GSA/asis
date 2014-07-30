@@ -8,6 +8,7 @@ gem 'thin'
 gem 'jbuilder'
 
 gem 'capistrano', :group => :development
+gem 'capistrano-sidekiq' , group: :development
 
 gem "elasticsearch-persistence", require: 'elasticsearch/persistence/model'
 gem 'instagram'

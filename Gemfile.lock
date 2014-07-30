@@ -46,6 +46,9 @@ GEM
       i18n
       rake (>= 10.0.0)
       sshkit (~> 1.3)
+    capistrano-sidekiq (0.3.5)
+      capistrano
+      sidekiq
     celluloid (0.15.2)
       timers (~> 1.1.0)
     chronic (0.10.2)
@@ -230,6 +233,7 @@ PLATFORMS
 
 DEPENDENCIES
   capistrano
+  capistrano-sidekiq
   codeclimate-test-reporter
   elasticsearch-persistence
   flickraw
