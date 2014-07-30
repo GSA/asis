@@ -57,10 +57,14 @@ class FlickrPhotosImporter
                        description: photo.description,
                        taken_at: photo.datetaken,
                        popularity: photo.views,
-                       url: photo.url_o,
+                       url: flickr_url(photo.owner, photo.id),
                        thumbnail_url: photo.url_q)
   rescue Exception => e
     Rails.logger.warn("Trouble storing Flickr photo #{photo.inspect}: #{e}")
+  end
+
+  def flickr_url(owner, flickr_id)
+    "http://www.flickr.com/photos/#{owner}/#{flickr_id}/"
   end
 
   def last_uploaded_ts(photos)

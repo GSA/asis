@@ -60,7 +60,7 @@ describe FlickrPhotosImporter do
         expect(first.description).to eq('description1')
         expect(first.taken_at).to eq(Date.parse("2014-07-09"))
         expect(first.popularity).to eq(100)
-        expect(first.url).to eq('http://photo1')
+        expect(first.url).to eq('http://www.flickr.com/photos/owner1/photo1/')
         expect(first.thumbnail_url).to eq('http://photo_thumbnail1')
       end
     end
