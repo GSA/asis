@@ -1,12 +1,14 @@
 module ElasticSettings
   KEYWORD = { type: 'string', analyzer: 'case_insensitive_keyword_analyzer' }
+  TAG = { type: 'string', analyzer: 'tag_analyzer' }
   ENGLISH_STOPWORDS = %w(a an and are as at be but by for if in into is no not of on or s such t that the their then there these they this to was with)
 
   COMMON = {
     index: {
       analysis: {
         char_filter: {
-          ignore_chars: { type: "mapping", mappings: ["'=>", "’=>", "`=>"] }
+          ignore_chars: { type: "mapping", mappings: ["'=>", "’=>", "`=>"] },
+          strip_whitespace: { type: "mapping", mappings: ["\\u0020=>"] }
         },
         filter: {
           bigram_filter: { type: 'shingle' },
@@ -25,6 +27,12 @@ module ElasticSettings
             tokenizer: "standard",
             char_filter: %w(ignore_chars),
             filter: %w(standard asciifolding lowercase bigram_filter)
+          },
+          tag_analyzer: {
+            type: "custom",
+            tokenizer: "standard",
+            char_filter: %w(strip_whitespace),
+            filter: %w(standard asciifolding lowercase)
           },
           case_insensitive_keyword_analyzer: {
             tokenizer: 'keyword',

@@ -5,7 +5,7 @@ class ImageSearch
   DEFAULT_PRE_TAG = '<strong>'
   DEFAULT_POST_TAG = '</strong>'
   NO_HITS = { 'hits' => { 'total' => 0, 'offset' => 0, 'hits' => [] } }
-  TEXT_FIELDS = %w(title description caption tags^2)
+  TEXT_FIELDS = %w(title description caption)
 
   def initialize(query, options)
     @query = (query || '').squish
@@ -140,12 +140,30 @@ class ImageSearch
 
   def filtered_query_query(json)
     json.query do
-      json.simple_query_string do
-        json.fields TEXT_FIELDS
-        json.query @query
-        json.analyzer "en_analyzer"
-        json.default_operator "AND"
+      json.bool do
+        json.set! :should do
+          json.child! { match_tags(json) }
+          json.child! { simple_query_string(json) }
+        end
       end
+    end
+  end
+
+  def match_tags(json)
+    json.match do
+      json.tags do
+        json.query @query
+        json.analyzer "tag_analyzer"
+      end
+    end
+  end
+
+  def simple_query_string(json)
+    json.simple_query_string do
+      json.fields TEXT_FIELDS
+      json.query @query
+      json.analyzer "en_analyzer"
+      json.default_operator "AND"
     end
   end
 

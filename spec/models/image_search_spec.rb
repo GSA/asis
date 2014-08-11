@@ -17,6 +17,21 @@ describe ImageSearch do
     end
   end
 
+  context 'when smooshed user query matches tag in either Instagram or Flickr indexes' do
+    before do
+      FlickrPhoto.create(id: "photo1", owner: "owner1", profile_type: 'user', tags: %w(apollo11 space), title: "title1 earth", description: "desc 1", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1")
+      FlickrPhoto.refresh_index!
+      InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(earth apollo11), caption: 'first photo of earth', taken_at: Date.current, popularity: 101, url: "http://photo2", thumbnail_url: "http://photo_thumbnail2")
+      InstagramPhoto.refresh_index!
+    end
+
+    it 'should return results from both indexes' do
+      image_search = ImageSearch.new("apollo 11", {})
+      image_search_results = image_search.search
+      expect(image_search_results.results.collect(&:type).uniq).to match_array(["InstagramPhoto", "FlickrPhoto"])
+    end
+  end
+
   context 'when search term yields no results but a similar spelling does have results' do
     before do
       FlickrPhoto.create(id: "photo1", owner: "owner1", profile_type: 'user', tags: [], title: "title1 earth", description: "desc 1", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1")

@@ -13,7 +13,7 @@ class FlickrPhoto
   attribute :title, String, mapping: { type: 'string', analyzer: 'en_analyzer', copy_to: 'bigram' }
   attribute :description, String, mapping: { type: 'string', analyzer: 'en_analyzer', copy_to: 'bigram' }
   attribute :taken_at, Date
-  attribute :tags, String, mapping: ElasticSettings::KEYWORD
+  attribute :tags, String, mapping: ElasticSettings::TAG
   attribute :url, String, mapping: ElasticSettings::KEYWORD
   attribute :thumbnail_url, String, mapping: ElasticSettings::KEYWORD
   attribute :popularity, Integer, default: 0, mapping: { type: 'integer', index: :not_analyzed }

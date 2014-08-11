@@ -9,7 +9,7 @@ class InstagramPhoto
   end
 
   attribute :username, String, mapping: ElasticSettings::KEYWORD
-  attribute :tags, String, mapping: ElasticSettings::KEYWORD
+  attribute :tags, String, mapping: ElasticSettings::TAG
   attribute :url, String, mapping: ElasticSettings::KEYWORD
   attribute :thumbnail_url, String, mapping: ElasticSettings::KEYWORD
   attribute :caption, String, mapping: { type: 'string', analyzer: 'en_analyzer', copy_to: 'bigram' }
