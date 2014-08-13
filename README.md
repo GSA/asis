@@ -49,6 +49,10 @@ You can bootstrap the system with some government Flickr/Instagram profiles to s
 Sample lists are in `config/instagram_profiles.csv` and `config/flickr_profiles.csv`.
 
     bundle exec rake oasis:seed_profiles
+    
+You can keep the indexes up to date by periodically refreshing the last day's images, perhaps via cron:
+    
+    bundle exec rake oasis:refresh
 
 ### Running it
 

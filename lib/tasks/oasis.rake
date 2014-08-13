@@ -11,4 +11,14 @@ namespace :oasis do
       instagram_profile.save and InstagramPhotosImporter.perform_async(instagram_profile.id)
     end
   end
+
+  desc "Get recent photos for existing Flickr and Instagram profiles"
+  task :refresh => :environment do
+    FlickrProfile.all.each do |flickr_profile|
+      FlickrPhotosImporter.perform_async(flickr_profile.id, flickr_profile.profile_type, 1)
+    end
+    InstagramProfile.all.each do |instagram_profile|
+      InstagramPhotosImporter.perform_async(instagram_profile.id, 1)
+    end
+  end
 end
