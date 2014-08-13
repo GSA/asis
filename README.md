@@ -62,6 +62,11 @@ Here are the profiles you have just bootstrapped.
 
 <http://localhost:3000/api/v1/flickr_profiles.json>
 
+You can add a new profile manually via the REST API:
+
+    	curl -XPOST "http://localhost:3000/api/v1/instagram_profiles.json?username=deptofdefense&id=542835249"
+    	curl -XPOST "http://localhost:3000/api/v1/flickr_profiles.json?name=commercegov&id=61913304@N07&profile_type=user"
+
 ### Asynchronous job processing
 
 We use [Sidekiq](http://sidekiq.org) for job processing. You can see all your Flickr and Instagram jobs queued up here:
@@ -71,10 +76,16 @@ We use [Sidekiq](http://sidekiq.org) for job processing. You can see all your Fl
 Kick off the indexing process:
 
     bundle exec sidekiq
+    
+In the Rails console, you can query each index manually using the Elasticsearch [Query DSL](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl.html):
+    
+    bin/rails c
+    InstagramPhoto.all(query:{term:{username:'usinterior'}}).size
+    FlickrPhoto.all(query:{term:{username:'usinterior'}}).size
 
 ### Parameters
 
-These parameters are accepted for search:
+These parameters are accepted for the blended search API:
 
 1. query
 2. flickr_groups (comma separated)
@@ -94,7 +105,7 @@ The top level JSON contains these fields:
 
 Each result contains these fields:
 
-* `type`: FlickrPhoto|InstagramPhoto
+* `type`: FlickrPhoto | InstagramPhoto
 * `title`
 * `url`
 * `thumbnail_url`
