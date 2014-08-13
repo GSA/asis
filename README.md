@@ -84,8 +84,10 @@ Kick off the indexing process:
 In the Rails console, you can query each index manually using the Elasticsearch [Query DSL](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl.html):
     
     bin/rails c
-    InstagramPhoto.all(query:{term:{username:'usinterior'}}).size
-    FlickrPhoto.all(query:{term:{username:'usinterior'}}).size
+    InstagramPhoto.count
+    FlickrPhoto.count
+    InstagramPhoto.all(query:{term:{username:'usinterior'}})
+    FlickrPhoto.all(query:{term:{username:'usinterior'}})
 
 ### Parameters
 
