@@ -8,6 +8,7 @@ gem 'thin'
 gem 'jbuilder'
 
 gem 'capistrano'
+gem 'capistrano-bundler'
 gem 'capistrano-sidekiq'
 
 gem "elasticsearch-persistence", require: 'elasticsearch/persistence/model'
