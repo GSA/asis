@@ -121,10 +121,10 @@ describe InstagramPhotosImporter do
       allow(InstagramProfile).to receive(:all) { [double(InstagramProfile, id: '123'), double(InstagramProfile, id: '456')] }
     end
 
-    it 'should enqueue importing the last 7 days of photos' do
+    it 'should enqueue importing the last X days of photos' do
       InstagramPhotosImporter.refresh
-      expect(InstagramPhotosImporter).to have_enqueued_job('123', 7)
-      expect(InstagramPhotosImporter).to have_enqueued_job('456', 7)
+      expect(InstagramPhotosImporter).to have_enqueued_job('123', InstagramPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
+      expect(InstagramPhotosImporter).to have_enqueued_job('456', InstagramPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
     end
   end
 end

@@ -115,10 +115,10 @@ describe FlickrPhotosImporter do
       allow(FlickrProfile).to receive(:all) { [double(FlickrProfile, id: 'abc', profile_type: 'user'), double(FlickrProfile, id: 'def', profile_type: 'group')] }
     end
 
-    it 'should enqueue importing the last 7 days of photos' do
+    it 'should enqueue importing the last X days of photos' do
       FlickrPhotosImporter.refresh
-      expect(FlickrPhotosImporter).to have_enqueued_job('abc', 'user', 7)
-      expect(FlickrPhotosImporter).to have_enqueued_job('def', 'group', 7)
+      expect(FlickrPhotosImporter).to have_enqueued_job('abc', 'user', FlickrPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
+      expect(FlickrPhotosImporter).to have_enqueued_job('def', 'group', FlickrPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
     end
   end
 

@@ -8,6 +8,7 @@ set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets}
 set :linked_files, %w{config/flickr.yml config/sidekiq.yml config/instagram.yml config/secrets.yml config/elasticsearch.yml}
 set :bundle_binstubs, nil
 set :sidekiq_role, 'sidekiq'
+set :whenever_roles, -> { :sidekiq }
 
 namespace :deploy do
 
