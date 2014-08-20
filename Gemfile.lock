@@ -36,6 +36,9 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+    airbrake (4.0.0)
+      builder
+      multi_json
     arel (5.0.1.20140414130214)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
@@ -127,6 +130,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
+    newrelic_rpm (3.9.1.236)
     polyglot (0.3.5)
     rack (1.5.2)
     rack-accept (0.4.5)
@@ -235,6 +239,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  airbrake
   capistrano
   capistrano-bundler
   capistrano-sidekiq
@@ -244,6 +249,7 @@ DEPENDENCIES
   grape
   instagram
   jbuilder
+  newrelic_rpm
   rails (= 4.1.4)
   rails-api
   rspec-rails (~> 3.0.0)

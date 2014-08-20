@@ -16,6 +16,27 @@ describe API::V1::ImageSearches do
         expect(JSON.parse(response.body)).to match(hash_including({"total"=>1, "offset"=>0, "results"=>[{"type"=>"InstagramPhoto", "title"=>"title", "url"=>"http://instagram.com/p/efykKOIaCh/", "thumbnail_url"=>"http://scontent-b.cdninstagram.com/hphotos-xpf1/outbound-distilleryimage9/t0.0-17/OBPTH/9c929416223811e3bad522000ab5bccf_5.jpg", "taken_at"=>"2013-09-20"}], "suggestion"=>{"text"=>"cindy", "highlighted"=>"<strong>cindy</strong>"}}))
       end
     end
+
+    context 'when an exception is raised' do
+      before do
+        expect(ImageSearch).to receive(:new).and_raise
+      end
+
+      it "logs the error" do
+        expect(Rails.logger).to receive(:error)
+        get "/api/v1/image", query: "some query"
+      end
+
+      it "attempts to report the error to Airbrake" do
+        expect(Airbrake).to receive(:notify)
+        get "/api/v1/image", query: "some query"
+      end
+
+      it "returns 500 error" do
+        get "/api/v1/image", query: "some query"
+        expect(response.status).to eq(500)
+      end
+    end
   end
 
 end

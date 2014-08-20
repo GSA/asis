@@ -19,6 +19,9 @@ gem 'sidekiq-unique-jobs'
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'whenever', :require => false
 
+gem 'newrelic_rpm'
+gem "airbrake"
+
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0'
 end
