@@ -49,6 +49,29 @@ describe ImageSearch do
     end
   end
 
+  context 'when a spelling suggestion exists even when results are present (https://github.com/elasticsearch/elasticsearch/issues/7472)' do
+    before do
+      result = { "took" => 6, "timed_out" => false, "_shards" => { "total" => 10, "successful" => 10, "failed" => 0 },
+                 "hits" => { "total" => 7472, "max_score" => 4.840977, "hits" =>
+                   [{ "_index" => "development-oasis-flickr_photos", "_type" => "flickr_photo", "_id" => "14610730228",
+                      "_score" => 4.840977,
+                      "_source" => { "created_at" => "2014-08-19T17:46:27.194+00:00", "updated_at" => "2014-08-19T17:46:27.194+00:00",
+                                     "owner" => "41555360@N03", "profile_type" => "user", "title" => "President Obama Visits HUD", "description" => "",
+                                     "taken_at" => "2014-07-31", "tags" => ["president", "potus", "barrackobama", "juliancastro", "sohud"],
+                                     "url" => "http://www.flickr.com/photos/41555360@N03/14610730228/",
+                                     "thumbnail_url" => "https://farm6.staticflickr.com/5595/14610730228_59c8b84fb8_q.jpg", "popularity" => 888 } }] },
+                 "suggest" => { "suggestion" => [{ "text" => "accordion", "offset" => 0, "length" => 9, "options" =>
+                   [{ "text" => "according", "highlighted" => "<strong>according</strong>", "score" => 0.061992195 }] }] } }
+      expect(Elasticsearch::Persistence.client).to receive(:search).and_return(result)
+    end
+
+    it 'should not return a spelling suggestion' do
+      image_search = ImageSearch.new("accordion", {})
+      image_search_results = image_search.search
+      expect(image_search_results.suggestion).to be_nil
+    end
+  end
+
   context 'when there is some unforseen problem during the search' do
     it 'should return a no results response' do
       image_search = ImageSearch.new("uh oh", {})

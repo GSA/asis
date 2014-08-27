@@ -18,6 +18,7 @@ class ImageSearch
 
   def search
     image_search_results = execute_client_search
+    ensure_no_suggestion_when_results_present(image_search_results)
     if image_search_results.total.zero? && image_search_results.suggestion.present?
       suggestion = image_search_results.suggestion
       @query = suggestion['text']
@@ -31,6 +32,10 @@ class ImageSearch
   end
 
   private
+
+  def ensure_no_suggestion_when_results_present(image_search_results)
+    image_search_results.override_suggestion(nil) if image_search_results.total > 0 && image_search_results.suggestion.present?
+  end
 
   def execute_client_search
     params = { preference: '_local', index: IMAGE_INDEXES, body: query_body, from: @from, size: @size }
