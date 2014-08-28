@@ -3,10 +3,10 @@ class ImageSearchResults
 
   Image = Struct.new(:type, :title, :url, :thumbnail_url, :taken_at)
 
-  def initialize(result)
+  def initialize(result, window_size = 0)
     @total = result['hits']['total']
     @offset = result['hits']['offset']
-    @results = extract_results(result['hits']['hits'])
+    @results = extract_results(extract_hits(result['aggregations']['taken_at_agg']['buckets'].last(window_size)))
     @suggestion = extract_suggestion(result['suggest']['suggestion']) if result['suggest']
   end
 
@@ -22,6 +22,12 @@ class ImageSearchResults
     suggestion
   rescue NoMethodError => e
     nil
+  end
+
+  def extract_hits(buckets)
+    buckets.map do |bucket|
+      bucket['top_image_hits']['hits']['hits']
+    end.flatten
   end
 
   def extract_results(hits)

@@ -4,7 +4,7 @@ class ImageSearch
   DEFAULT_FROM = 0
   DEFAULT_PRE_TAG = '<strong>'
   DEFAULT_POST_TAG = '</strong>'
-  NO_HITS = { 'hits' => { 'total' => 0, 'offset' => 0, 'hits' => [] } }
+  NO_HITS = { 'hits' => { 'total' => 0, 'offset' => 0, 'aggregations' => { 'taken_at_agg' => { 'buckets' => [] } } } }
   TEXT_FIELDS = %w(title description caption)
 
   def initialize(query, options)
@@ -38,21 +38,48 @@ class ImageSearch
   end
 
   def execute_client_search
-    params = { preference: '_local', index: IMAGE_INDEXES, body: query_body, from: @from, size: @size }
+    params = { preference: '_local', index: IMAGE_INDEXES, body: query_body, search_type: "count" }
     result = Elasticsearch::Persistence.client.search(params)
     result['hits']['offset'] = @from
-    ImageSearchResults.new(result)
+    ImageSearchResults.new(result, @size)
   end
 
   def query_body
     Jbuilder.encode do |json|
       filtered_query(json)
+      aggs(json)
       suggest(json)
     end
   end
 
   def normalize_profile_names(profile_names)
     profile_names.try(:collect) { |entry| entry.downcase }
+  end
+
+  def aggs(json)
+    json.aggs do
+      json.taken_at_agg do
+        json.terms do
+          json.field "taken_at"
+          json.order do
+            json.top_hit "desc"
+          end
+          json.size @from + @size
+        end
+        json.aggs do
+          json.top_image_hits do
+            json.top_hits do
+              json.size 1
+            end
+          end
+          json.top_hit do
+            json.max do
+              json.script "_doc.score"
+            end
+          end
+        end
+      end
+    end
   end
 
   def suggest(json)
