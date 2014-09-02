@@ -4,9 +4,9 @@ describe ImageSearch do
 
   context 'when relevant results exist in both Instagram and Flickr indexes' do
     before do
-      FlickrPhoto.create(id: "photo1", owner: "owner1", profile_type: 'user', tags: [], title: "title1 earth", description: "desc 1", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1")
+      FlickrPhoto.create(id: "photo1", owner: "owner1", profile_type: 'user', tags: [], title: "title1 earth", description: "desc 1", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1", album: 'album1')
       FlickrPhoto.refresh_index!
-      InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(tag1 tag2), caption: 'first photo of earth', taken_at: Date.current, popularity: 101, url: "http://photo2", thumbnail_url: "http://photo_thumbnail2")
+      InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(tag1 tag2), caption: 'first photo of earth', taken_at: Date.current, popularity: 101, url: "http://photo2", thumbnail_url: "http://photo_thumbnail2", album: 'album2')
       InstagramPhoto.refresh_index!
     end
 
@@ -19,9 +19,9 @@ describe ImageSearch do
 
   context 'when smooshed user query matches tag in either Instagram or Flickr indexes' do
     before do
-      FlickrPhoto.create(id: "photo1", owner: "owner1", profile_type: 'user', tags: %w(apollo11 space), title: "title1 earth", description: "desc 1", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1")
+      FlickrPhoto.create(id: "photo1", owner: "owner1", profile_type: 'user', tags: %w(apollo11 space), title: "title1 earth", description: "desc 1", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1", album: 'album1')
       FlickrPhoto.refresh_index!
-      InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(earth apollo11), caption: 'first photo of earth', taken_at: Date.current, popularity: 101, url: "http://photo2", thumbnail_url: "http://photo_thumbnail2")
+      InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(earth apollo11), caption: 'first photo of earth', taken_at: Date.current, popularity: 101, url: "http://photo2", thumbnail_url: "http://photo_thumbnail2", album: 'album2')
       InstagramPhoto.refresh_index!
     end
 
@@ -34,8 +34,8 @@ describe ImageSearch do
 
   context 'when search term yields no results but a similar spelling does have results' do
     before do
-      FlickrPhoto.create(id: "photo1", owner: "owner1", profile_type: 'user', tags: [], title: "title1 earth", description: "desc 1", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1")
-      InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(tag1 tag2), caption: 'photo of the cassini probe', taken_at: Date.current, popularity: 101, url: "http://photo2", thumbnail_url: "http://photo_thumbnail2")
+      FlickrPhoto.create(id: "photo1", owner: "owner1", profile_type: 'user', tags: [], title: "title1 earth", description: "desc 1", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1", album: 'album1')
+      InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(tag1 tag2), caption: 'photo of the cassini probe', taken_at: Date.current, popularity: 101, url: "http://photo2", thumbnail_url: "http://photo_thumbnail2", album: 'album2')
       InstagramPhoto.refresh_index!
       FlickrPhoto.refresh_index!
     end
@@ -51,17 +51,7 @@ describe ImageSearch do
 
   context 'when a spelling suggestion exists even when results are present (https://github.com/elasticsearch/elasticsearch/issues/7472)' do
     before do
-      result = { "took" => 6, "timed_out" => false, "_shards" => { "total" => 10, "successful" => 10, "failed" => 0 },
-                 "hits" => { "total" => 7472, "max_score" => 4.840977, "hits" =>
-                   [{ "_index" => "development-oasis-flickr_photos", "_type" => "flickr_photo", "_id" => "14610730228",
-                      "_score" => 4.840977,
-                      "_source" => { "created_at" => "2014-08-19T17:46:27.194+00:00", "updated_at" => "2014-08-19T17:46:27.194+00:00",
-                                     "owner" => "41555360@N03", "profile_type" => "user", "title" => "President Obama Visits HUD", "description" => "",
-                                     "taken_at" => "2014-07-31", "tags" => ["president", "potus", "barrackobama", "juliancastro", "sohud"],
-                                     "url" => "http://www.flickr.com/photos/41555360@N03/14610730228/",
-                                     "thumbnail_url" => "https://farm6.staticflickr.com/5595/14610730228_59c8b84fb8_q.jpg", "popularity" => 888 } }] },
-                 "suggest" => { "suggestion" => [{ "text" => "accordion", "offset" => 0, "length" => 9, "options" =>
-                   [{ "text" => "according", "highlighted" => "<strong>according</strong>", "score" => 0.061992195 }] }] } }
+      result = { "took" => 86, "timed_out" => false, "_shards" => { "total" => 2, "successful" => 2, "failed" => 0 }, "hits" => { "total" => 50, "max_score" => 0.0, "hits" => [] }, "aggregations" => { "album_agg" => { "buckets" => [{ "key" => "41555360@N03:2014-07-31:14794249441", "doc_count" => 50, "top_image_hits" => { "hits" => { "total" => 50, "max_score" => 0.70445955, "hits" => [{ "_index" => "development-oasis-flickr_photos", "_type" => "flickr_photo", "_id" => "14610842557", "_score" => 0.70445955, "_source" => { "created_at" => "2014-09-02T18:00:36.525+00:00", "updated_at" => "2014-09-13T18:42:12.145Z", "owner" => "41555360@N03", "profile_type" => "user", "title" => "President Obama Visits HUD", "description" => "", "taken_at" => "2014-07-31", "tags" => ["president", "potus", "barrackobama", "juliancastro", "sohud"], "url" => "http://www.flickr.com/photos/41555360@N03/14610842557/", "thumbnail_url" => "https://farm4.staticflickr.com/3841/14610842557_ed0ff5879a_q.jpg", "popularity" => 982, "album" => "41555360@N03:2014-07-31:14794249441" } }] } }, "top_score" => { "value" => 0.704459547996521 } }] } }, "suggest" => { "suggestion" => [{ "text" => "president obama visits hud", "offset" => 0, "length" => 26, "options" => [] }] } }
       expect(Elasticsearch::Persistence.client).to receive(:search).and_return(result)
     end
 
@@ -84,9 +74,9 @@ describe ImageSearch do
 
   describe "filtering on flickr/instagram profiles" do
     before do
-      FlickrPhoto.create(id: "photo1", owner: "owner1", profile_type: 'user', tags: [], title: "title1 earth", description: "desc 1", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1")
-      FlickrPhoto.create(id: "photo2", owner: "owner2", profile_type: 'group', tags: [], title: "title2 earth", description: "desc 2", taken_at: Date.current, popularity: 100, url: "http://photo2", thumbnail_url: "http://photo_thumbnail2")
-      InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(tag1 tag2), caption: 'first photo of earth', taken_at: Date.current, popularity: 101, url: "http://instaphoto2", thumbnail_url: "http://instaphoto_thumbnail2")
+      FlickrPhoto.create(id: "photo1", owner: "owner1", profile_type: 'user', tags: [], title: "title1 earth", description: "desc 1", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1", album: 'album1')
+      FlickrPhoto.create(id: "photo2", owner: "owner2", profile_type: 'group', tags: [], title: "title2 earth", description: "desc 2", taken_at: Date.current, popularity: 100, url: "http://photo2", thumbnail_url: "http://photo_thumbnail2", album: 'album2')
+      InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(tag1 tag2), caption: 'first photo of earth', taken_at: Date.current, popularity: 101, url: "http://instaphoto2", thumbnail_url: "http://instaphoto_thumbnail2", album: 'album3')
       InstagramPhoto.refresh_index!
       FlickrPhoto.refresh_index!
     end

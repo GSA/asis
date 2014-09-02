@@ -16,6 +16,7 @@ gem 'instagram'
 gem 'flickraw'
 gem 'sidekiq'
 gem 'sidekiq-unique-jobs'
+gem 'sidekiq-failures'
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'whenever', :require => false
 

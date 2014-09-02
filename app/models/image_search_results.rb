@@ -6,7 +6,7 @@ class ImageSearchResults
   def initialize(result, window_size = 0)
     @total = result['hits']['total']
     @offset = result['hits']['offset']
-    @results = extract_results(extract_hits(result['aggregations']['taken_at_agg']['buckets'].last(window_size)))
+    @results = extract_results(extract_hits(result['aggregations']['album_agg']['buckets'].last(window_size)))
     @suggestion = extract_suggestion(result['suggest']['suggestion']) if result['suggest']
   end
 

@@ -87,7 +87,7 @@ In the Rails console, you can query each index manually using the Elasticsearch 
     InstagramPhoto.count
     FlickrPhoto.count
     InstagramPhoto.all(query:{term:{username:'usinterior'}})
-    FlickrPhoto.all(query:{term:{username:'usinterior'}})
+    FlickrPhoto.all(query:{term:{owner:'41555360@n03'}})
 
 ### Parameters
 

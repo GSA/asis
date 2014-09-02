@@ -12,11 +12,12 @@ class InstagramPhotosImporter
     photos = instagram_client.user_recent_media(profile_id, options)
     return unless photos.present?
     Rails.logger.info("Storing #{photos.count} photos for Instagram profile #{profile_id}")
-    store_photos(photos)
+    stored_photos = store_photos(photos)
+    stored_photos.each { |photo| AlbumDetector.detect_albums!(photo) }
   end
 
   def self.refresh
-    InstagramProfile.all.each do |instagram_profile|
+    InstagramProfile.find_each do |instagram_profile|
       InstagramPhotosImporter.perform_async(instagram_profile.id, DAYS_BACK_TO_CHECK_FOR_UPDATES)
     end
   end
@@ -24,22 +25,23 @@ class InstagramPhotosImporter
   private
 
   def store_photos(photos)
-    photos.each do |photo|
+    photos.collect do |photo|
       store_photo(photo)
+    end.compact.select do |photo|
+      photo.persisted?
     end
   end
 
   def store_photo(photo)
-    InstagramPhoto.create(id: photo.id,
-                          username: photo.user.username,
-                          tags: photo.tags,
-                          caption: photo.caption.text,
-                          taken_at: Time.at(photo.created_time.to_i).utc,
-                          popularity: photo.likes['count'] + photo.comments['count'],
-                          url: photo.link,
-                          thumbnail_url: photo.images.thumbnail.url)
+    attributes = { id: photo.id, username: photo.user.username, tags: photo.tags, caption: photo.caption.text,
+                   taken_at: Time.at(photo.created_time.to_i).utc, popularity: photo.likes['count'] + photo.comments['count'],
+                   url: photo.link, thumbnail_url: photo.images.thumbnail.url }
+    InstagramPhoto.create(attributes, { op_type: 'create' })
+  rescue Elasticsearch::Transport::Transport::Errors::Conflict => e
+    nil
   rescue Exception => e
     Rails.logger.warn("Trouble storing Instagram photo #{photo}: #{e}")
+    nil
   end
 
 end

@@ -5,6 +5,11 @@ describe InstagramPhotosImporter do
   it { should be_unique }
 
   describe "#perform" do
+    before do
+      InstagramPhoto.gateway.delete_index!
+      InstagramPhoto.create_index!
+    end
+
     let(:importer) { InstagramPhotosImporter.new }
     let(:instagram_client) { double('Instagram client') }
 
@@ -114,11 +119,38 @@ describe InstagramPhotosImporter do
         expect(InstagramPhoto.find("7890")).to be_present
       end
     end
+
+    context 'when photo already exists in the index' do
+      let(:photos) do
+        photo1 = Hashie::Mash.new(id: "123456",
+                                  user: { username: 'user1' },
+                                  tags: %w(tag1 tag2),
+                                  caption: { text: 'new caption' },
+                                  created_time: "1404920005",
+                                  likes: { count: 3000 },
+                                  comments: { count: 300 },
+                                  link: 'http://photo1',
+                                  images: { thumbnail: {
+                                    url: 'http://photo_thumbnail1' } })
+        [photo1]
+      end
+
+      before do
+        InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(tag1 tag2), caption: 'initial caption', taken_at: Date.current, popularity: 101, url: "http://instaphoto2", thumbnail_url: "http://instaphoto_thumbnail2", album: 'album3')
+        expect(instagram_client).to receive(:user_recent_media) { photos }
+      end
+
+      it "should leave the existing record unchanged" do
+        importer.perform('1234')
+
+        expect(InstagramPhoto.find("123456").caption).to eq("initial caption")
+      end
+    end
   end
 
   describe ".refresh" do
     before do
-      allow(InstagramProfile).to receive(:all) { [double(InstagramProfile, id: '123'), double(InstagramProfile, id: '456')] }
+      allow(InstagramProfile).to receive(:find_each).and_yield(double(InstagramProfile, id: '123')).and_yield(double(InstagramProfile, id: '456'))
     end
 
     it 'should enqueue importing the last X days of photos' do
