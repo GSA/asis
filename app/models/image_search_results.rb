@@ -3,10 +3,10 @@ class ImageSearchResults
 
   Image = Struct.new(:type, :title, :url, :thumbnail_url, :taken_at)
 
-  def initialize(result, window_size = 0)
-    @total = result['hits']['total']
-    @offset = result['hits']['offset']
-    @results = extract_results(extract_hits(result['aggregations']['album_agg']['buckets'].last(window_size)))
+  def initialize(result, offset = 0, window_size = 0)
+    @total = result['aggregations']['album_agg']['buckets'].size
+    @offset = offset
+    @results = extract_results(extract_hits(result['aggregations']['album_agg']['buckets'].slice(offset, window_size)))
     @suggestion = extract_suggestion(result['suggest']['suggestion']) if result['suggest']
   end
 

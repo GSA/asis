@@ -27,7 +27,7 @@ class TopHits
           json.order do
             json.top_score "desc"
           end
-          json.size @from + @size
+          json.size @from + @size + 1
         end
         json.aggs do
           json.top_image_hits do

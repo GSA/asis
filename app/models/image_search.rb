@@ -38,8 +38,7 @@ class ImageSearch
     top_hits_query = TopHits.new(@query, @size, @from, @flickr_groups, @flickr_users, @instagram_profiles)
     params = { preference: '_local', index: IMAGE_INDEXES, body: top_hits_query.query_body, search_type: "count" }
     result = Elasticsearch::Persistence.client.search(params)
-    result['hits']['offset'] = @from
-    ImageSearchResults.new(result, @size)
+    ImageSearchResults.new(result, @from, @size)
   end
 
   def normalize_profile_names(profile_names)
