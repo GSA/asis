@@ -85,6 +85,21 @@ describe FlickrPhotosImporter do
       end
     end
 
+    context 'when photo contains datetaken with zero month or day' do
+      before do
+        photo1 = Hashie::Mash.new(id: "photo1", owner: "owner1", profile_type: 'user', tags: "tag2", title: "title1", description: "description1", datetaken: "2014-00-00 00:00:00", views: 100, url_o: "http://photo1", url_q: "http://photo_thumbnail1", dateupload: 9.days.ago.to_i)
+        batch1_photos = [photo1]
+        allow(batch1_photos).to receive(:pages).and_return(1)
+        allow(importer).to receive(:get_photos).with("flickr id", "user", { per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST, extras: FlickrPhotosImporter::EXTRA_FIELDS, page: 1 }).and_return(batch1_photos)
+      end
+
+      it "should assign zero month as January and zero day as one" do
+        importer.perform('flickr id', 'user')
+        first = FlickrPhoto.find("photo1")
+        expect(first.taken_at).to eq(Date.parse("2014-01-01"))
+      end
+    end
+
     context 'when title/desc contain leading/trailing spaces' do
       before do
         photo1 = Hashie::Mash.new(id: "photo1", owner: "owner1", profile_type: 'user', tags: "tag1 tag2", title: "     title1    ", description: "             ", datetaken: "2014-07-09 12:34:56", views: 100, url_o: "http://photo1", url_q: "http://photo_thumbnail1", dateupload: 9.days.ago.to_i)

@@ -54,7 +54,7 @@ class FlickrPhotosImporter
   def store_photo(photo, profile_type)
     tags = photo.tags.try(:split) || []
     attributes = { id: photo.id, owner: photo.owner, profile_type: profile_type, tags: strip_irrelevant_tags(tags),
-                   title: photo.title.squish, description: photo.description.squish, taken_at: photo.datetaken,
+                   title: photo.title.squish, description: photo.description.squish, taken_at: normalize_date(photo.datetaken),
                    popularity: photo.views, url: flickr_url(photo.owner, photo.id), thumbnail_url: photo.url_q }
     FlickrPhoto.create(attributes, { op_type: 'create' })
   rescue Elasticsearch::Transport::Transport::Errors::Conflict => e
@@ -77,6 +77,10 @@ class FlickrPhotosImporter
 
   def strip_irrelevant_tags(tags)
     tags.reject { |tag| tag.include?(':') }
+  end
+
+  def normalize_date(datetaken)
+    datetaken.gsub("-00","-01")
   end
 
 end
