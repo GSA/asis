@@ -174,6 +174,17 @@ describe FlickrPhotosImporter do
         importer.perform('group1', 'group')
       end
     end
+
+    context 'when Flickr API generates some error' do
+      before do
+        expect(FlickRaw::Flickr).to receive_message_chain("new.people.getPublicPhotos").and_raise Exception
+      end
+
+      it 'should log a warning and continue' do
+        expect(Rails.logger).to receive(:warn)
+        importer.perform('user1', 'user')
+      end
+    end
   end
 
   describe ".refresh" do

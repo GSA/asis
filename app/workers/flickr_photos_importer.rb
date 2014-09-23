@@ -13,6 +13,7 @@ class FlickrPhotosImporter
     oldest_retrieved_ts = Time.now.to_i
     while page <= pages && oldest_retrieved_ts >= min_ts
       photos = get_photos(id, profile_type, OPTIONS.merge(page: page))
+      return if photos.nil?
       Rails.logger.info("Storing #{photos.count} photos from page #{page} of #{pages} for Flickr #{profile_type} profile #{id}")
       stored_photos = store_photos(photos, profile_type)
       stored_photos.each { |photo| AlbumDetector.detect_albums!(photo) }
@@ -33,14 +34,17 @@ class FlickrPhotosImporter
   def get_photos(id, profile_type, options)
     method = "get_#{profile_type}_photos"
     send(method, id, options)
+  rescue Exception => e
+    Rails.logger.warn("Trouble fetching Flickr photos for id: #{id}, profile_type: #{profile_type}, options: #{options}: #{e}")
+    nil
   end
 
   def get_user_photos(id, options)
-    FlickRaw::Flickr.new.people.getPublicPhotos(options.merge(user_id: id)) rescue nil
+    FlickRaw::Flickr.new.people.getPublicPhotos(options.merge(user_id: id))
   end
 
   def get_group_photos(id, options)
-    FlickRaw::Flickr.new.groups.pools.getPhotos(options.merge(group_id: id)) rescue nil
+    FlickRaw::Flickr.new.groups.pools.getPhotos(options.merge(group_id: id))
   end
 
   def store_photos(photos, profile_type)
@@ -80,7 +84,7 @@ class FlickrPhotosImporter
   end
 
   def normalize_date(datetaken)
-    datetaken.gsub("-00","-01")
+    datetaken.gsub("-00", "-01")
   end
 
 end
