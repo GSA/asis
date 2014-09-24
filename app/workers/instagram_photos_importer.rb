@@ -8,8 +8,7 @@ class InstagramPhotosImporter
   def perform(profile_id, days_ago = nil)
     options = { count: MAX_PHOTOS_PER_REQUEST }
     options.merge!(min_timestamp: days_ago.days.ago.to_i) if days_ago
-    instagram_client = Instagram.client(access_token: INSTAGRAM_ACCESS_TOKEN)
-    photos = instagram_client.user_recent_media(profile_id, options)
+    photos = get_photos(options, profile_id)
     return unless photos.present?
     Rails.logger.info("Storing #{photos.count} photos for Instagram profile #{profile_id}")
     stored_photos = store_photos(photos)
@@ -24,6 +23,14 @@ class InstagramPhotosImporter
 
   private
 
+  def get_photos(options, profile_id)
+    instagram_client = Instagram.client(access_token: INSTAGRAM_ACCESS_TOKEN)
+    instagram_client.user_recent_media(profile_id, options)
+  rescue Exception => e
+    Rails.logger.warn("Trouble fetching Flickr photos for profile_id: #{profile_id}, options: #{options}: #{e}")
+    nil
+  end
+
   def store_photos(photos)
     photos.collect do |photo|
       store_photo(photo)
@@ -33,15 +40,19 @@ class InstagramPhotosImporter
   end
 
   def store_photo(photo)
-    attributes = { id: photo.id, username: photo.user.username, tags: photo.tags, caption: photo.caption.text,
-                   taken_at: Time.at(photo.created_time.to_i).utc, popularity: photo.likes['count'] + photo.comments['count'],
-                   url: photo.link, thumbnail_url: photo.images.thumbnail.url }
+    attributes = get_attributes(photo)
     InstagramPhoto.create(attributes, { op_type: 'create' })
   rescue Elasticsearch::Transport::Transport::Errors::Conflict => e
     nil
   rescue Exception => e
     Rails.logger.warn("Trouble storing Instagram photo #{photo}: #{e}")
     nil
+  end
+
+  def get_attributes(photo)
+    { id: photo.id, username: photo.user.username, tags: photo.tags, caption: photo.caption.text,
+      taken_at: Time.at(photo.created_time.to_i).utc, popularity: photo.likes['count'] + photo.comments['count'],
+      url: photo.link, thumbnail_url: photo.images.thumbnail.url }
   end
 
 end

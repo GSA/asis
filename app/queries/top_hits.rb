@@ -22,26 +22,34 @@ class TopHits
   def aggs(json)
     json.aggs do
       json.album_agg do
-        json.terms do
-          json.field "album"
-          json.order do
-            json.top_score "desc"
-          end
-          json.size @from + @size + 1
-        end
-        json.aggs do
-          json.top_image_hits do
-            json.top_hits do
-              json.size 1
-            end
-          end
-          json.top_score do
-            json.max do
-              json.script "_doc.score"
-            end
-          end
+        albums(json)
+        top_hits(json)
+      end
+    end
+  end
+
+  def top_hits(json)
+    json.aggs do
+      json.top_image_hits do
+        json.top_hits do
+          json.size 1
         end
       end
+      json.top_score do
+        json.max do
+          json.script "_doc.score"
+        end
+      end
+    end
+  end
+
+  def albums(json)
+    json.terms do
+      json.field "album"
+      json.order do
+        json.top_score "desc"
+      end
+      json.size @from + @size + 1
     end
   end
 

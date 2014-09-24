@@ -56,16 +56,20 @@ class FlickrPhotosImporter
   end
 
   def store_photo(photo, profile_type)
-    tags = photo.tags.try(:split) || []
-    attributes = { id: photo.id, owner: photo.owner, profile_type: profile_type, tags: strip_irrelevant_tags(tags),
-                   title: photo.title.squish, description: photo.description.squish, taken_at: normalize_date(photo.datetaken),
-                   popularity: photo.views, url: flickr_url(photo.owner, photo.id), thumbnail_url: photo.url_q }
+    attributes = get_attributes(photo, profile_type)
     FlickrPhoto.create(attributes, { op_type: 'create' })
   rescue Elasticsearch::Transport::Transport::Errors::Conflict => e
     nil
   rescue Exception => e
     Rails.logger.warn("Trouble storing Flickr photo #{photo.inspect}: #{e}")
     nil
+  end
+
+  def get_attributes(photo, profile_type)
+    tags = photo.tags.try(:split) || []
+    { id: photo.id, owner: photo.owner, profile_type: profile_type, tags: strip_irrelevant_tags(tags),
+      title: photo.title.squish, description: photo.description.squish, taken_at: normalize_date(photo.datetaken),
+      popularity: photo.views, url: flickr_url(photo.owner, photo.id), thumbnail_url: photo.url_q }
   end
 
   def flickr_url(owner, flickr_id)

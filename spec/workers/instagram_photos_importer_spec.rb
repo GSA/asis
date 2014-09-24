@@ -146,6 +146,18 @@ describe InstagramPhotosImporter do
         expect(InstagramPhoto.find("123456").caption).to eq("initial caption")
       end
     end
+    
+    context 'when Instagram API generates some error' do
+      before do
+        expect(instagram_client).to receive(:user_recent_media).and_raise Exception
+      end
+
+      it 'should log a warning and continue' do
+        expect(Rails.logger).to receive(:warn)
+        importer.perform('1234')
+      end
+    end
+
   end
 
   describe ".refresh" do
