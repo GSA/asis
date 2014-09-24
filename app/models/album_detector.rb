@@ -32,7 +32,7 @@ class AlbumDetector
   private
 
   def self.assign_default_album(photo)
-    options = photo._version.present? ? { version: photo._version } : {}
+    options = photo._version.present? && photo._version > 1 ? { version: photo._version } : {}
     photo.update({ album: photo.generate_album_name }, options)
   rescue Elasticsearch::Transport::Transport::Errors::Conflict => e
     Rails.logger.warn "Photo album probably got assigned already in prior album detection: #{e}"
