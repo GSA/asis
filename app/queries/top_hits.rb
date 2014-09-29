@@ -176,6 +176,7 @@ class TopHits
         json.set! :should do
           json.child! { match_tags(json) }
           json.child! { simple_query_string(json) }
+          match_phrase_collection(json)
         end
       end
     end
@@ -209,6 +210,16 @@ class TopHits
 
   def some_profile_specified?
     @flickr_groups.present? or @flickr_users.present? or @instagram_profiles.present?
+  end
+
+  def match_phrase_collection(json)
+    TEXT_FIELDS.each do |field|
+      json.child! do
+        json.match_phrase do
+          json.set! field, @query
+        end
+      end
+    end
   end
 
 end

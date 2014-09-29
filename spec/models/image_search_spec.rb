@@ -32,6 +32,20 @@ describe ImageSearch do
     end
   end
 
+  context 'when exact phrase matches' do
+    before do
+      FlickrPhoto.create(id: "phrase match 1", owner: "owner1", profile_type: 'user', tags: %w(jeffersonmemorial), title: "jefferson township Petitions and Memorials", description: "stuff about jefferson memorial", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1", album: 'album1')
+      FlickrPhoto.create(id: "phrase match 2", owner: "owner1", profile_type: 'user', tags: %w(jeffersonmemorial), title: "jefferson Memorial and township Petitions", description: "stuff about jefferson memorial", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1", album: 'album1')
+      FlickrPhoto.refresh_index!
+    end
+
+    it 'should positively influence relevancy score' do
+      image_search = ImageSearch.new("jefferson memorial", {})
+      image_search_results = image_search.search
+      expect(image_search_results.results.first.title).to eq("jefferson Memorial and township Petitions")
+    end
+  end
+
   context 'when search term yields no results but a similar spelling does have results' do
     before do
       FlickrPhoto.create(id: "photo1", owner: "owner1", profile_type: 'user', tags: [], title: "title1 earth", description: "desc 1", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1", album: 'album1')
