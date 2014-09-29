@@ -122,7 +122,7 @@ describe InstagramPhotosImporter do
 
     context 'when photo already exists in the index' do
       let(:photos) do
-        photo1 = Hashie::Mash.new(id: "123456",
+        photo1 = Hashie::Mash.new(id: "already exists",
                                   user: { username: 'user1' },
                                   tags: %w(tag1 tag2),
                                   caption: { text: 'new caption' },
@@ -136,14 +136,16 @@ describe InstagramPhotosImporter do
       end
 
       before do
-        InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(tag1 tag2), caption: 'initial caption', taken_at: Date.current, popularity: 101, url: "http://instaphoto2", thumbnail_url: "http://instaphoto_thumbnail2", album: 'album3')
+        InstagramPhoto.create(id: "already exists", username: 'user1', tags: %w(tag1 tag2), caption: 'initial caption', taken_at: Date.current, popularity: 101, url: "http://instaphoto2", thumbnail_url: "http://instaphoto_thumbnail2", album: 'album3')
         expect(instagram_client).to receive(:user_recent_media) { photos }
       end
 
-      it "should leave the existing record unchanged" do
+      it "should update the popularity field" do
         importer.perform('1234')
 
-        expect(InstagramPhoto.find("123456").caption).to eq("initial caption")
+        already_exists = InstagramPhoto.find("already exists")
+        expect(already_exists.album).to eq("album3")
+        expect(already_exists.popularity).to eq(3300)
       end
     end
     

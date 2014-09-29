@@ -59,6 +59,7 @@ class FlickrPhotosImporter
     attributes = get_attributes(photo, profile_type)
     FlickrPhoto.create(attributes, { op_type: 'create' })
   rescue Elasticsearch::Transport::Transport::Errors::Conflict => e
+    FlickrPhoto.gateway.update(id: photo.id, popularity: photo.views)
     nil
   rescue Exception => e
     Rails.logger.warn("Trouble storing Flickr photo #{photo.inspect}: #{e}")

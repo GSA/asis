@@ -43,6 +43,7 @@ class InstagramPhotosImporter
     attributes = get_attributes(photo)
     InstagramPhoto.create(attributes, { op_type: 'create' })
   rescue Elasticsearch::Transport::Transport::Errors::Conflict => e
+    InstagramPhoto.gateway.update(id: photo.id, popularity: compute_popularity(photo))
     nil
   rescue Exception => e
     Rails.logger.warn("Trouble storing Instagram photo #{photo}: #{e}")
@@ -51,8 +52,12 @@ class InstagramPhotosImporter
 
   def get_attributes(photo)
     { id: photo.id, username: photo.user.username, tags: photo.tags, caption: photo.caption.text,
-      taken_at: Time.at(photo.created_time.to_i).utc, popularity: photo.likes['count'] + photo.comments['count'],
+      taken_at: Time.at(photo.created_time.to_i).utc, popularity: compute_popularity(photo),
       url: photo.link, thumbnail_url: photo.images.thumbnail.url }
+  end
+
+  def compute_popularity(photo)
+    photo.likes['count'] + photo.comments['count']
   end
 
 end

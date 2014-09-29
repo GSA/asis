@@ -134,16 +134,18 @@ describe FlickrPhotosImporter do
 
     context 'when photo already exists in the index' do
       before do
-        photo1 = Hashie::Mash.new(id: "photo1", owner: "owner1", profile_type: 'user', tags: nil, title: "new title", description: "tags are nil", datetaken: "2014-07-09 12:34:56", views: 100, url_o: "http://photo1", url_q: "http://photo_thumbnail1", dateupload: 9.days.ago.to_i)
+        photo1 = Hashie::Mash.new(id: "already exists", owner: "owner1", profile_type: 'user', tags: nil, title: "new title", description: "tags are nil", datetaken: "2014-07-09 12:34:56", views: 101, url_o: "http://photo1", url_q: "http://photo_thumbnail1", dateupload: 9.days.ago.to_i)
         batch1_photos = [photo1]
         allow(batch1_photos).to receive(:pages).and_return(1)
         allow(importer).to receive(:get_photos).with("flickr id", "user", { per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST, extras: FlickrPhotosImporter::EXTRA_FIELDS, page: 1 }).and_return(batch1_photos)
-        FlickrPhoto.create(id: "photo1", owner: "owner1", profile_type: 'user', tags: [], title: "initial title", description: "desc 1", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1", album: 'album1')
+        FlickrPhoto.create(id: "already exists", owner: "owner1", profile_type: 'user', tags: [], title: "initial title", description: "desc 1", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1", album: 'album1')
       end
 
-      it "should leave the existing record unchanged" do
+      it "should update the popularity field" do
         importer.perform('flickr id', 'user')
-        expect(FlickrPhoto.find("photo1").title).to eq("initial title")
+        already_exists = FlickrPhoto.find("already exists")
+        expect(already_exists.popularity).to eq(101)
+        expect(already_exists.album).to eq("album1")
       end
     end
 
