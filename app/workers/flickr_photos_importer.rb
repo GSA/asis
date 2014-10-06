@@ -3,7 +3,7 @@ class FlickrPhotosImporter
   sidekiq_options unique: true
 
   MAX_PHOTOS_PER_REQUEST = 500
-  DAYS_BACK_TO_CHECK_FOR_UPDATES = 1
+  DAYS_BACK_TO_CHECK_FOR_UPDATES = 30
   EXTRA_FIELDS = "description, date_upload, date_taken, owner_name, tags, views, url_q, url_o"
   OPTIONS = { per_page: MAX_PHOTOS_PER_REQUEST, extras: EXTRA_FIELDS }
 

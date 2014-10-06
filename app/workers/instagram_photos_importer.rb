@@ -3,7 +3,7 @@ class InstagramPhotosImporter
   sidekiq_options unique: true
 
   MAX_PHOTOS_PER_REQUEST = -1
-  DAYS_BACK_TO_CHECK_FOR_UPDATES = 1
+  DAYS_BACK_TO_CHECK_FOR_UPDATES = 30
 
   def perform(profile_id, days_ago = nil)
     options = { count: MAX_PHOTOS_PER_REQUEST }
