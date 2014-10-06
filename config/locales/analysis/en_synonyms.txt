@@ -1,89 +1,193 @@
-acoustic, acoustical
+1, one
+10, ten
+100, hundred
+1000, thousand
+1000000, million
+1000000000, billion
+1000000000, billionth
+1000000000000, trillion
+1000000000000th, trillionth
+1000000th, millionth
+1000th, thousandth
+100th, hundredth
+10th, tenth
+11, eleven, xi
+11th, eleventh
+12, twelve, xii, dozen
+12th, twelfth, twelth
+13, thirteen, xiii
+13th, thirteenth
+14, fourteen, xiv
+14th, fourteenth
+15, fifteen, xv
+15th, fifteenth
+16, sixteen, xvi
+16th, sixteenth
+17, seventeen, xvii
+17th, seventeenth
+18, eighteen, xviii
+18th, eighteenth
+19, nineteen, xix
+19th, nineteenth
+1st, first
+2, ii, two
+20, twenty, xx
+20th, twentieth
+2nd, second
+3, iii, three
+30, thirty, xxx
+30th, thirtieth
+3rd, third
+4, four, iv
+40, forty, xl
+40th, fortieth
+4th, fourth
+5, five
+50, fifty
+50th, fiftieth
+5th, fifth
+6, six, vi
+60, sixty
+60th, sixtieth
+6th, sixth
+7, seven, vii
+70, seventy
+70th, seventieth
+7th, seventh
+8, eight, viii
+80, eighty
+80th, eightieth
+8th, eighth, eigth
+9, ix, nine
+90, ninety
+90th, ninetieth
+9th, ninth
+accreditation, accredited, accredit, accrediting
+acoustic, acoustical, acoustically
+addenda, addendum
 address, addresses
-adopt, adopted, adopting, adoption, adoptive
-alcohol, alcoholic
-award, awarded
-backpacker, backpacking
-bill, billing
-birth, birthing
-boxer, boxing
+adopt, adopted, adopting
+adoption, adoptive
+agricultural, agriculture
+alcohol, alcoholic, alcoholically
+alligator, gator
+alumna, alumnae, alumnus, alumni
+analysis, analyses
+antenna, antennae
+antithesis, antitheses
+appendix, appendices, appendixes
+arch, arches
+award, awarded, awarding
+bacillus, bacilli
+backpacker, backpacking, backpack, backpacked
+bacterium, bacteria
+bee, bees
+bicycle, bike
+bomb, bombed, bomber, bombing
+burger, hamburger
 business, businesses
-calculate, calculating, calculator
-camp, campers, camping
-charge, charged, charging
-closed, closing, closings
+cactus, cacti
+camp, camping, camped
+cell, cellular
+child, children
+closing, closings
 clothes, clothing
-confidential, confidentiality
-connect, connecting, connection
+confidential, confidentiality, confidentially
+consolidating, consolidation, consolidate, consolidated, consolidator
 constitution, constitutional
-contract, contracting
+contract, contracting, contracted
 corporate, corporation
-correction, correctional, corrections
-crush, crusher, crushing
-delay, delayed
-deposit, deposited
+correctional, corrections
+crush, crusher, crushing, crushed, crushable
+deportation, deported, deport, deporting, deportable
+deposit, deposited, depositing
 divorce, divorced, divorcing
-education, educational, educators
-eligibility, eligible
-employer, employment
-enroll, enrolling, enrollment
-exempt, exemption
-export, exported, exporters, exporting
-fax, faxing
+dorm, dormitory
+eligibility, eligible, eligibly
+employee, employees
+employer, employers
+enroll, enrol, enrolled, enrolling, enrollment, enrolment
+erratum, errata
+estimate, estimated, estimator, estimating, estimation
+exam, examination
+exempt, exempted, exemption
+expedite, expedited, expediting
+fax, faxing, facsimile, faxed
 fee, fees
 file, filing
-fish, fishes, fishing
+fish, fishes, fishing, fished
 flood, flooding
-forecast, forecasting
-garden, gardener, gardening
+flu, influenza
+foot, feet
+forecast, forecasting, forecasted, forecastable
+fracking, fracturing, hydrofracking, hydrofracturing
+ft, fort
+garnished, garnishing, garnishment, garnish
+gas, gasoline
+glacial, glaciation
 glassmaker, glassmaking
 grantee, grantees
-greetings, greets
-harass, harassment
-heat, heated
-hike, hiking
+gym, gymnasium
+harass, harasses, harassed, harassing, harassment
 hipaa, hippa
-hire, hired, hiring
-hunt, hunted, hunter, hunting
-image, imaging
-immunization, immunize
-innovation, innovative
-island, islanders
+homosexual, homosexuality
+housed, housing
+immigrant, immigrants
+immunization, immunizations
+incorporate, incorporated, incorporating, incorporation
+lab, labratory
+launch, launches, launched, launching
+levee, levees, leveed, leveeing
 leverage, leveraged, leveraging
-license, licensed, licensing
-locate, located, location, locator
-lodge, lodging
-logic, logical
-map, mapping
-medical, medication
-naturalization, naturalize
-office, officer
+lift, lifting, lifted
+limo, limousine
+lunch, luncheon
+man, men
+math, mathematics, mathematical
+memo, memoranda, memorandum
+meth, methamphetamine
+obese, obesity, obeseness, obesely
 offset, offsetting
+parked, parking
 payee, payees
-plan, planning
-possess, possesses, possessing, possession
-post, postal, poster
-presidency, president
-protect, protected, protection
-recycle, recycled, recycling
-reinforced, reinforcement, reinforcing
-renovation, renovator
-research, researchers
-reserve, reservist
-residence, residency, resident
-restricted, restrictions
-retire, retired, retirement, retiring
+perc, percolation
+phone, telephone
+photo, photograph
+plane, airplane
+possess, possesses, possessing, possession, possessed
+posted, posting
+presidency, president, presidential, presidents
+president, presidents
+recycle, recycled, recycling, recyclable
+recycle, recycling
+refrig, refrigerator, fridge
+refugee, refugees
+repossess, repossesses, repossessed, repossessing, repossession
+reservist, reservists
+retire, retired, retiring
+retiree, retirees
+rig, rigging
 roof, roofing
-sequester, sequestration
-set, setting
-shooter, shooting
+sandbag, sandbags, sandbagging
+scaffold, scaffolding, scaffolded
+sequester, sequestered, sequestration
+sexual, sexuality
+shoot, shooter, shooting
+sketch, sketches, sketching
+ski, skiing
 spiritual, spirituality
-standardization, standards
-supplier, supplies
-tattoo, tattooing
-translate, translated, translator
+st, street
+stat, statistical, statistics
+tattoo, tattooing, tattooed
+tax, taxable, taxation, taxes
+taxi, taxicab
+teen, teenage, teenager
+thesis, theses
+tour, touring
 travel, traveling
-vaccination, vaccine
-volunteer, volunteering
-well, wellness
-write, writing
+underwrite, underwrote, underwriting, underwritten, underwriter
+vaccination, vaccine, immunization, immunize, vaccinate, vaccinated, immunized, inoculate, immunizations
+volunteer, volunteered, volunteering, volunteers
+vote, voting, voted
+waive, waiver, waivers, waived, waiving
+woman, women
