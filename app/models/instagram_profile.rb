@@ -1,6 +1,6 @@
 class InstagramProfile
   include Elasticsearch::Persistence::Model
-  index_name [Rails.env, Rails.application.engine_name.split('_').first, self.name.tableize].join('-')
+  include AliasedIndex
 
   settings(ElasticSettings::COMMON)
 

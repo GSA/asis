@@ -1,8 +1,8 @@
 module IndexablePhoto
   extend ActiveSupport::Concern
+  include AliasedIndex
 
   included do
-    index_name [Rails.env, Rails.application.engine_name.split('_').first, self.name.tableize].join('-')
 
     settings ElasticSettings::COMMON do
       mappings dynamic: 'true' do
