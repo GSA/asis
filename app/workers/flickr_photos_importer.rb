@@ -15,7 +15,8 @@ class FlickrPhotosImporter
       photos = get_photos(id, profile_type, OPTIONS.merge(page: page))
       return if photos.nil?
       Rails.logger.info("Storing #{photos.count} photos from page #{page} of #{pages} for Flickr #{profile_type} profile #{id}")
-      stored_photos = store_photos(photos, profile_type)
+      group_id = (profile_type == 'group' ? id : nil)
+      stored_photos = store_photos(photos, group_id)
       stored_photos.each { |photo| AlbumDetector.detect_albums!(photo) }
       pages = photos.pages
       page += 1
@@ -47,28 +48,35 @@ class FlickrPhotosImporter
     FlickRaw::Flickr.new.groups.pools.getPhotos(options.merge(group_id: id))
   end
 
-  def store_photos(photos, profile_type)
-    photos.collect do |photo|
-      store_photo(photo, profile_type)
+  def store_photos(flickr_photo_structures, group_id)
+    flickr_photo_structures.collect do |flickr_photo_structure|
+      store_photo(flickr_photo_structure, group_id)
     end.compact.select do |photo|
       photo.persisted?
     end
   end
 
-  def store_photo(photo, profile_type)
-    attributes = get_attributes(photo, profile_type)
+  def store_photo(flickr_photo_structure, group_id)
+    attributes = get_attributes(flickr_photo_structure, group_id)
     FlickrPhoto.create(attributes, { op_type: 'create' })
   rescue Elasticsearch::Transport::Transport::Errors::Conflict => e
-    FlickrPhoto.gateway.update(id: photo.id, popularity: photo.views)
+    params = { new_popularity: flickr_photo_structure.views }
+    script = 'ctx._source.popularity = new_popularity'
+    if group_id.present?
+      params.merge!(new_group: group_id)
+      script << '; ctx._source.groups=(ctx._source.groups+new_group).unique()'
+    end
+    FlickrPhoto.gateway.update(flickr_photo_structure.id, lang: 'groovy', params: params, script: script)
     nil
   rescue Exception => e
-    Rails.logger.warn("Trouble storing Flickr photo #{photo.inspect}: #{e}")
+    Rails.logger.warn("Trouble storing Flickr photo #{flickr_photo_structure.inspect}: #{e}")
     nil
   end
 
-  def get_attributes(photo, profile_type)
+  def get_attributes(photo, group_id)
     tags = photo.tags.try(:split) || []
-    { id: photo.id, owner: photo.owner, profile_type: profile_type, tags: strip_irrelevant_tags(tags),
+    groups = group_id.present? ? [group_id] : []
+    { id: photo.id, owner: photo.owner, tags: strip_irrelevant_tags(tags), groups: groups,
       title: photo.title.squish, description: photo.description.squish, taken_at: normalize_date(photo.datetaken),
       popularity: photo.views, url: flickr_url(photo.owner, photo.id), thumbnail_url: photo.url_q }
   end

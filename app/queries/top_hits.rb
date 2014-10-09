@@ -137,8 +137,7 @@ class TopHits
     json.filter do
       json.bool do
         json.set! :should do
-          json.child! { flickr_profiles_filter(json, "group", @flickr_groups) } if @flickr_groups.present?
-          json.child! { flickr_profiles_filter(json, "user", @flickr_users) } if @flickr_users.present?
+          json.child! { flickr_profiles_filter(json, @flickr_groups, @flickr_users) } if @flickr_users.present? or @flickr_groups.present?
           json.child! { instagram_profiles_filter(json, @instagram_profiles) } if @instagram_profiles.present?
         end
       end
@@ -154,19 +153,15 @@ class TopHits
     end
   end
 
-  def flickr_profiles_filter(json, profile_type, profiles)
+  def flickr_profiles_filter(json, flickr_groups, flickr_users)
     json.bool do
       json.must do
-        json.child! { owner_terms(json, profiles) }
-        json.child! { json.term { json.profile_type profile_type } }
         json.child! { json.term { json._type "flickr_photo" } }
       end
-    end
-  end
-
-  def owner_terms(json, profiles)
-    json.terms do
-      json.owner profiles
+      json.set! :should do
+        json.child! { json.terms { json.owner flickr_users } } if flickr_users.present?
+        json.child! { json.terms { json.groups flickr_groups } } if flickr_groups.present?
+      end
     end
   end
 

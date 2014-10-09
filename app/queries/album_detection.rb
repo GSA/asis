@@ -58,11 +58,12 @@ class AlbumDetection
   end
 
   def term_filter_child(json, filter_field)
+    filter_value = @photo.send(filter_field)
     json.child! do
       json.term do
-        json.set! filter_field, @photo.send(filter_field)
+        json.set! filter_field, filter_value
       end
-    end
+    end if filter_value.present?
   end
 
   def aggregations(json)
