@@ -159,10 +159,14 @@ class TopHits
         json.child! { json.term { json._type "flickr_photo" } }
       end
       json.set! :should do
-        json.child! { json.terms { json.owner flickr_users } } if flickr_users.present?
-        json.child! { json.terms { json.groups flickr_groups } } if flickr_groups.present?
+        flickr_profiles_filter_child('owner', flickr_users, json)
+        flickr_profiles_filter_child('groups', flickr_groups, json)
       end
     end
+  end
+
+  def flickr_profiles_filter_child(field, terms, json)
+    json.child! { json.terms { json.set! field, terms } } if terms.present?
   end
 
   def filtered_query_query(json)

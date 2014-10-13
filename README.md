@@ -4,7 +4,7 @@ OASIS Server
 [![Build Status](https://travis-ci.org/GSA/oasis.png)](https://travis-ci.org/GSA/oasis)
 [![Code Climate](https://codeclimate.com/github/GSA/oasis.png)](https://codeclimate.com/github/GSA/oasis)
 
-Federated image search across Flickr/Instagram/....
+OASIS (OASIS Advanced Social Image Search) indexes Flickr and Instagram images and provides a search API across both indexes.
 
 ## Current Version
 
@@ -12,7 +12,8 @@ You are reading documentation for Oasis API v1.
 
 ## Contribute to the Code
 
-The server code that runs the image search component of [DigitalGov Search](http://search.digitalgov.gov) is here on Github. If you're a Ruby developer, keep reading. Fork this repo to add features (such as additional datasets) or fix bugs.
+The server code that runs the image search component of [DigitalGov Search](http://search.digitalgov.gov) is here on Github. 
+[Fork this repo](https://github.com/GSA/oasis/fork) to add features like additional datasets, or to fix bugs.
 
 ### Ruby
 
@@ -41,7 +42,7 @@ Otherwise, follow the [instructions](http://www.elasticsearch.org/download/) to 
 
 ### Redis
 
-Sidekiq (see below) uses Redis, so make sure you have that installed and running.
+Sidekiq (see below) uses [Redis](http://redis.io), so make sure you have that installed and running.
 
 ### Seed some image data
 
@@ -50,9 +51,12 @@ Sample lists are in `config/instagram_profiles.csv` and `config/flickr_profiles.
 
     bundle exec rake oasis:seed_profiles
     
-You can keep the indexes up to date by periodically refreshing the last day's images, perhaps via cron:
-    
-    bundle exec rake oasis:refresh
+You can keep the indexes up to date by periodically refreshing the last day's images. To do this manually via the Rails console:
+  
+    FlickrPhotosImporter.refresh
+    InstagramPhotosImporter.refresh
+
+The Capistrano deploy script has [whenever](https://github.com/javan/whenever) hooks so this refresh happens automatically via cron.
 
 ### Running it
 
@@ -60,7 +64,7 @@ Fire up a server and try it all out.
 
     bundle exec rails s
 
-Here are the profiles you have just bootstrapped.
+Here are the profiles you have just bootstrapped. Note: Chrome does a nice job of pretty-printing the JSON response.
 
 <http://localhost:3000/api/v1/instagram_profiles.json>
 
