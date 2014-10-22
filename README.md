@@ -1,16 +1,16 @@
-OASIS Server
+ASIS Server
 ==============
 
 [![Build Status](https://travis-ci.org/GSA/oasis.png)](https://travis-ci.org/GSA/oasis)
 [![Code Climate](https://codeclimate.com/github/GSA/oasis.png)](https://codeclimate.com/github/GSA/oasis)
 
-OASIS (OASIS Advanced Social Image Search) indexes Flickr and Instagram images and provides a search API across both indexes.
+ASIS (Advanced Social Image Search) indexes Flickr and Instagram images and provides a search API across both indexes.
 
-## Current Version
+## Current version
 
-You are reading documentation for Oasis API v1.
+You are reading documentation for ASIS API v1.
 
-## Contribute to the Code
+## Contribute to the code
 
 The server code that runs the image search component of [DigitalGov Search](http://search.digitalgov.gov) is here on Github. 
 [Fork this repo](https://github.com/GSA/oasis/fork) to add features like additional datasets, or to fix bugs.
@@ -31,14 +31,13 @@ We use bundler to manage gems. You can install bundler and other required gems l
     gem install bundler
     bundle install
 
-### ElasticSearch
+### Elasticsearch
 
-We're using [ElasticSearch](http://www.elasticsearch.org/) (>= 1.3.0) for fulltext search. On a Mac, it's easy to install with [Homebrew](http://mxcl.github.com/homebrew/).
+We're using [Elasticsearch](http://www.elasticsearch.org/) (>= 1.3.0) for fulltext search. On a Mac, it's easy to install with [Homebrew](http://mxcl.github.com/homebrew/).
 
     $ brew install elasticsearch
 
 Otherwise, follow the [instructions](http://www.elasticsearch.org/download/) to download and run it.
-
 
 ### Redis
 
@@ -121,7 +120,7 @@ Each result contains these fields:
 * `thumbnail_url`
 * `taken_at`
 
-### API Versioning
+### API versioning
 
 We support API versioning with the JSON format. The current version is v1. You can specify a specific JSON API version like this:
 
@@ -129,17 +128,25 @@ We support API versioning with the JSON format. The current version is v1. You c
 
 ### Tests
 
-These require an [ElasticSearch](http://www.elasticsearch.org/) server to be running.
+These require an [Elasticsearch](http://www.elasticsearch.org/) server to be running.
 
     bundle exec rspec
 
-### Code Coverage
+### Code coverage
 
 We track test coverage of the codebase over time, to help identify areas where we could write better tests and to see when poorly tested code got introduced.
 
 After running your tests, view the report by opening `coverage/index.html`.
 
 Click around on the files that have < 100% coverage to see what lines weren't exercised.
+
+## Code samples
+
+We "eat our own dog food" and use this ASIS API to display image results on the government websites that use [DigitalGov Search](http://search.digitalgov.gov).
+
+See the sample results below for a search for [*moon* on DOI.gov](http://search.doi.gov/search/images?affiliate=doi.gov&query=moon).
+
+[![DOI ASIS-powered results for moon](https://9fddeb862c037f6d2190-f1564c64756a8cfee25b6b19953b1d23.ssl.cf2.rackcdn.com/release-08-2014-doi-instagram.png "DOI ASIS-powered results for moon")](http://search.doi.gov/search/images?&affiliate=doi.gov&query=moon)
 
 Feedback
 --------
