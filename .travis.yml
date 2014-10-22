@@ -7,6 +7,8 @@ before_install:
   - 'echo ''script.disable_dynamic: false'' | sudo tee --append /etc/elasticsearch/elasticsearch.yml'
   - 'echo ''index.number_of_shards: 1'' | sudo tee --append /etc/elasticsearch/elasticsearch.yml'
   - sudo service elasticsearch start
+services:
+  - redis-server
 before_script:
   - cp -p config/flickr.yml.example config/flickr.yml
   - cp -p config/instagram.yml.example config/instagram.yml

@@ -1,5 +1,5 @@
 class ImageSearch
-  IMAGE_INDEXES = [FlickrPhoto.index_name, InstagramPhoto.index_name].join(',')
+  IMAGE_INDEXES = [FlickrPhoto.index_name, InstagramPhoto.index_name, MrssPhoto.index_name].join(',')
   DEFAULT_SIZE = 10
   DEFAULT_FROM = 0
   NO_HITS = { "hits" => { "total" => 0, "max_score" => 0.0, "hits" => [] }, "aggregations" => { "album_agg" => { "buckets" => [] } } }
@@ -11,6 +11,7 @@ class ImageSearch
     @flickr_groups = normalize_profile_names(options.delete(:flickr_groups))
     @flickr_users = normalize_profile_names(options.delete(:flickr_users))
     @instagram_profiles = normalize_profile_names(options.delete(:instagram_profiles))
+    @mrss_urls = MrssProfile.mrss_urls_from_names(options.delete(:mrss_names))
   end
 
   def search
@@ -35,7 +36,7 @@ class ImageSearch
   end
 
   def execute_client_search
-    top_hits_query = TopHits.new(@query, @size, @from, @flickr_groups, @flickr_users, @instagram_profiles)
+    top_hits_query = TopHits.new(@query, @size, @from, @flickr_groups, @flickr_users, @instagram_profiles, @mrss_urls)
     params = { preference: '_local', index: IMAGE_INDEXES, body: top_hits_query.query_body, search_type: "count" }
     result = Elasticsearch::Persistence.client.search(params)
     ImageSearchResults.new(result, @from, @size)

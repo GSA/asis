@@ -10,5 +10,9 @@ namespace :oasis do
       instagram_profile = InstagramProfile.new(username: row[1], id: row[0])
       instagram_profile.save and InstagramPhotosImporter.perform_async(instagram_profile.id)
     end
+    CSV.foreach("#{Rails.root}/config/mrss_profiles.csv") do |row|
+      mrss_profile = MrssProfile.new(id: row[0])
+      mrss_profile.save and MrssPhotosImporter.perform_async(mrss_profile.id)
+    end
   end
 end

@@ -14,12 +14,14 @@ module API
           optional :flickr_groups, type: String, desc: "restrict results to these Flickr groups (comma separated)"
           optional :flickr_users, type: String, desc: "restrict results to these Flickr users (comma separated)"
           optional :instagram_profiles, type: String, desc: "restrict results to these Instagram profiles (comma separated)"
+          optional :mrss_names, type: String, desc: "restrict results to these MRSS names (comma separated)"
         end
 
         get do
           image_search = ImageSearch.new(params[:query], size: params[:size], from: params[:from],
                                          flickr_groups: params[:flickr_groups].try(:split, ','),
                                          flickr_users: params[:flickr_users].try(:split, ','),
+                                         mrss_names: params[:mrss_names].try(:split, ','),
                                          instagram_profiles: params[:instagram_profiles].try(:split, ','))
           image_search.search
         end

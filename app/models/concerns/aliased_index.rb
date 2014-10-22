@@ -29,5 +29,9 @@ module AliasedIndex
     rescue Elasticsearch::Transport::Transport::Errors::NotFound => e
       false
     end
+
+    def delete_all
+      Elasticsearch::Persistence.client.delete_by_query index: alias_name, q: '*:*'
+    end
   end
 end

@@ -1,6 +1,6 @@
-class PhotoFilter
-  def initialize(key, value)
-    @key, @value = key, value
+class TermsFilter
+  def initialize(key, values)
+    @key, @values = key, values
   end
 
   def query_body
@@ -14,8 +14,8 @@ class PhotoFilter
   def filtered_query(json)
     json.filtered do
       json.filter do
-        json.term do
-          json.set! @key, @value
+        json.terms do
+          json.set! @key, @values
         end
       end
     end

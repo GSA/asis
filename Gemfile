@@ -23,6 +23,8 @@ gem 'whenever', :require => false
 gem 'newrelic_rpm'
 gem "airbrake"
 
+gem 'feedjira'
+
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0'
 end

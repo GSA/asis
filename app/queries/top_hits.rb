@@ -7,8 +7,9 @@ class TopHits
   DECAY_SCALE = '4w'
   CUTOFF_BOOST_FACTOR = 0.119657286
 
-  def initialize(query, size, from, flickr_groups, flickr_users, instagram_profiles)
-    @query, @size, @from, @flickr_groups, @flickr_users, @instagram_profiles = query, size, from, flickr_groups, flickr_users, instagram_profiles
+  def initialize(query, size, from, flickr_groups, flickr_users, instagram_profiles, mrss_urls)
+    @query, @size, @from = query, size, from
+    @flickr_groups, @flickr_users, @instagram_profiles, @mrss_urls = flickr_groups, flickr_users, instagram_profiles, mrss_urls
   end
 
   def query_body
@@ -139,9 +140,19 @@ class TopHits
         json.set! :should do
           json.child! { flickr_profiles_filter(json, @flickr_groups, @flickr_users) } if @flickr_users.present? or @flickr_groups.present?
           json.child! { instagram_profiles_filter(json, @instagram_profiles) } if @instagram_profiles.present?
+          json.child! { mrss_profiles_filter(json, @mrss_urls) } if @mrss_urls.present?
         end
       end
     end if some_profile_specified?
+  end
+
+  def mrss_profiles_filter(json, mrss_urls)
+    json.bool do
+      json.must do
+        json.child! { json.terms { json.mrss_url mrss_urls } }
+        json.child! { json.term { json._type "mrss_photo" } }
+      end
+    end
   end
 
   def instagram_profiles_filter(json, profiles)
@@ -208,7 +219,7 @@ class TopHits
   end
 
   def some_profile_specified?
-    @flickr_groups.present? or @flickr_users.present? or @instagram_profiles.present?
+    @flickr_groups.present? or @flickr_users.present? or @instagram_profiles.present? or @mrss_urls.present?
   end
 
   def match_phrase_collection(json)

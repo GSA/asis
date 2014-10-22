@@ -33,7 +33,8 @@ We use bundler to manage gems. You can install bundler and other required gems l
 
 ### Elasticsearch
 
-We're using [Elasticsearch](http://www.elasticsearch.org/) (>= 1.3.0) for fulltext search. On a Mac, it's easy to install with [Homebrew](http://mxcl.github.com/homebrew/).
+We're using [Elasticsearch](http://www.elasticsearch.org/) (>= 1.3.0) for fulltext search. On a Mac, it's easy to 
+install with [Homebrew](http://mxcl.github.com/homebrew/).
 
     $ brew install elasticsearch
 
@@ -45,8 +46,8 @@ Sidekiq (see below) uses [Redis](http://redis.io), so make sure you have that in
 
 ### Seed some image data
 
-You can bootstrap the system with some government Flickr/Instagram profiles to see the system working.
-Sample lists are in `config/instagram_profiles.csv` and `config/flickr_profiles.csv`.
+You can bootstrap the system with some government Flickr/Instagram profiles and MRSS feeds to see the system working.
+Sample lists are in `config/instagram_profiles.csv` and `config/flickr_profiles.csv` and `config/mrss_profiles.csv`.
 
     bundle exec rake oasis:seed_profiles
     
@@ -54,8 +55,10 @@ You can keep the indexes up to date by periodically refreshing the last day's im
   
     FlickrPhotosImporter.refresh
     InstagramPhotosImporter.refresh
+    MrssPhotosImporter.refresh
 
-The Capistrano deploy script has [whenever](https://github.com/javan/whenever) hooks so this refresh happens automatically via cron.
+The Capistrano deploy script has [whenever](https://github.com/javan/whenever) hooks so this refresh happens automatically 
+via cron in your production environment.
 
 ### Running it
 
@@ -69,10 +72,23 @@ Here are the profiles you have just bootstrapped. Note: Chrome does a nice job o
 
 <http://localhost:3000/api/v1/flickr_profiles.json>
 
+<http://localhost:3000/api/v1/mrss_profiles.json>
+
 You can add a new profile manually via the REST API:
 
     	curl -XPOST "http://localhost:3000/api/v1/instagram_profiles.json?username=deptofdefense&id=542835249"
     	curl -XPOST "http://localhost:3000/api/v1/flickr_profiles.json?name=commercegov&id=61913304@N07&profile_type=user"
+    	curl -XPOST "http://localhost:3000/api/v1/mrss_profiles.json?url=http%3A%2F%2Fremotesensing.usgs.gov%2Fgallery%2Frss.php%3Fcat%3Dall"
+    	
+MRSS profiles work a little differently than Flickr and Instagram profiles. When you create the MRSS profile, Oasis assigns a
+short name to it that you will use when performing searches. The JSON result from the POST request will look something like this:
+
+      {
+        "created_at": "2014-10-26T18:25:21.167+00:00",
+        "updated_at": "2014-10-26T18:25:21.173+00:00",
+        "name": "72",
+        "id": "http:\/\/remotesensing.usgs.gov\/gallery\/rss.php?cat=all"
+      }
 
 ### Asynchronous job processing
 
@@ -89,8 +105,10 @@ In the Rails console, you can query each index manually using the Elasticsearch 
     bin/rails c
     InstagramPhoto.count
     FlickrPhoto.count
+    MrssPhoto.count
     InstagramPhoto.all(query:{term:{username:'usinterior'}})
     FlickrPhoto.all(query:{term:{owner:'41555360@n03'}})
+    MrssPhoto.all(query:{term:{mrss_url:'http://remotesensing.usgs.gov/gallery/rss.php?cat=all'}})
 
 ### Parameters
 
@@ -100,6 +118,7 @@ These parameters are accepted for the blended search API:
 2. flickr_groups (comma separated)
 2. flickr_users (comma separated)
 2. instagram_profiles (comma separated)
+2. mrss_names (comma separated list of Oasis-assigned names)
 4. size
 5. from
 
@@ -124,11 +143,11 @@ Each result contains these fields:
 
 We support API versioning with the JSON format. The current version is v1. You can specify a specific JSON API version like this:
 
-    curl http://localhost:3000/api/v1/image.json?flickr_groups=1058319@N21&flickr_users=35067687@n04,24662369@n07&instagram_profiles=nasa&query=earth
+    curl "http://localhost:3000/api/v1/image.json?flickr_groups=1058319@N21&flickr_users=35067687@n04,24662369@n07&instagram_profiles=nasa&mrss_names=72,73&query=earth"
 
 ### Tests
 
-These require an [Elasticsearch](http://www.elasticsearch.org/) server to be running.
+These require an [Elasticsearch](http://www.elasticsearch.org/) server and [Redis](http://redis.io) server to be running.
 
     bundle exec rspec
 
