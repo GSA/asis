@@ -58,21 +58,33 @@ class TopHits
     json.suggest do
       json.text @query
       json.suggestion do
-        json.phrase do
-          json.analyzer 'bigram_analyzer'
-          json.field 'bigram'
-          json.size 1
-          json.direct_generator do
-            json.child! do
-              json.field 'bigram'
-              json.prefix_len 1
-            end
-          end
-          json.highlight do
-            json.pre_tag pre_tags.first
-            json.post_tag post_tags.first
-          end
-        end
+        phrase_suggestion(json)
+      end
+    end
+  end
+
+  def phrase_suggestion(json)
+    json.phrase do
+      json.analyzer 'bigram_analyzer'
+      json.field 'bigram'
+      json.size 1
+      direct_generator(json)
+      suggestion_highlight(json)
+    end
+  end
+
+  def suggestion_highlight(json)
+    json.highlight do
+      json.pre_tag pre_tags.first
+      json.post_tag post_tags.first
+    end
+  end
+
+  def direct_generator(json)
+    json.direct_generator do
+      json.child! do
+        json.field 'bigram'
+        json.prefix_len 1
       end
     end
   end
