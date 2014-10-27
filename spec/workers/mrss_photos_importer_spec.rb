@@ -8,19 +8,19 @@ describe MrssPhotosImporter do
     before do
       MrssPhoto.gateway.delete_index!
       MrssPhoto.create_index!
+      @mrss_profile = MrssProfile.create(id: 'http://some.mrss.url/importme.xml')
+      MrssProfile.refresh_index!
     end
 
     let(:importer) { MrssPhotosImporter.new }
-    let(:mrss_url) { 'http://some.mrss.url/feed.xml' }
     let(:feed) { double(Feedjira::Parser::Oasis::Mrss, entries: []) }
 
     it "should fetch the photos from the MRSS feed" do
-      expect(Feedjira::Feed).to receive(:fetch_and_parse).with(mrss_url, MrssPhotosImporter::FEEDJIRA_OPTIONS) { feed }
-      importer.perform(mrss_url)
+      expect(Feedjira::Feed).to receive(:fetch_and_parse).with('http://some.mrss.url/importme.xml', MrssPhotosImporter::FEEDJIRA_OPTIONS) { feed }
+      importer.perform(@mrss_profile.name)
     end
 
     context 'when MRSS photo entries are returned' do
-      let(:mrss_url) { 'http://some.mrss.url/feed.xml' }
       let(:photos) do
         photo1 = Hashie::Mash.new(entry_id: "guid1",
                                   title: 'first photo',
@@ -40,14 +40,14 @@ describe MrssPhotosImporter do
       let(:feed) { double(Feedjira::Parser::Oasis::Mrss, entries: photos) }
 
       before do
-        expect(Feedjira::Feed).to receive(:fetch_and_parse).with(mrss_url, MrssPhotosImporter::FEEDJIRA_OPTIONS) { feed }
+        expect(Feedjira::Feed).to receive(:fetch_and_parse).with(@mrss_profile.id, MrssPhotosImporter::FEEDJIRA_OPTIONS) { feed }
       end
 
       it "should store and index them" do
-        importer.perform(mrss_url)
+        importer.perform(@mrss_profile.name)
         first = MrssPhoto.find("guid1")
         expect(first.id).to eq('guid1')
-        expect(first.mrss_url).to eq(mrss_url)
+        expect(first.mrss_name).to eq(@mrss_profile.name)
         expect(first.title).to eq('first photo')
         expect(first.description).to eq('summary for first photo')
         expect(first.taken_at).to eq(Date.parse("2014-10-22"))
@@ -56,7 +56,7 @@ describe MrssPhotosImporter do
         expect(first.thumbnail_url).to eq('http://photo_thumbnail1')
         second = MrssPhoto.find("guid2")
         expect(second.id).to eq('guid2')
-        expect(second.mrss_url).to eq(mrss_url)
+        expect(second.mrss_name).to eq(@mrss_profile.name)
         expect(second.title).to eq('second photo')
         expect(second.description).to eq('summary for second photo')
         expect(second.taken_at).to eq(Date.parse("2014-10-22"))
@@ -86,12 +86,12 @@ describe MrssPhotosImporter do
       let(:feed) { double(Feedjira::Parser::Oasis::Mrss, entries: photos) }
 
       before do
-        expect(Feedjira::Feed).to receive(:fetch_and_parse).with(mrss_url, MrssPhotosImporter::FEEDJIRA_OPTIONS) { feed }
+        expect(Feedjira::Feed).to receive(:fetch_and_parse).with(@mrss_profile.id, MrssPhotosImporter::FEEDJIRA_OPTIONS) { feed }
       end
 
       it "should log the issue and move on to the next photo" do
         expect(Rails.logger).to receive(:warn)
-        importer.perform(mrss_url)
+        importer.perform(@mrss_profile.name)
 
         expect(MrssPhoto.find("guid2")).to be_present
       end
@@ -112,12 +112,12 @@ describe MrssPhotosImporter do
       let(:feed) { double(Feedjira::Parser::Oasis::Mrss, entries: photos) }
 
       before do
-        expect(Feedjira::Feed).to receive(:fetch_and_parse).with(mrss_url, MrssPhotosImporter::FEEDJIRA_OPTIONS) { feed }
-        MrssPhoto.create(id: "already exists", mrss_url: 'some url', tags: %w(tag1 tag2), title: 'initial title', description: 'initial description', taken_at: Date.current, popularity: 0, url: "http://mrssphoto2", thumbnail_url: "http://mrssphoto_thumbnail2", album: 'album3')
+        expect(Feedjira::Feed).to receive(:fetch_and_parse).with(@mrss_profile.id, MrssPhotosImporter::FEEDJIRA_OPTIONS) { feed }
+        MrssPhoto.create(id: "already exists", mrss_name: @mrss_profile.name, tags: %w(tag1 tag2), title: 'initial title', description: 'initial description', taken_at: Date.current, popularity: 0, url: "http://mrssphoto2", thumbnail_url: "http://mrssphoto_thumbnail2", album: 'album3')
       end
 
       it "should ignore it" do
-        importer.perform(mrss_url)
+        importer.perform(@mrss_profile.name)
 
         already_exists = MrssPhoto.find("already exists")
         expect(already_exists.album).to eq("album3")
@@ -132,7 +132,7 @@ describe MrssPhotosImporter do
 
       it 'should log a warning and continue' do
         expect(Rails.logger).to receive(:warn)
-        importer.perform('someurl')
+        importer.perform(@mrss_profile.name)
       end
     end
 
@@ -140,13 +140,13 @@ describe MrssPhotosImporter do
 
   describe ".refresh" do
     before do
-      allow(MrssProfile).to receive(:find_each).and_yield(double(MrssProfile, id: 'http://some/mrss.url/feed.xml1')).and_yield(double(MrssProfile, id: 'http://some/mrss.url/feed.xml2'))
+      allow(MrssProfile).to receive(:find_each).and_yield(double(MrssProfile, name: "3", id: 'http://some/mrss.url/feed.xml1')).and_yield(double(MrssProfile, name: "4", id: 'http://some/mrss.url/feed.xml2'))
     end
 
     it 'should enqueue importing the photos' do
       MrssPhotosImporter.refresh
-      expect(MrssPhotosImporter).to have_enqueued_job('http://some/mrss.url/feed.xml1')
-      expect(MrssPhotosImporter).to have_enqueued_job('http://some/mrss.url/feed.xml1')
+      expect(MrssPhotosImporter).to have_enqueued_job("3")
+      expect(MrssPhotosImporter).to have_enqueued_job("4")
     end
   end
 end

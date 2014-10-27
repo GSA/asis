@@ -8,7 +8,7 @@ describe ImageSearch do
       FlickrPhoto.refresh_index!
       InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(tag1 tag2), caption: 'first photo of earth', taken_at: Date.current, popularity: 101, url: "http://photo2", thumbnail_url: "http://photo_thumbnail2", album: 'album2')
       InstagramPhoto.refresh_index!
-      MrssPhoto.create(id: "guid", mrss_url: 'some url', tags: %w(tag1 tag2), title: 'earth title', description: 'initial description', taken_at: Date.current, popularity: 0, url: "http://mrssphoto2", thumbnail_url: "http://mrssphoto_thumbnail2", album: 'album3')
+      MrssPhoto.create(id: "guid", mrss_name: 'some url', tags: %w(tag1 tag2), title: 'earth title', description: 'initial description', taken_at: Date.current, popularity: 0, url: "http://mrssphoto2", thumbnail_url: "http://mrssphoto_thumbnail2", album: 'album3')
       MrssPhoto.refresh_index!
     end
 
@@ -93,9 +93,9 @@ describe ImageSearch do
       FlickrPhoto.create(id: "photo1", owner: "owner1", tags: [], title: "title1 earth", description: "desc 1", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1", album: 'album1')
       FlickrPhoto.create(id: "photo2", owner: "owner2", tags: [], title: "title2 earth", description: "desc 2", taken_at: Date.current, popularity: 100, url: "http://photo2", thumbnail_url: "http://photo_thumbnail2", album: 'album2', groups: %w(group1))
       InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(tag1 tag2), caption: 'first photo of earth', taken_at: Date.current, popularity: 101, url: "http://instaphoto2", thumbnail_url: "http://instaphoto_thumbnail2", album: 'album3')
-      MrssPhoto.create(id: "guid1", mrss_url: 'http://some/mrss.url/feed.xml3', tags: %w(tag1 tag2), title: 'mrss earth title', description: 'initial description', taken_at: Date.current, popularity: 0, url: "http://mrssphoto2", thumbnail_url: "http://mrssphoto_thumbnail2", album: 'album3')
-      MrssProfile.create(id: 'http://some/mrss.url/feed.xml3', name: 'my_feed')
+      mrss_profile = MrssProfile.create(id: 'http://some/mrss.url/feed.xml3')
       MrssProfile.refresh_index!
+      MrssPhoto.create(id: "guid1", mrss_name: mrss_profile.name, tags: %w(tag1 tag2), title: 'mrss earth title', description: 'initial description', taken_at: Date.current, popularity: 0, url: "http://mrssphoto2", thumbnail_url: "http://mrssphoto_thumbnail2", album: 'album3')
       MrssPhoto.refresh_index!
       InstagramPhoto.refresh_index!
       FlickrPhoto.refresh_index!
@@ -129,7 +129,7 @@ describe ImageSearch do
     end
 
     it "should filter on MRSS feeds" do
-      image_search = ImageSearch.new("earth", { mrss_names: ["my_feed"] })
+      image_search = ImageSearch.new("earth", { mrss_names: [MrssProfile.all.last.name] })
       image_search_results = image_search.search
       expect(image_search_results.total).to eq(1)
       expect(image_search_results.results.first.title).to eq('mrss earth title')

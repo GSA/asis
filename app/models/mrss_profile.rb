@@ -6,6 +6,7 @@ class MrssProfile
 
   attribute :name, String, mapping: ElasticSettings::KEYWORD
   validates :name, presence: true
+  validates :id, presence: true
 
   after_save { Rails.logger.info "Successfuly saved #{self.class.name.tableize}: #{self}" }
 
@@ -14,10 +15,15 @@ class MrssProfile
     super(options)
   end
 
-  def self.mrss_urls_from_names(mrss_names)
-    return nil unless mrss_names.present?
-    mrss_names_filter = TermsFilter.new('name', mrss_names)
-    all(query: mrss_names_filter.query_body).collect(&:id)
+  def self.find_by_name(mrss_name)
+    mrss_names_filter = TermsFilter.new('name', [mrss_name])
+    all(query: mrss_names_filter.query_body).first
+  end
+
+  def self.create_or_find_by_id(id)
+    MrssProfile.create({ id: id }, { op_type: 'create' })
+  rescue Elasticsearch::Transport::Transport::Errors::Conflict => e
+    MrssProfile.find(id)
   end
 
   private

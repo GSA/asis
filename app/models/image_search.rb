@@ -11,7 +11,7 @@ class ImageSearch
     @flickr_groups = normalize_profile_names(options.delete(:flickr_groups))
     @flickr_users = normalize_profile_names(options.delete(:flickr_users))
     @instagram_profiles = normalize_profile_names(options.delete(:instagram_profiles))
-    @mrss_urls = MrssProfile.mrss_urls_from_names(options.delete(:mrss_names))
+    @mrss_names = normalize_profile_names(options.delete(:mrss_names))
   end
 
   def search
@@ -36,7 +36,7 @@ class ImageSearch
   end
 
   def execute_client_search
-    top_hits_query = TopHits.new(@query, @size, @from, @flickr_groups, @flickr_users, @instagram_profiles, @mrss_urls)
+    top_hits_query = TopHits.new(@query, @size, @from, @flickr_groups, @flickr_users, @instagram_profiles, @mrss_names)
     params = { preference: '_local', index: IMAGE_INDEXES, body: top_hits_query.query_body, search_type: "count" }
     result = Elasticsearch::Persistence.client.search(params)
     ImageSearchResults.new(result, @from, @size)

@@ -15,14 +15,12 @@ module API
           requires :url, type: String, desc: "MRSS feed URL."
         end
         post do
-          profile = begin
-            mrss_profile = MrssProfile.new(id: params[:url])
-            mrss_profile.save(op_type: 'create') and MrssPhotosImporter.perform_async(mrss_profile.id)
-            mrss_profile
-          rescue Elasticsearch::Transport::Transport::Errors::Conflict => e
-            MrssProfile.find(params[:url])
+          profile = MrssProfile.create_or_find_by_id(params[:url])
+          if profile.persisted?
+            MrssProfile.refresh_index!
+            MrssPhotosImporter.perform_async(profile.name)
+            profile
           end
-          profile
         end
       end
     end
