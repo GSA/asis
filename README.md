@@ -40,6 +40,21 @@ install with [Homebrew](http://mxcl.github.com/homebrew/).
 
 Otherwise, follow the [instructions](http://www.elasticsearch.org/download/) to download and run it.
 
+You can generally leave the defaults in elasticsearch.yml as they are, but there are two exceptions:
+
+#### Enable dynamic scripting
+
+[Dynamic scripting](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/modules-scripting.html#_enabling_dynamic_scripting) is disabled by default since Elasticsearch 1.2.0. It's required here:
+
+    script.disable_dynamic: false
+
+#### Number of shards
+
+[Default shards] are set to 5, but you'll have an easier time with tests if you set it to 1 on your development machine:
+
+    index.number_of_shards: 1
+ 
+
 ### Redis
 
 Sidekiq (see below) uses [Redis](http://redis.io), so make sure you have that installed and running.
