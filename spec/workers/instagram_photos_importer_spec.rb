@@ -6,8 +6,8 @@ describe InstagramPhotosImporter do
 
   describe "#perform" do
     before do
-      InstagramPhoto.gateway.delete_index!
-      InstagramPhoto.create_index!
+      InstagramPhoto.delete_all
+      InstagramPhoto.refresh_index!
     end
 
     let(:importer) { InstagramPhotosImporter.new }

@@ -6,8 +6,8 @@ describe MrssPhotosImporter do
 
   describe "#perform" do
     before do
-      MrssPhoto.gateway.delete_index!
-      MrssPhoto.create_index!
+      MrssPhoto.delete_all
+      MrssPhoto.refresh_index!
       @mrss_profile = MrssProfile.create(id: 'http://some.mrss.url/importme.xml')
       MrssProfile.refresh_index!
     end

@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 describe ImageSearch do
+  before do
+    FlickrPhoto.delete_all
+    InstagramPhoto.delete_all
+    MrssPhoto.delete_all
+  end
 
   context 'when relevant results exist in Instagram, Flickr, and MRSS indexes' do
     before do

@@ -4,6 +4,7 @@ describe API::V1::InstagramProfiles do
   describe "GET /api/v1/instagram_profiles" do
     context 'when profiles exist' do
       before do
+        InstagramProfile.delete_all
         InstagramProfile.create(username: 'profile2', id: '2')
         InstagramProfile.create(username: 'profile1', id: '1')
         InstagramProfile.refresh_index!

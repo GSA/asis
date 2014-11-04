@@ -6,8 +6,8 @@ describe FlickrPhotosImporter do
 
   describe "#perform" do
     before do
-      FlickrPhoto.gateway.delete_index!
-      FlickrPhoto.create_index!
+      FlickrPhoto.delete_all
+      FlickrPhoto.refresh_index!
     end
 
     let(:importer) { FlickrPhotosImporter.new }
