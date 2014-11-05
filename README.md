@@ -50,11 +50,10 @@ You can generally leave the defaults in elasticsearch.yml as they are, but there
 
 #### Number of shards
 
-[Default shards] are set to 5, but you'll have an easier time with tests if you set it to 1 on your development machine:
+Default shards are set to 5, but you'll have an easier time with tests if you set it to 1 on your development machine:
 
     index.number_of_shards: 1
  
-
 ### Redis
 
 Sidekiq (see below) uses [Redis](http://redis.io), so make sure you have that installed and running.
