@@ -32,5 +32,11 @@ describe API::V1::FlickrProfiles do
     it "enqueues the importer to download and index photos" do
       expect(FlickrPhotosImporter).to have_enqueued_job('61913304@N07', 'user')
     end
+
+    it 'returns created profile as JSON' do
+      expect(response.status).to eq(201)
+      expect(JSON.parse(response.body)).to match(hash_including('name' => 'commercegov', 'id' => '61913304@N07', 'profile_type' => 'user'))
+    end
+
   end
 end

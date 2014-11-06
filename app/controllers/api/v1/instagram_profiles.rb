@@ -18,6 +18,7 @@ module API
         post do
           instagram_profile = InstagramProfile.new(username: params[:username], id: params[:id])
           instagram_profile.save and InstagramPhotosImporter.perform_async(instagram_profile.id)
+          instagram_profile
         end
       end
     end

@@ -32,5 +32,11 @@ describe API::V1::InstagramProfiles do
     it "enqueues the importer to download and index photos" do
       expect(InstagramPhotosImporter).to have_enqueued_job('192237852')
     end
+
+    it 'returns created profile as JSON' do
+      expect(response.status).to eq(201)
+      expect(JSON.parse(response.body)).to match(hash_including('username' => 'bureau_of_reclamation', 'id' => '192237852'))
+    end
+
   end
 end
