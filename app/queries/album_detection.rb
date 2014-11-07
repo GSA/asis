@@ -70,7 +70,7 @@ class AlbumDetection
     json.aggregations do
       json.scores_histogram do
         json.histogram do
-          json.script "doc.score"
+          json.script "_score"
           json.interval 2
           json.order do
             json._key "desc"

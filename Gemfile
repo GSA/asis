@@ -15,6 +15,7 @@ gem "elasticsearch-persistence", require: 'elasticsearch/persistence/model'
 gem 'instagram'
 gem 'flickraw'
 gem 'sidekiq'
+gem 'mock_redis'
 gem 'sidekiq-unique-jobs'
 gem 'sidekiq-failures'
 gem 'sinatra', '>= 1.3.0', :require => nil

@@ -38,7 +38,7 @@ class TopHits
       end
       json.top_score do
         json.max do
-          json.script "_doc.score"
+          json.script "_score"
         end
       end
     end

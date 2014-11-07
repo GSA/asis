@@ -33,7 +33,7 @@ We use bundler to manage gems. You can install bundler and other required gems l
 
 ### Elasticsearch
 
-We're using [Elasticsearch](http://www.elasticsearch.org/) (>= 1.3.0) for fulltext search. On a Mac, it's easy to 
+We're using [Elasticsearch](http://www.elasticsearch.org/) (>= 1.4.0) for fulltext search. On a Mac, it's easy to 
 install with [Homebrew](http://mxcl.github.com/homebrew/).
 
     $ brew install elasticsearch
@@ -44,9 +44,9 @@ You can generally leave the defaults in elasticsearch.yml as they are, but there
 
 #### Enable dynamic scripting
 
-[Dynamic scripting](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/modules-scripting.html#_enabling_dynamic_scripting) is disabled by default since Elasticsearch 1.2.0. It's required here:
+[Dynamic scripting](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/modules-scripting.html#_enabling_dynamic_scripting) is disabled by default since Elasticsearch 1.2.0. You can either set it to `false` or use the safer setting of `sandbox`:
 
-    script.disable_dynamic: false
+    script.disable_dynamic: sandbox
 
 #### Number of shards
 
