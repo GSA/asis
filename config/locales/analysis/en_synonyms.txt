@@ -4,7 +4,7 @@
 1000, thousand
 1000000, million
 1000000000, billion
-1000000000, billionth
+1000000000th, billionth
 1000000000000, trillion
 1000000000000th, trillionth
 1000000th, millionth
@@ -90,7 +90,6 @@ cactus, cacti
 camp, camping, camped
 cell, cellular
 child, children
-closing, closings
 clothes, clothing
 confidential, confidentiality, confidentially
 consolidating, consolidation, consolidate, consolidated, consolidator
@@ -105,7 +104,6 @@ divorce, divorced, divorcing
 dorm, dormitory
 eligibility, eligible, eligibly
 employee, employees
-employer, employers
 enroll, enrol, enrolled, enrolling, enrollment, enrolment
 erratum, errata
 estimate, estimated, estimator, estimating, estimation
@@ -132,8 +130,6 @@ harass, harasses, harassed, harassing, harassment
 hipaa, hippa
 homosexual, homosexuality
 housed, housing
-immigrant, immigrants
-immunization, immunizations
 incorporate, incorporated, incorporating, incorporation
 lab, labratory
 launch, launches, launched, launching
@@ -156,19 +152,16 @@ photo, photograph
 plane, airplane
 possess, possesses, possessing, possession, possessed
 posted, posting
-presidency, president, presidential, presidents
-president, presidents
+presidency, president, presidential
 recycle, recycled, recycling, recyclable
-recycle, recycling
 refrig, refrigerator, fridge
 refugee, refugees
 repossess, repossesses, repossessed, repossessing, repossession
-reservist, reservists
 retire, retired, retiring
 retiree, retirees
 rig, rigging
 roof, roofing
-sandbag, sandbags, sandbagging
+sandbag, sandbagging
 scaffold, scaffolding, scaffolded
 sequester, sequestered, sequestration
 sexual, sexuality
@@ -186,8 +179,8 @@ thesis, theses
 tour, touring
 travel, traveling
 underwrite, underwrote, underwriting, underwritten, underwriter
-vaccination, vaccine, immunization, immunize, vaccinate, vaccinated, immunized, inoculate, immunizations
-volunteer, volunteered, volunteering, volunteers
+vaccination, vaccine, immunization, immunize, vaccinate, vaccinated, immunized, inoculate
+volunteer, volunteered, volunteering
 vote, voting, voted
-waive, waiver, waivers, waived, waiving
+waive, waiver, waived, waiving
 woman, women
