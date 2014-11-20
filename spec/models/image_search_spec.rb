@@ -9,16 +9,16 @@ describe ImageSearch do
 
   context 'when relevant results exist in Instagram, Flickr, and MRSS indexes' do
     before do
-      FlickrPhoto.create(id: "photo1", owner: "owner1", tags: [], title: "title1 earth", description: "desc 1", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1", album: 'album1', groups: [])
+      FlickrPhoto.create(id: "photo1", owner: "owner1", tags: [], title: "title1 petrol", description: "desc 1", taken_at: Date.current, popularity: 100, url: "http://photo1", thumbnail_url: "http://photo_thumbnail1", album: 'album1', groups: [])
       FlickrPhoto.refresh_index!
-      InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(tag1 tag2), caption: 'first photo of earth', taken_at: Date.current, popularity: 101, url: "http://photo2", thumbnail_url: "http://photo_thumbnail2", album: 'album2')
+      InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(tag1 tag2), caption: 'first photo of petrol', taken_at: Date.current, popularity: 101, url: "http://photo2", thumbnail_url: "http://photo_thumbnail2", album: 'album2')
       InstagramPhoto.refresh_index!
-      MrssPhoto.create(id: "guid", mrss_name: 'some url', tags: %w(tag1 tag2), title: 'earth title', description: 'initial description', taken_at: Date.current, popularity: 0, url: "http://mrssphoto2", thumbnail_url: "http://mrssphoto_thumbnail2", album: 'album3')
+      MrssPhoto.create(id: "guid", mrss_name: 'some url', tags: %w(tag1 tag2), title: 'petrol title', description: 'initial description', taken_at: Date.current, popularity: 0, url: "http://mrssphoto2", thumbnail_url: "http://mrssphoto_thumbnail2", album: 'album3')
       MrssPhoto.refresh_index!
     end
 
     it 'should return results from all indexes' do
-      image_search = ImageSearch.new("earth", {})
+      image_search = ImageSearch.new("gas", {})
       image_search_results = image_search.search
       expect(image_search_results.results.collect(&:type).uniq).to match_array(["InstagramPhoto", "FlickrPhoto", "MrssPhoto"])
     end

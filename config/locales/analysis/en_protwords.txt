@@ -1,2 +1,2 @@
 # Import these from https://github.com/GSA/punchcard
-gas, petrol
+gas
