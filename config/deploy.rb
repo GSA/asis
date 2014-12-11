@@ -1,4 +1,4 @@
-lock '3.2.1'
+lock '3.3.4'
 
 set :application, 'oasis'
 set :repo_url, "git@github.com:GSA/oasis.git"
