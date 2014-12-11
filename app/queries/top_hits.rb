@@ -171,7 +171,7 @@ class TopHits
   end
 
   def mrss_profiles_filter(json, mrss_names)
-    type_and_terms_filter(json, "mrss_photo", :mrss_name, mrss_names)
+    type_and_terms_filter(json, "mrss_photo", :mrss_names, mrss_names)
   end
 
   def instagram_profiles_filter(json, profiles)

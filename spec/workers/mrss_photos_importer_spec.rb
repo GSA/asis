@@ -47,7 +47,7 @@ describe MrssPhotosImporter do
         importer.perform(@mrss_profile.name)
         first = MrssPhoto.find("guid1")
         expect(first.id).to eq('guid1')
-        expect(first.mrss_name).to eq(@mrss_profile.name)
+        expect(first.mrss_names.first).to eq(@mrss_profile.name)
         expect(first.title).to eq('first photo')
         expect(first.description).to eq('summary for first photo')
         expect(first.taken_at).to eq(Date.parse("2014-10-22"))
@@ -56,7 +56,7 @@ describe MrssPhotosImporter do
         expect(first.thumbnail_url).to eq('http://photo_thumbnail1')
         second = MrssPhoto.find("guid2")
         expect(second.id).to eq('guid2')
-        expect(second.mrss_name).to eq(@mrss_profile.name)
+        expect(second.mrss_names.first).to eq(@mrss_profile.name)
         expect(second.title).to eq('second photo')
         expect(second.description).to eq('summary for second photo')
         expect(second.taken_at).to eq(Date.parse("2014-10-22"))
@@ -113,15 +113,19 @@ describe MrssPhotosImporter do
 
       before do
         expect(Feedjira::Feed).to receive(:fetch_and_parse).with(@mrss_profile.id, MrssPhotosImporter::FEEDJIRA_OPTIONS) { feed }
-        MrssPhoto.create(id: "already exists", mrss_name: @mrss_profile.name, tags: %w(tag1 tag2), title: 'initial title', description: 'initial description', taken_at: Date.current, popularity: 0, url: "http://mrssphoto2", thumbnail_url: "http://mrssphoto_thumbnail2", album: 'album3')
+        MrssPhoto.create(id: "already exists", mrss_names: %w(existing_mrss_name), tags: %w(tag1 tag2), title: 'initial title', description: 'initial description', taken_at: Date.current, popularity: 0, url: "http://mrssphoto2", thumbnail_url: "http://mrssphoto_thumbnail2", album: 'album3')
       end
 
-      it "should ignore it" do
+      it "should add the mrss_name to the mrss_names array and leave other meta data alone" do
         importer.perform(@mrss_profile.name)
 
         already_exists = MrssPhoto.find("already exists")
         expect(already_exists.album).to eq("album3")
         expect(already_exists.popularity).to eq(0)
+        expect(already_exists.title).to eq('initial title')
+        expect(already_exists.description).to eq('initial description')
+        expect(already_exists.tags).to match_array(%w(tag1 tag2))
+        expect(already_exists.mrss_names).to match_array(['existing_mrss_name', @mrss_profile.name])
       end
     end
 

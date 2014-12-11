@@ -13,7 +13,7 @@ describe ImageSearch do
       FlickrPhoto.refresh_index!
       InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(tag1 tag2), caption: 'first photo of petrol', taken_at: Date.current, popularity: 101, url: "http://photo2", thumbnail_url: "http://photo_thumbnail2", album: 'album2')
       InstagramPhoto.refresh_index!
-      MrssPhoto.create(id: "guid", mrss_name: 'some url', tags: %w(tag1 tag2), title: 'petrol title', description: 'initial description', taken_at: Date.current, popularity: 0, url: "http://mrssphoto2", thumbnail_url: "http://mrssphoto_thumbnail2", album: 'album3')
+      MrssPhoto.create(id: "guid", mrss_names: ['some url'], tags: %w(tag1 tag2), title: 'petrol title', description: 'initial description', taken_at: Date.current, popularity: 0, url: "http://mrssphoto2", thumbnail_url: "http://mrssphoto_thumbnail2", album: 'album3')
       MrssPhoto.refresh_index!
     end
 
@@ -100,7 +100,7 @@ describe ImageSearch do
       InstagramPhoto.create(id: "123456", username: 'user1', tags: %w(tag1 tag2), caption: 'first photo of earth', taken_at: Date.current, popularity: 101, url: "http://instaphoto2", thumbnail_url: "http://instaphoto_thumbnail2", album: 'album3')
       mrss_profile = MrssProfile.create(id: 'http://some/mrss.url/feed.xml3')
       MrssProfile.refresh_index!
-      MrssPhoto.create(id: "guid1", mrss_name: mrss_profile.name, tags: %w(tag1 tag2), title: 'mrss earth title', description: 'initial description', taken_at: Date.current, popularity: 0, url: "http://mrssphoto2", thumbnail_url: "http://mrssphoto_thumbnail2", album: 'album3')
+      MrssPhoto.create(id: "guid1", mrss_names: [mrss_profile.name], tags: %w(tag1 tag2), title: 'mrss earth title', description: 'initial description', taken_at: Date.current, popularity: 0, url: "http://mrssphoto2", thumbnail_url: "http://mrssphoto_thumbnail2", album: 'album3')
       MrssPhoto.refresh_index!
       InstagramPhoto.refresh_index!
       FlickrPhoto.refresh_index!
