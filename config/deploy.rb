@@ -1,5 +1,3 @@
-lock '3.3.4'
-
 set :application, 'oasis'
 set :repo_url, "git@github.com:GSA/oasis.git"
 set :rails_env, "production"
