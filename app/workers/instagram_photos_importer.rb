@@ -2,17 +2,25 @@ class InstagramPhotosImporter
   include Sidekiq::Worker
   sidekiq_options unique: true
 
-  MAX_PHOTOS_PER_REQUEST = -1
   DAYS_BACK_TO_CHECK_FOR_UPDATES = 30
 
   def perform(profile_id, days_ago = nil)
-    options = { count: MAX_PHOTOS_PER_REQUEST }
+    morepages = true
+    max_id = nil
+    options = {}
     options.merge!(min_timestamp: days_ago.days.ago.to_i) if days_ago
-    photos = get_photos(options, profile_id)
-    return unless photos.present?
-    Rails.logger.info("Storing #{photos.count} photos for Instagram profile #{profile_id}")
-    stored_photos = store_photos(photos)
-    stored_photos.each { |photo| AlbumDetector.detect_albums!(photo) }
+    while morepages do
+      options.merge!(max_id: max_id) if max_id
+      photos = get_photos(options, profile_id)
+      if photos.present?
+        max_id = photos.last.id
+        Rails.logger.info("Storing #{photos.count} photos for Instagram profile #{profile_id}")
+        stored_photos = store_photos(photos)
+        stored_photos.each { |photo| AlbumDetector.detect_albums!(photo) }
+      else
+        morepages = false
+      end
+    end
   end
 
   def self.refresh

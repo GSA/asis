@@ -43,6 +43,7 @@ RSpec.configure do |config|
 
 
   config.before(:suite) do
+    TestServices::delete_es_indexes
     TestServices::create_es_indexes
   end
 

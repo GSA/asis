@@ -18,21 +18,22 @@ describe InstagramPhotosImporter do
     end
 
     context 'when days_ago is specified' do
-      it "should convert that to a timestamp and use it when fetching the maximum amount of recent media in a single request" do
-        expect(instagram_client).to receive(:user_recent_media).with('1234', { count: -1, min_timestamp: a_value_within(10).of(7.days.ago.to_i) })
+      it "should convert that to a timestamp and use it when fetching the recent media" do
+        expect(instagram_client).to receive(:user_recent_media).with('1234', { min_timestamp: a_value_within(10).of(7.days.ago.to_i) })
         importer.perform('1234', 7)
       end
     end
 
     context 'when days_ago is not specified' do
-      it "should fetch the maximum amount of recent media available in a single request" do
-        expect(instagram_client).to receive(:user_recent_media).with('1234', { count: -1 })
+      it "should fetch the recent media" do
+        expect(instagram_client).to receive(:user_recent_media).with('1234', {})
         importer.perform('1234')
       end
     end
 
     context 'when photos are returned' do
-      let(:photos) do
+      before do
+
         photo1 = Hashie::Mash.new(id: "123456",
                                   user: { username: 'user1' },
                                   tags: %w(tag1 tag2),
@@ -53,11 +54,31 @@ describe InstagramPhotosImporter do
                                   link: 'http://photo2',
                                   images: { thumbnail: {
                                     url: 'http://photo_thumbnail2' } })
-        [photo1, photo2]
-      end
-
-      before do
-        expect(instagram_client).to receive(:user_recent_media) { photos }
+        batch1_photos = [photo1, photo2]
+        photo3 = Hashie::Mash.new(id: "7809",
+                                  user: { username: 'user2' },
+                                  tags: %w(other stuff),
+                                  caption: { text: 'third photo' },
+                                  created_time: "1406008374",
+                                  likes: { count: 1999 },
+                                  comments: { count: 199 },
+                                  link: 'http://photo3',
+                                  images: { thumbnail: {
+                                    url: 'http://photo_thumbnail3' } })
+        photo4 = Hashie::Mash.new(id: "7808",
+                                  user: { username: 'user2' },
+                                  tags: %w(other stuff),
+                                  caption: { text: 'fourth photo' },
+                                  created_time: "1406008373",
+                                  likes: { count: 1998 },
+                                  comments: { count: 198 },
+                                  link: 'http://photo4',
+                                  images: { thumbnail: {
+                                    url: 'http://photo_thumbnail4' } })
+        batch2_photos = [photo3, photo4]
+        expect(instagram_client).to receive(:user_recent_media).with('1234', {}) { batch1_photos }
+        expect(instagram_client).to receive(:user_recent_media).with('1234', { max_id: '7890' }) { batch2_photos }
+        expect(instagram_client).to receive(:user_recent_media).with('1234', { max_id: '7808' }) { [] }
       end
 
       it "should store and index them" do
@@ -109,7 +130,8 @@ describe InstagramPhotosImporter do
       end
 
       before do
-        expect(instagram_client).to receive(:user_recent_media) { photos }
+        expect(instagram_client).to receive(:user_recent_media).with('1234', {}) { photos }
+        expect(instagram_client).to receive(:user_recent_media).with('1234', { max_id: '7890' }) { [] }
       end
 
       it "should log the issue and move on to the next photo" do
@@ -137,7 +159,8 @@ describe InstagramPhotosImporter do
 
       before do
         InstagramPhoto.create(id: "already exists", username: 'user1', tags: %w(tag1 tag2), caption: 'initial caption', taken_at: Date.current, popularity: 101, url: "http://instaphoto2", thumbnail_url: "http://instaphoto_thumbnail2", album: 'album3')
-        expect(instagram_client).to receive(:user_recent_media) { photos }
+        expect(instagram_client).to receive(:user_recent_media).with('1234', {}) { photos }
+        expect(instagram_client).to receive(:user_recent_media).with('1234', { max_id: 'already exists' }) { [] }
       end
 
       it "should update the popularity field" do
@@ -148,7 +171,7 @@ describe InstagramPhotosImporter do
         expect(already_exists.popularity).to eq(3300)
       end
     end
-    
+
     context 'when Instagram API generates some error' do
       before do
         expect(instagram_client).to receive(:user_recent_media).and_raise Exception
