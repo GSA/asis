@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <atom:link href="http://media.dma.mil/mrss/portal/144/detailpage/www.af.mil/News/Photos.aspx" rel="self"
+               type="application/rss+xml"/>
+    <title>Air Force Link Images</title>
+    <link>http://www.af.mil</link>
+    <description>The latest images from Air Force Link.</description>
+    <item>
+      <title type="html">
+        <![CDATA[  ]]>
+      </title>
+      <link>www.af.mil/News/Photos.aspx?igphoto=2000949217</link>
+      <guid>www.af.mil/News/Photos.aspx?igphoto=2000949217</guid>
+      <pubDate>Wed, 22 Oct 2014 14:24:00 GMT</pubDate>
+      <media:description type="html">
+        <![CDATA[ Official Photo-   of something important (U.S. Air Force Photo) ]]>
+      </media:description>
+      <media:thumbnail url="media.dma.mil/2014/Oct/22/2000949217/145/100/0/141022-F-PB123-223.JPG" width="72"
+                       height="100"/>
+      <media:content url="media.dma.mil/2014/Oct/22/2000949217/-1/-1/0/141022-F-PB123-223.JPG" width="1500"
+                     height="2100"/>
+    </item>
+  </channel>
+</rss>

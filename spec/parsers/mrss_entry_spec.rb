@@ -59,4 +59,17 @@ describe Feedjira::Parser::Oasis::MrssEntry do
     end
   end
 
+  context 'when URLs are missing scheme' do
+    let(:entry) do
+      mrss_xml = File.read(Rails.root.to_s + '/spec/sample_feeds/missing_scheme.xml')
+      feed = Feedjira::Feed.parse(mrss_xml)
+      feed.entries.first
+    end
+
+    it 'should prepend with http' do
+      expect(entry.url).to eq("http://www.af.mil/News/Photos.aspx?igphoto=2000949217")
+      expect(entry.thumbnail_url).to eq("http://media.dma.mil/2014/Oct/22/2000949217/145/100/0/141022-F-PB123-223.JPG")
+    end
+  end
+
 end

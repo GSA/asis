@@ -33,11 +33,23 @@ module Feedjira
           sanitize @summary
         end
 
+        def url
+          ensure_scheme_present(@url)
+        end
+
+        def thumbnail_url
+          ensure_scheme_present(@thumbnail_url)
+        end
+
         private
 
         def sanitize(unsafe_html)
           doc = Loofah.fragment(unsafe_html)
           doc.text.strip.squish
+        end
+
+        def ensure_scheme_present(link)
+          link =~ %r{^https?://}i ? link : "http://#{link}"
         end
       end
     end
