@@ -143,6 +143,7 @@ GEM
     newrelic_rpm (3.9.8.273)
     nokogiri (1.6.5)
       mini_portile (~> 0.6.0)
+    patron (0.4.20)
     rack (1.5.2)
     rack-accept (0.4.5)
       rack (>= 0.4)
@@ -262,6 +263,7 @@ DEPENDENCIES
   jbuilder
   mock_redis
   newrelic_rpm
+  patron
   rails (= 4.1.8)
   rails-api
   rspec-rails (~> 3.0.0)
