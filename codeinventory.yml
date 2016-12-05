@@ -1,0 +1,12 @@
+﻿name: ASIS
+description: 'Social media image indexing API, primarily for use with the DigitalGov Search system.'
+license: null
+openSourceProject: 1
+governmentWideReuseProject: 1
+tags:
+    - image
+    - search
+    - GSA
+    - DigitalGovSearch
+contact:
+    email: dawn.mccleskey@gsa.gov
