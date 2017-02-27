@@ -175,11 +175,9 @@ Click around on the files that have < 100% coverage to see what lines weren't ex
 
 ## Code samples
 
-We "eat our own dog food" and use this ASIS API to display image results on the government websites that use [DigitalGov Search](http://search.digitalgov.gov).
+We "eat our own dog food" and use this ASIS API to display image results on the government websites that use [DigitalGov Search](https://search.digitalgov.gov).
 
-See the sample results below for a search for [*moon* on DOI.gov](http://search.doi.gov/search/images?affiliate=doi.gov&query=moon).
-
-[![DOI ASIS-powered results for moon](https://9fddeb862c037f6d2190-f1564c64756a8cfee25b6b19953b1d23.ssl.cf2.rackcdn.com/release-08-2014-doi-instagram.png "DOI ASIS-powered results for moon")](http://search.doi.gov/search/images?&affiliate=doi.gov&query=moon)
+See the results for a search for [*moon* on DOI.gov](https://search.doi.gov/search/images?affiliate=doi.gov&query=moon).
 
 Feedback
 --------
