@@ -1,0 +1,82 @@
+# Ruby CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-ruby/ for more details
+#
+version: 2
+jobs:
+  build:
+    environment:
+      CC_TEST_REPORTER_ID: 0643ac526557dd490bc6f0542cac608a8815d7538dd580261e67dd334c07cc87
+      COVERAGE: true
+    docker:
+      # specify the version you desire here
+       - image: circleci/ruby:2.3.5-node-browsers
+         env:
+         - RAILS_ENV=test
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
+       - image: redis:3.2
+
+    working_directory: ~/asis
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Elasticsearch
+          command: |
+            curl -O https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.deb && sudo dpkg -i elasticsearch-1.7.2.deb && true
+            echo ''script.disable_dynamic: false'' | sudo tee --append /etc/elasticsearch/elasticsearch.yml
+            echo ''index.number_of_shards: 1'' | sudo tee --append /etc/elasticsearch/elasticsearch.yml
+            sudo service elasticsearch start
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "Gemfile.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          #- v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            bundle install --without development --jobs=4 --retry=3 --path vendor/bundle
+
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+
+      - run:
+          name: Install Code Climate Test Reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+
+      # run tests!
+      - run:
+          name: run tests
+          command: |
+            cp -p config/flickr.yml.example config/flickr.yml
+            cp -p config/instagram.yml.example config/instagram.yml
+
+            mkdir /tmp/test-results
+            ./cc-test-reporter before-build
+
+            bundle exec rspec --format progress \
+                            --format RspecJunitFormatter \
+                            --out /tmp/test-results/rspec.xml \
+                            --format progress \
+                            $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+            ./cc-test-reporter format-coverage --output coverage/codeclimate.json
+            ./cc-test-reporter upload-coverage
+
+      # collect reports
+      - store_test_results:
+          path: /tmp/test-results
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: test-results

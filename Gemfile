@@ -39,5 +39,5 @@ end
 group :test do
   gem 'rspec-sidekiq', '~> 3.0.1'
   gem 'simplecov', '~> 0.7.1'
-  gem "codeclimate-test-reporter", '~> 0.4.3', require: nil
+  gem 'rspec_junit_formatter', '~> 0.2.3'
 end
