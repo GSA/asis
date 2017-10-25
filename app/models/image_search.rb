@@ -29,6 +29,10 @@ class ImageSearch
     ImageSearchResults.new(NO_HITS)
   end
 
+  def uncovered
+    puts "I have no coverage!"
+  end
+
   private
 
   def ensure_no_suggestion_when_results_present(image_search_results)
