@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-gem 'rails', '4.2.8'
+gem 'rails', '4.2.10'
 
 # Temporarily limiting rake version:
 # #http://stackoverflow.com/questions/35893584/nomethoderror-undefined-method-last-comment-after-upgrading-to-rake-11
