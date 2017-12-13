@@ -1,0 +1,2 @@
+script.disable_dynamic: false
+index.number_of_shards: 1

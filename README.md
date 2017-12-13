@@ -12,7 +12,7 @@ You are reading documentation for ASIS API v1.
 
 ## Contribute to the code
 
-The server code that runs the image search component of [DigitalGov Search](http://search.digitalgov.gov) is here on Github. 
+The server code that runs the image search component of [DigitalGov Search](http://search.digitalgov.gov) is here on Github.
 [Fork this repo](https://github.com/GSA/oasis/fork) to add features like additional datasets, or to fix bugs.
 
 ### Ruby
@@ -33,7 +33,7 @@ We use bundler to manage gems. You can install bundler and other required gems l
 
 ### Elasticsearch
 
-We're using [Elasticsearch](http://www.elasticsearch.org/) (>= 1.7.0) for fulltext search. On a Mac, it's easy to 
+We're using [Elasticsearch](http://www.elasticsearch.org/) (>= 1.7.0) for fulltext search. On a Mac, it's easy to
 install with [Homebrew](http://mxcl.github.com/homebrew/).
 
     $ brew install elasticsearch
@@ -41,6 +41,30 @@ install with [Homebrew](http://mxcl.github.com/homebrew/).
 Otherwise, follow the [instructions](http://www.elasticsearch.org/download/) to download and run it.
 
 You can generally leave the defaults in elasticsearch.yml as they are, but there are two exceptions:
+
+### Elasticsearch with Docker
+
+Install Docker if you haven't done so yet. Follow the instruction [here](https://www.docker.com/community-edition)
+Once you have Docker installed on your machine, run the following command from the project root
+
+    $ .docker/bin/elasticsearch-docker
+
+This will download an docker image containing elasticsearch=1.7 from docker hub, run it, and expose port 9200 & 9300 to your machine. You can verify your setup with the following command.
+
+    $ curl localhost:9200
+    {
+      "status" : 200,
+      "name" : "Abraham Cornelius",
+      "cluster_name" : "elasticsearch",
+      "version" : {
+        "number" : "1.7.6",
+        "build_hash" : "c730b59357f8ebc555286794dcd90b3411f517c9",
+        "build_timestamp" : "2016-11-18T15:21:16Z",
+        "build_snapshot" : false,
+        "lucene_version" : "4.10.4"
+      },
+      "tagline" : "You Know, for Search"
+    }
 
 #### Enable dynamic scripting
 
@@ -53,7 +77,7 @@ You can generally leave the defaults in elasticsearch.yml as they are, but there
 Default shards are set to 5, but you'll have an easier time with tests if you set it to 1 on your development machine:
 
     index.number_of_shards: 1
- 
+
 ### Redis
 
 Sidekiq (see below) uses [Redis](http://redis.io), so make sure you have that installed and running.
@@ -64,14 +88,14 @@ You can bootstrap the system with some government Flickr/Instagram profiles and 
 Sample lists are in `config/instagram_profiles.csv` and `config/flickr_profiles.csv` and `config/mrss_profiles.csv`.
 
     bundle exec rake oasis:seed_profiles
-    
+
 You can keep the indexes up to date by periodically refreshing the last day's images. To do this manually via the Rails console:
-  
+
     FlickrPhotosImporter.refresh
     InstagramPhotosImporter.refresh
     MrssPhotosImporter.refresh
 
-The Capistrano deploy script has [whenever](https://github.com/javan/whenever) hooks so this refresh happens automatically 
+The Capistrano deploy script has [whenever](https://github.com/javan/whenever) hooks so this refresh happens automatically
 via cron in your production environment.
 
 ### Running it
@@ -93,7 +117,7 @@ You can add a new profile manually via the REST API:
     	curl -XPOST "http://localhost:3000/api/v1/instagram_profiles.json?username=deptofdefense&id=542835249"
     	curl -XPOST "http://localhost:3000/api/v1/flickr_profiles.json?name=commercegov&id=61913304@N07&profile_type=user"
     	curl -XPOST "http://localhost:3000/api/v1/mrss_profiles.json?url=http%3A%2F%2Fremotesensing.usgs.gov%2Fgallery%2Frss.php%3Fcat%3Dall"
-    	
+
 MRSS profiles work a little differently than Flickr and Instagram profiles. When you create the MRSS profile, Oasis assigns a
 short name to it that you will use when performing searches. The JSON result from the POST request will look something like this:
 
@@ -113,9 +137,9 @@ We use [Sidekiq](http://sidekiq.org) for job processing. You can see all your Fl
 Kick off the indexing process:
 
     bundle exec sidekiq
-    
+
 In the Rails console, you can query each index manually using the Elasticsearch [Query DSL](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl.html):
-    
+
     bin/rails c
     InstagramPhoto.count
     FlickrPhoto.count
