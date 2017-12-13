@@ -14,10 +14,10 @@ gem 'capistrano', '~> 3.3.5'
 gem 'capistrano-bundler', '~> 1.1.3'
 gem 'capistrano-sidekiq', '~> 0.4.0'
 
-gem "elasticsearch-persistence", '~> 0.1.6', require: 'elasticsearch/persistence/model'
-gem 'elasticsearch-api', '~> 1.0.6'
-gem 'elasticsearch-model', '~> 0.1.0'
-gem 'elasticsearch-transport', '~> 1.0.6'
+gem "elasticsearch-persistence", '~> 5.0', require: 'elasticsearch/persistence/model'
+gem 'elasticsearch-api', '~> 6.0'
+gem 'elasticsearch-model', '~> 5.0'
+gem 'elasticsearch-transport', '~> 6.0'
 gem 'instagram', '~> 1.1.3'
 gem 'flickraw', '~> 0.9.8'
 gem 'sidekiq', '~> 3.3.0'
@@ -33,6 +33,8 @@ gem "airbrake", '~> 4.1.0'
 gem 'feedjira', '~> 1.5.0'
 
 group :development, :test do
+  gem 'binding_of_caller'
+  gem 'pry-rails'
   gem 'rspec-rails', '~> 3.0.0'
 end
 

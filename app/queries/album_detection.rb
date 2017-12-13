@@ -14,7 +14,7 @@ class AlbumDetection
 
   def filtered_query(json)
     json.query do
-      json.filtered do
+      json.bool do
         filtered_query_query(json)
         filtered_query_filter(json)
       end
@@ -34,17 +34,14 @@ class AlbumDetection
   end
 
   def filtered_query_query(json)
-    json.query do
-      json.bool do
-        json.must do
-          @query_fields_thresholds_hash.each do |query_field, minimum_should_match|
-            more_like_this(json, query_field, minimum_should_match)
-          end
-        end
+    json.must do
+      @query_fields_thresholds_hash.each do |query_field, minimum_should_match|
+        more_like_this(json, query_field, minimum_should_match)
       end
     end
   end
 
+  # https://www.elastic.co/guide/en/elasticsearch/reference/2.0/breaking_20_query_dsl_changes.html#_more_like_this
   def more_like_this(json, query_field, minimum_should_match)
     json.child! do
       json.more_like_this do
@@ -52,7 +49,7 @@ class AlbumDetection
         json.ids [@photo.id]
         json.min_term_freq 1
         json.max_query_terms 500
-        json.percent_terms_to_match minimum_should_match
+        json.minimum_should_match percentize(minimum_should_match)
       end
     end if @photo.send(query_field).present?
   end
@@ -60,8 +57,14 @@ class AlbumDetection
   def term_filter_child(json, filter_field)
     filter_value = @photo.send(filter_field)
     json.child! do
-      json.term do
-        json.set! filter_field, filter_value
+      if filter_value.is_a? Array
+        json.terms do
+          json.set! filter_field, filter_value
+        end
+      else
+        json.term do
+          json.set! filter_field, filter_value
+        end
       end
     end if filter_value.present?
   end
@@ -70,7 +73,10 @@ class AlbumDetection
     json.aggregations do
       json.scores_histogram do
         json.histogram do
-          json.script "_score"
+          json.script do
+            json.inline '_score'
+            json.lang 'groovy'
+          end
           json.interval 2
           json.order do
             json._key "desc"
@@ -80,5 +86,7 @@ class AlbumDetection
     end
   end
 
-
+  def percentize(number)
+    "#{(number * 100).round}%"
+  end
 end

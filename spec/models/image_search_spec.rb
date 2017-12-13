@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe ImageSearch do
   before do
+    sleep 1
     FlickrPhoto.delete_all
     InstagramPhoto.delete_all
     MrssPhoto.delete_all

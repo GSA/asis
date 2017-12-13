@@ -37,7 +37,8 @@ class ImageSearch
 
   def execute_client_search
     top_hits_query = TopHits.new(@query, @size, @from, @flickr_groups, @flickr_users, @instagram_profiles, @mrss_names)
-    params = { preference: '_local', index: IMAGE_INDEXES, body: top_hits_query.query_body, search_type: "count" }
+    # https://www.elastic.co/guide/en/elasticsearch/reference/5.5/breaking_50_search_changes.html#_literal_search_type_count_literal_removed
+    params = { preference: '_local', index: IMAGE_INDEXES, body: top_hits_query.query_body }
     result = Elasticsearch::Persistence.client.search(params)
     ImageSearchResults.new(result, @from, @size)
   end

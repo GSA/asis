@@ -1,8 +1,9 @@
 module ElasticSettings
-  KEYWORD = { type: 'string', analyzer: 'case_insensitive_keyword_analyzer' }
+  KEYWORD = { type: 'keyword' } #, analyzer: 'case_insensitive_keyword_analyzer' }
   TAG = { type: 'string', analyzer: 'tag_analyzer' }
 
   COMMON = {
+    number_of_shards: 1,
     index: {
       analysis: {
         char_filter: {

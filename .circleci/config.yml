@@ -24,7 +24,6 @@ jobs:
 
     steps:
       - checkout
-
       - run:
           name: Install Elasticsearch
           command: |
