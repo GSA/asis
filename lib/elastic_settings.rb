@@ -1,6 +1,6 @@
 module ElasticSettings
-  KEYWORD = { type: 'keyword' } #, analyzer: 'case_insensitive_keyword_analyzer' }
-  TAG = { type: 'string', analyzer: 'tag_analyzer' }
+  KEYWORD = { type: :keyword, normalizer: :case_insensitive_keyword_normalizer }
+  TAG = { type: :text, analyzer: :tag_analyzer }
 
   COMMON = {
     number_of_shards: 1,
@@ -38,7 +38,18 @@ module ElasticSettings
           case_insensitive_keyword_analyzer: {
             tokenizer: 'keyword',
             char_filter: %w(ignore_chars),
-            filter: %w(standard asciifolding lowercase) } } } }
+            filter: %w(standard asciifolding lowercase)
+          }
+        },
+        normalizer: {
+          case_insensitive_keyword_normalizer: {
+            type: 'custom',
+            char_filter: %w(ignore_chars),
+            filter: %w(asciifolding lowercase)
+          }
+        }
+      }
+    }
   }
 
 end
