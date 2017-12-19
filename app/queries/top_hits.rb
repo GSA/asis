@@ -14,8 +14,9 @@ class TopHits
     @flickr_groups, @flickr_users, @instagram_profiles, @mrss_names = flickr_groups, flickr_users, instagram_profiles, mrss_names
   end
 
-  def query_body
+  def query_body(search_type: :query_then_fetch)
     Jbuilder.encode do |json|
+      json.size 0 if search_type == :count
       filtered_query(json)
       aggs(json)
       suggest(json)

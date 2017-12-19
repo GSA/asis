@@ -18,6 +18,7 @@ gem "elasticsearch-persistence", '~> 5.0', require: 'elasticsearch/persistence/m
 gem 'elasticsearch-api', '~> 6.0'
 gem 'elasticsearch-model', '~> 5.0'
 gem 'elasticsearch-transport', '~> 6.0'
+gem 'hashie', '~> 3.3.2' # Hashie::Mash@3.5 will emit warning on key collision. Lock to 3.3.2 to avoid code change.
 gem 'instagram', '~> 1.1.3'
 gem 'flickraw', '~> 0.9.8'
 gem 'sidekiq', '~> 3.3.0'
