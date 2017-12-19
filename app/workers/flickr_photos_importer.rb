@@ -61,13 +61,13 @@ class FlickrPhotosImporter
     FlickrPhoto.create(attributes, { op_type: 'create' })
   rescue Elasticsearch::Transport::Transport::Errors::Conflict => e
     script = {
-      inline: 'ctx._source.popularity = new_popularity',
+      source: 'ctx._source.popularity = new_popularity',
       lang: 'groovy',
       params: { new_popularity: flickr_photo_structure.views }
     }
     if group_id.present?
       script[:params][:new_group] = group_id
-      script[:inline] << '; ctx._source.groups=(ctx._source.groups+new_group).unique()'
+      script[:source] << '; ctx._source.groups=(ctx._source.groups+new_group).unique()'
     end
     FlickrPhoto.gateway.update(flickr_photo_structure.id, script: script)
     nil

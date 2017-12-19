@@ -42,7 +42,7 @@ class MrssPhotosImporter
     MrssPhoto.create(attributes, { op_type: 'create' })
   rescue Elasticsearch::Transport::Transport::Errors::Conflict => e
     script = {
-      inline: 'if (ctx._source.mrss_names.contains(new_name)) { ctx.op = "none" } else { ctx._source.mrss_names += new_name }',
+      source: 'if (ctx._source.mrss_names.contains(new_name)) { ctx.op = "none" } else { ctx._source.mrss_names += new_name }',
       params: { new_name: @mrss.name },
       lang: 'groovy'
     }

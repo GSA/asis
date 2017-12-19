@@ -43,7 +43,7 @@ class TopHits
         json.max do
           # https://www.elastic.co/guide/en/elasticsearch/reference/2.0/breaking_20_scripting_changes.html#_scripting_syntax
           json.script do
-            json.inline '_score'
+            json.source '_score'
             json.lang 'groovy'
           end
         end

@@ -74,7 +74,7 @@ class AlbumDetection
       json.scores_histogram do
         json.histogram do
           json.script do
-            json.inline '_score'
+            json.source '_score'
             json.lang 'groovy'
           end
           json.interval 2
