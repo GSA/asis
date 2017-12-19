@@ -150,8 +150,8 @@ describe MrssPhotosImporter do
 
     it 'should enqueue importing the photos' do
       MrssPhotosImporter.refresh
-      expect(MrssPhotosImporter).to have_enqueued_job("3")
-      expect(MrssPhotosImporter).to have_enqueued_job("4")
+      expect(MrssPhotosImporter).to have_enqueued_sidekiq_job("3")
+      expect(MrssPhotosImporter).to have_enqueued_sidekiq_job("4")
     end
   end
 end

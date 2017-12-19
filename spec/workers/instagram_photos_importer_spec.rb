@@ -192,8 +192,8 @@ describe InstagramPhotosImporter do
 
     it 'should enqueue importing the last X days of photos' do
       InstagramPhotosImporter.refresh
-      expect(InstagramPhotosImporter).to have_enqueued_job('123', InstagramPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
-      expect(InstagramPhotosImporter).to have_enqueued_job('456', InstagramPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
+      expect(InstagramPhotosImporter).to have_enqueued_sidekiq_job('123', InstagramPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
+      expect(InstagramPhotosImporter).to have_enqueued_sidekiq_job('456', InstagramPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
     end
   end
 end
