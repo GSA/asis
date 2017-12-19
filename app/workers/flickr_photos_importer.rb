@@ -60,13 +60,16 @@ class FlickrPhotosImporter
     attributes = get_attributes(flickr_photo_structure, group_id)
     FlickrPhoto.create(attributes, { op_type: 'create' })
   rescue Elasticsearch::Transport::Transport::Errors::Conflict => e
-    params = { new_popularity: flickr_photo_structure.views }
-    script = 'ctx._source.popularity = new_popularity'
+    script = {
+      inline: 'ctx._source.popularity = new_popularity',
+      lang: 'groovy',
+      params: { new_popularity: flickr_photo_structure.views }
+    }
     if group_id.present?
-      params.merge!(new_group: group_id)
-      script << '; ctx._source.groups=(ctx._source.groups+new_group).unique()'
+      script[:params][:new_group] = group_id
+      script[:inline] << '; ctx._source.groups=(ctx._source.groups+new_group).unique()'
     end
-    FlickrPhoto.gateway.update(flickr_photo_structure.id, lang: 'groovy', params: params, script: script)
+    FlickrPhoto.gateway.update(flickr_photo_structure.id, script: script)
     nil
   rescue Exception => e
     Rails.logger.warn("Trouble storing Flickr photo #{flickr_photo_structure.inspect}: #{e}")
