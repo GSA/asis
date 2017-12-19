@@ -4,8 +4,8 @@ class FlickrPhoto
 
   attribute :owner, String, mapping: ElasticSettings::KEYWORD
   attribute :groups, String, mapping: ElasticSettings::KEYWORD
-  attribute :title, String, mapping: { type: 'string', analyzer: 'en_analyzer', copy_to: 'bigram' }
-  attribute :description, String, mapping: { type: 'string', analyzer: 'en_analyzer', copy_to: 'bigram' }
+  attribute :title, String, mapping: { type: 'text', analyzer: 'en_analyzer', copy_to: 'bigram' }
+  attribute :description, String, mapping: { type: 'text', analyzer: 'en_analyzer', copy_to: 'bigram' }
 
   validates :owner, presence: true
   validates :title, presence: true

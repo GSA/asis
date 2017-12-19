@@ -46,7 +46,7 @@ class AlbumDetection
     json.child! do
       json.more_like_this do
         json.fields [query_field]
-        json.ids [@photo.id]
+        json.like [{ _id: @photo.id }]
         json.min_term_freq 1
         json.max_query_terms 500
         json.minimum_should_match percentize(minimum_should_match)

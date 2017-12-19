@@ -34,11 +34,6 @@ module ElasticSettings
             tokenizer: "standard",
             char_filter: %w(strip_whitespace),
             filter: %w(standard asciifolding lowercase)
-          },
-          case_insensitive_keyword_analyzer: {
-            tokenizer: 'keyword',
-            char_filter: %w(ignore_chars),
-            filter: %w(standard asciifolding lowercase)
           }
         },
         normalizer: {
