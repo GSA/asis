@@ -22,7 +22,7 @@ gem 'instagram', '~> 1.1.3'
 gem 'flickraw', '~> 0.9.8'
 gem 'sidekiq', '~> 3.3.0'
 gem 'mock_redis', '~> 0.14.0'
-gem 'sidekiq-unique-jobs', '~> 3.0.11'
+gem 'sidekiq-unique-jobs', '3.0.11' # sidekiq-unique-jobs > 3.0.11 broke spec
 gem 'sidekiq-failures', '~> 0.4.3'
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'whenever', '~> 0.9.4', :require => false
