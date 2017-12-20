@@ -5,6 +5,7 @@ describe API::V1::FlickrProfiles do
     context 'when profiles exist' do
       before do
         FlickrProfile.delete_all
+        sleep 1
         FlickrProfile.create(name: 'profile2', id: '2', profile_type: 'group')
         FlickrProfile.create(name: 'profile1', id: '1', profile_type: 'user')
         FlickrProfile.refresh_index!

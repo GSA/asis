@@ -3,6 +3,7 @@ require 'rails_helper'
 describe API::V1::MrssProfiles do
   before :each do
     MrssProfile.delete_all
+    sleep 1
     MrssProfile.refresh_index!
   end
 

@@ -7,6 +7,7 @@ describe FlickrPhotosImporter do
   describe "#perform" do
     before do
       FlickrPhoto.delete_all
+      sleep 1
       FlickrPhoto.refresh_index!
     end
 
