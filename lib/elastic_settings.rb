@@ -3,7 +3,7 @@ module ElasticSettings
   TAG = { type: :text, analyzer: :tag_analyzer }
 
   COMMON = {
-    number_of_shards: 1,
+    number_of_shards: Rails.configuration.elasticsearch['number_of_shards'],
     index: {
       analysis: {
         char_filter: {
