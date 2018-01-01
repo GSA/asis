@@ -22,7 +22,7 @@ gem 'hashie', '~> 3.3.2' # Hashie::Mash@3.5 will emit warning on key collision. 
 gem 'instagram', '~> 1.1.3'
 gem 'flickraw', '~> 0.9.8'
 gem 'sidekiq', '~> 3.3.0'
-gem 'mock_redis', '~> 0.14.0'
+gem 'mock_redis', '~> 0.17.3'
 gem 'sidekiq-unique-jobs', '3.0.11' # sidekiq-unique-jobs > 3.0.11 broke spec
 gem 'sidekiq-failures', '~> 0.4.3'
 gem 'sinatra', '>= 1.3.0', :require => nil
@@ -31,12 +31,12 @@ gem 'whenever', '~> 0.9.4', :require => false
 gem 'newrelic_rpm', '~> 4.2.0.334'
 gem "airbrake", '~> 4.1.0'
 
-gem 'feedjira', '~> 1.5.0'
+gem 'feedjira', '~> 2.1.1'
 
 group :development, :test do
   gem 'binding_of_caller'
   gem 'pry-rails'
-  gem 'rspec-rails', '~> 3.0.0'
+  gem 'rspec-rails', '~> 3.3.0'
 end
 
 group :test do
