@@ -8,7 +8,7 @@ gem 'rake', '~> 10.0'
 gem 'grape', '~> 0.9.0'
 gem 'thin', '~> 1.6.3'
 
-gem 'jbuilder', '~> 2.2.5'
+gem 'jbuilder', '~> 2.6.4'
 
 gem 'capistrano', '~> 3.3.5'
 gem 'capistrano-bundler', '~> 1.1.3'
