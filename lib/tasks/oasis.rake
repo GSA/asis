@@ -12,7 +12,7 @@ namespace :oasis do
     end
     CSV.foreach("#{Rails.root}/config/mrss_profiles.csv") do |row|
       mrss_profile = MrssProfile.new(id: row[0])
-      mrss_profile.save and MrssPhotosImporter.perform_async(mrss_profile.id)
+      mrss_profile.save and MrssPhotosImporter.perform_async(mrss_profile.name)
     end
   end
 end
