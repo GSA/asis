@@ -7,7 +7,6 @@ describe InstagramPhotosImporter do
   describe "#perform" do
     before do
       InstagramPhoto.delete_all
-      sleep 1
       InstagramPhoto.refresh_index!
     end
 

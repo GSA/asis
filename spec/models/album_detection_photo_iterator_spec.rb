@@ -3,7 +3,6 @@ require 'rails_helper'
 describe AlbumDetectionPhotoIterator, "run" do
   before do
     FlickrPhoto.delete_all
-    sleep 1
     5.times do |x|
       i = x + 1
       FlickrPhoto.create(id: "photo #{i}", owner: "owner1", tags: ['alpha', 'bravo', 'charlie', i.ordinalize],

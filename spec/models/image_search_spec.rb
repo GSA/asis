@@ -5,7 +5,6 @@ describe ImageSearch do
     FlickrPhoto.delete_all
     InstagramPhoto.delete_all
     MrssPhoto.delete_all
-    sleep 1
   end
 
   context 'when relevant results exist in Instagram, Flickr, and MRSS indexes' do
