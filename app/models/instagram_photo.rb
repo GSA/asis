@@ -3,7 +3,7 @@ class InstagramPhoto
   include IndexablePhoto
 
   attribute :username, String, mapping: ElasticSettings::KEYWORD
-  attribute :caption, String, mapping: { type: 'string', analyzer: 'en_analyzer', copy_to: 'bigram' }
+  attribute :caption, String, mapping: { type: 'text', analyzer: 'en_analyzer', copy_to: 'bigram' }
 
   validates :username, presence: true
   validates :caption, presence: true

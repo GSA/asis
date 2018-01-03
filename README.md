@@ -17,7 +17,7 @@ The server code that runs the image search component of [DigitalGov Search](http
 
 ### Ruby
 
-This code is currently tested against [Ruby 2.1](http://www.ruby-lang.org/en/downloads/).
+This code is currently tested against [Ruby 2.3](http://www.ruby-lang.org/en/downloads/).
 
 ### Configuration
 
@@ -33,14 +33,22 @@ We use bundler to manage gems. You can install bundler and other required gems l
 
 ### Elasticsearch
 
-We're using [Elasticsearch](http://www.elasticsearch.org/) (>= 1.7.0) for fulltext search. On a Mac, it's easy to
+We're using [Elasticsearch](http://www.elasticsearch.org/) (>= 5.6.5) for fulltext search. On a Mac, it's easy to
 install with [Homebrew](http://mxcl.github.com/homebrew/).
 
-    $ brew install elasticsearch
+    $ brew install elasticsearch@5.6
 
 Otherwise, follow the [instructions](http://www.elasticsearch.org/download/) to download and run it.
 
-You can generally leave the defaults in elasticsearch.yml as they are, but there are two exceptions:
+You can generally leave the defaults in elasticsearch.yml as they are, with the exception of:
+
+#### Scripting
+
+[Scripting](https://www.elastic.co/guide/en/elasticsearch/reference/5.6/modules-scripting-security.html#security-script-source) is disabled by default in Elasticsearch 5.6. Set both `script.inline` and `script.stored` to `true`:
+
+    script:
+      inline: true
+      stored: true
 
 ### Elasticsearch with Docker
 
@@ -49,34 +57,22 @@ Once you have Docker installed on your machine, run the following command from t
 
     $ .docker/bin/elasticsearch-docker
 
-This will download an docker image containing elasticsearch=1.7 from docker hub, run it, and expose port 9200 & 9300 to your machine. You can verify your setup with the following command.
+This will download an docker image containing elasticsearch=5.6 from docker.elastic.co, run it, and expose port 9200 & 9300 to your machine. You can verify your setup with the following command.
 
     $ curl localhost:9200
     {
-      "status" : 200,
-      "name" : "Abraham Cornelius",
+      "name" : ...random string...,
       "cluster_name" : "elasticsearch",
+      "cluster_uuid" : ...uuid...
       "version" : {
-        "number" : "1.7.6",
-        "build_hash" : "c730b59357f8ebc555286794dcd90b3411f517c9",
-        "build_timestamp" : "2016-11-18T15:21:16Z",
+        "number" : "5.6.5",
+        "build_hash" : "6a37571",
+        "build_timestamp" : "2017-12-04T07:50:10.466Z",
         "build_snapshot" : false,
-        "lucene_version" : "4.10.4"
+        "lucene_version" : "6.6.1"
       },
       "tagline" : "You Know, for Search"
     }
-
-#### Enable dynamic scripting
-
-[Dynamic scripting](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/modules-scripting.html#_enabling_dynamic_scripting) is disabled by default since Elasticsearch 1.2.0. You can either set it to `false` or use the safer setting of `sandbox`:
-
-    script.disable_dynamic: sandbox
-
-#### Number of shards
-
-Default shards are set to 5, but you'll have an easier time with tests if you set it to 1 on your development machine:
-
-    index.number_of_shards: 1
 
 ### Redis
 

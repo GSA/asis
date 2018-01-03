@@ -1,8 +1,9 @@
 module ElasticSettings
-  KEYWORD = { type: 'string', analyzer: 'case_insensitive_keyword_analyzer' }
-  TAG = { type: 'string', analyzer: 'tag_analyzer' }
+  KEYWORD = { type: :keyword, normalizer: :case_insensitive_keyword_normalizer }
+  TAG = { type: :text, analyzer: :tag_analyzer }
 
   COMMON = {
+    number_of_shards: Rails.configuration.elasticsearch['number_of_shards'],
     index: {
       analysis: {
         char_filter: {
@@ -33,11 +34,17 @@ module ElasticSettings
             tokenizer: "standard",
             char_filter: %w(strip_whitespace),
             filter: %w(standard asciifolding lowercase)
-          },
-          case_insensitive_keyword_analyzer: {
-            tokenizer: 'keyword',
+          }
+        },
+        normalizer: {
+          case_insensitive_keyword_normalizer: {
+            type: 'custom',
             char_filter: %w(ignore_chars),
-            filter: %w(standard asciifolding lowercase) } } } }
+            filter: %w(asciifolding lowercase)
+          }
+        }
+      }
+    }
   }
 
 end

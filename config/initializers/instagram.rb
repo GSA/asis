@@ -1,10 +1,8 @@
 require 'instagram'
 
-yaml = YAML.load_file("#{Rails.root}/config/instagram.yml")
-
 Instagram.configure do |config|
-  config.client_id = yaml['client_id']
-  config.client_secret = yaml['client_secret']
+  config.client_id = Rails.configuration.instagram['client_id']
+  config.client_secret = Rails.configuration.instagram['client_secret']
 end
 
-INSTAGRAM_ACCESS_TOKEN = yaml['access_token']
+INSTAGRAM_ACCESS_TOKEN = Rails.configuration.instagram['access_token']

@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe MrssPhotosImporter do
-  it { should be_retryable true }
-  it { should be_unique }
+  it { is_expected.to be_retryable true }
+  it { is_expected.to be_unique }
 
   describe "#perform" do
     before do
@@ -149,8 +149,8 @@ describe MrssPhotosImporter do
 
     it 'should enqueue importing the photos' do
       MrssPhotosImporter.refresh
-      expect(MrssPhotosImporter).to have_enqueued_job("3")
-      expect(MrssPhotosImporter).to have_enqueued_job("4")
+      expect(MrssPhotosImporter).to have_enqueued_sidekiq_job("3")
+      expect(MrssPhotosImporter).to have_enqueued_sidekiq_job("4")
     end
   end
 end

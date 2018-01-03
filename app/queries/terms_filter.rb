@@ -12,7 +12,7 @@ class TermsFilter
 
   private
   def filtered_query(json)
-    json.filtered do
+    json.bool do
       json.filter do
         json.terms do
           json.set! @key, @values

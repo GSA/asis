@@ -21,7 +21,7 @@ describe API::V1::InstagramProfiles do
 
   describe "POST /api/v1/instagram_profiles" do
     before do
-      post "/api/v1/instagram_profiles", id: '192237852', username: 'bureau_of_reclamation'
+      post "/api/v1/instagram_profiles", params: { id: '192237852', username: 'bureau_of_reclamation' }
       InstagramProfile.refresh_index!
     end
 
@@ -30,7 +30,7 @@ describe API::V1::InstagramProfiles do
     end
 
     it "enqueues the importer to download and index photos" do
-      expect(InstagramPhotosImporter).to have_enqueued_job('192237852')
+      expect(InstagramPhotosImporter).to have_enqueued_sidekiq_job('192237852')
     end
 
     it 'returns created profile as JSON' do

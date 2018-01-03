@@ -21,7 +21,7 @@ describe API::V1::FlickrProfiles do
 
   describe "POST /api/v1/flickr_profiles" do
     before do
-      post "/api/v1/flickr_profiles", id: '61913304@N07', name: 'commercegov', profile_type: 'user'
+      post "/api/v1/flickr_profiles", params: { id: '61913304@N07', name: 'commercegov', profile_type: 'user' }
       FlickrProfile.refresh_index!
     end
 
@@ -30,7 +30,7 @@ describe API::V1::FlickrProfiles do
     end
 
     it "enqueues the importer to download and index photos" do
-      expect(FlickrPhotosImporter).to have_enqueued_job('61913304@N07', 'user')
+      expect(FlickrPhotosImporter).to have_enqueued_sidekiq_job('61913304@N07', 'user')
     end
 
     it 'returns created profile as JSON' do

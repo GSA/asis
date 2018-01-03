@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe InstagramPhotosImporter do
-  it { should be_retryable true }
-  it { should be_unique }
+  it { is_expected.to be_retryable true }
+  it { is_expected.to be_unique }
 
   describe "#perform" do
     before do
@@ -13,20 +13,16 @@ describe InstagramPhotosImporter do
     let(:importer) { InstagramPhotosImporter.new }
     let(:instagram_client) { double('Instagram client') }
 
-    before do
-      allow(Instagram).to receive(:client) { instagram_client }
-    end
-
     context 'when days_ago is specified' do
       it "should convert that to a timestamp and use it when fetching the recent media" do
-        expect(instagram_client).to receive(:user_recent_media).with('1234', { min_timestamp: a_value_within(10).of(7.days.ago.to_i) })
+        expect_any_instance_of(Instagram::Client).to receive(:user_recent_media).with('1234', { min_timestamp: a_value_within(10).of(7.days.ago.to_i) })
         importer.perform('1234', 7)
       end
     end
 
     context 'when days_ago is not specified' do
       it "should fetch the recent media" do
-        expect(instagram_client).to receive(:user_recent_media).with('1234', {})
+        expect_any_instance_of(Instagram::Client).to receive(:user_recent_media).with('1234', {})
         importer.perform('1234')
       end
     end
@@ -76,9 +72,9 @@ describe InstagramPhotosImporter do
                                   images: { thumbnail: {
                                     url: 'http://photo_thumbnail4' } })
         batch2_photos = [photo3, photo4]
-        expect(instagram_client).to receive(:user_recent_media).with('1234', {}) { batch1_photos }
-        expect(instagram_client).to receive(:user_recent_media).with('1234', { max_id: '7890' }) { batch2_photos }
-        expect(instagram_client).to receive(:user_recent_media).with('1234', { max_id: '7808' }) { [] }
+        allow_any_instance_of(Instagram::Client).to receive(:user_recent_media).with('1234', {}) { batch1_photos }
+        expect_any_instance_of(Instagram::Client).to receive(:user_recent_media).with('1234', { max_id: '7890' }) { batch2_photos }
+        allow_any_instance_of(Instagram::Client).to receive(:user_recent_media).with('1234', { max_id: '7808' }) { [] }
       end
 
       it "should store and index them" do
@@ -130,8 +126,8 @@ describe InstagramPhotosImporter do
       end
 
       before do
-        expect(instagram_client).to receive(:user_recent_media).with('1234', {}) { photos }
-        expect(instagram_client).to receive(:user_recent_media).with('1234', { max_id: '7890' }) { [] }
+        expect_any_instance_of(Instagram::Client).to receive(:user_recent_media).with('1234', {}) { photos }
+        expect_any_instance_of(Instagram::Client).to receive(:user_recent_media).with('1234', { max_id: '7890' }) { [] }
       end
 
       it "should log the issue and move on to the next photo" do
@@ -159,8 +155,8 @@ describe InstagramPhotosImporter do
 
       before do
         InstagramPhoto.create(id: "already exists", username: 'user1', tags: %w(tag1 tag2), caption: 'initial caption', taken_at: Date.current, popularity: 101, url: "http://instaphoto2", thumbnail_url: "http://instaphoto_thumbnail2", album: 'album3')
-        expect(instagram_client).to receive(:user_recent_media).with('1234', {}) { photos }
-        expect(instagram_client).to receive(:user_recent_media).with('1234', { max_id: 'already exists' }) { [] }
+        expect_any_instance_of(Instagram::Client).to receive(:user_recent_media).with('1234', {}) { photos }
+        expect_any_instance_of(Instagram::Client).to receive(:user_recent_media).with('1234', { max_id: 'already exists' }) { [] }
       end
 
       it "should update the popularity field" do
@@ -174,7 +170,7 @@ describe InstagramPhotosImporter do
 
     context 'when Instagram API generates some error' do
       before do
-        expect(instagram_client).to receive(:user_recent_media).and_raise Exception
+        expect_any_instance_of(Instagram::Client).to receive(:user_recent_media).and_raise Exception
       end
 
       it 'should log a warning and continue' do
@@ -192,8 +188,8 @@ describe InstagramPhotosImporter do
 
     it 'should enqueue importing the last X days of photos' do
       InstagramPhotosImporter.refresh
-      expect(InstagramPhotosImporter).to have_enqueued_job('123', InstagramPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
-      expect(InstagramPhotosImporter).to have_enqueued_job('456', InstagramPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
+      expect(InstagramPhotosImporter).to have_enqueued_sidekiq_job('123', InstagramPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
+      expect(InstagramPhotosImporter).to have_enqueued_sidekiq_job('456', InstagramPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
     end
   end
 end

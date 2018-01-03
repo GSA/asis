@@ -1,18 +1,17 @@
-require File.expand_path('../boot', __FILE__)
+require_relative 'boot'
 
-# Pick the frameworks you want:
-# require "active_record/railtie"
-require "action_controller/railtie"
-# require "action_mailer/railtie"
-# require "sprockets/railtie"
-# require "rails/test_unit/railtie"
+require 'rails'
+require 'action_controller/railtie'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(:default, Rails.env)
+Bundler.require(*Rails.groups)
 
 module Oasis
   class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 5.1
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -27,7 +26,9 @@ module Oasis
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    # Disable the asset pipeline.
-    config.assets.enabled = false
+    config.airbrake      = config_for(:airbrake)
+    config.elasticsearch = config_for(:elasticsearch)
+    config.flickr        = config_for(:flickr)
+    config.instagram     = config_for(:instagram)
   end
 end

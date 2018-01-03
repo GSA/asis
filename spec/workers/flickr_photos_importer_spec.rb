@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe FlickrPhotosImporter do
-  it { should be_retryable true }
-  it { should be_unique }
+  it { is_expected.to be_retryable true }
+  it { is_expected.to be_unique }
 
   describe "#perform" do
     before do
@@ -260,8 +260,8 @@ describe FlickrPhotosImporter do
 
     it 'should enqueue importing the last X days of photos' do
       FlickrPhotosImporter.refresh
-      expect(FlickrPhotosImporter).to have_enqueued_job('abc', 'user', FlickrPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
-      expect(FlickrPhotosImporter).to have_enqueued_job('def', 'group', FlickrPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
+      expect(FlickrPhotosImporter).to have_enqueued_sidekiq_job('abc', 'user', FlickrPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
+      expect(FlickrPhotosImporter).to have_enqueued_sidekiq_job('def', 'group', FlickrPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
     end
   end
 
