@@ -4,16 +4,19 @@ class TopHits
   TEXT_FIELDS = %w(title description caption)
 
   CUTOFF_FOR_DECAY = "now-6w/w"
-  DECAY_SCALE = '4w'
-  CUTOFF_BOOST_FACTOR = 0.119657286
+
+  # https://github.com/elastic/elasticsearch/pull/19102
+  DECAY_SCALE = '28d'
+  CUTOFF_WEIGHT = 0.119657286
 
   def initialize(query, size, from, flickr_groups, flickr_users, instagram_profiles, mrss_names)
     @query, @size, @from = query, size, from
     @flickr_groups, @flickr_users, @instagram_profiles, @mrss_names = flickr_groups, flickr_users, instagram_profiles, mrss_names
   end
 
-  def query_body
+  def query_body(search_type: :query_then_fetch)
     Jbuilder.encode do |json|
+      json.size 0 if search_type == :count
       filtered_query(json)
       aggs(json)
       suggest(json)
@@ -38,7 +41,11 @@ class TopHits
       end
       json.top_score do
         json.max do
-          json.script "_score"
+          # https://www.elastic.co/guide/en/elasticsearch/reference/2.0/breaking_20_scripting_changes.html#_scripting_syntax
+          json.script do
+            json.source '_score'
+            json.lang 'groovy'
+          end
         end
       end
     end
@@ -84,7 +91,7 @@ class TopHits
     json.direct_generator do
       json.child! do
         json.field 'bigram'
-        json.prefix_len 1
+        json.prefix_length 1 # https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters-phrase.html#_direct_generators
       end
     end
   end
@@ -98,7 +105,8 @@ class TopHits
           older_photos(json)
         end
         json.query do
-          json.filtered do
+          # https://www.elastic.co/guide/en/elasticsearch/reference/2.0/breaking_20_query_dsl_changes.html#_literal_filtered_literal_query_and_literal_query_literal_filter_deprecated
+          json.bool do
             filtered_query_query(json)
             filtered_query_filter(json)
           end
@@ -116,7 +124,8 @@ class TopHits
           end
         end
       end
-      json.boost_factor CUTOFF_BOOST_FACTOR
+      # https://www.elastic.co/guide/en/elasticsearch/reference/1.4/query-dsl-function-score-query.html#_boost_factor
+      json.weight CUTOFF_WEIGHT
     end
   end
 
@@ -195,7 +204,7 @@ class TopHits
   end
 
   def filtered_query_query(json)
-    json.query do
+    json.must do
       json.bool do
         json.set! :should do
           json.child! { match_tags(json) }

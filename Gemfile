@@ -14,15 +14,16 @@ gem 'capistrano', '~> 3.3.5'
 gem 'capistrano-bundler', '~> 1.1.3'
 gem 'capistrano-sidekiq', '~> 0.4.0'
 
-gem "elasticsearch-persistence", '~> 0.1.6', require: 'elasticsearch/persistence/model'
-gem 'elasticsearch-api', '~> 1.0.6'
-gem 'elasticsearch-model', '~> 0.1.0'
-gem 'elasticsearch-transport', '~> 1.0.6'
+gem "elasticsearch-persistence", '~> 5.0', require: 'elasticsearch/persistence/model'
+gem 'elasticsearch-api', '~> 6.0'
+gem 'elasticsearch-model', '~> 5.0'
+gem 'elasticsearch-transport', '~> 6.0'
+gem 'hashie', '~> 3.3.2' # Hashie::Mash@3.5 will emit warning on key collision. Lock to 3.3.2 to avoid code change.
 gem 'instagram', '~> 1.1.3'
 gem 'flickraw', '~> 0.9.8'
 gem 'sidekiq', '~> 3.3.0'
 gem 'mock_redis', '~> 0.14.0'
-gem 'sidekiq-unique-jobs', '~> 3.0.11'
+gem 'sidekiq-unique-jobs', '3.0.11' # sidekiq-unique-jobs > 3.0.11 broke spec
 gem 'sidekiq-failures', '~> 0.4.3'
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'whenever', '~> 0.9.4', :require => false
@@ -33,6 +34,8 @@ gem "airbrake", '~> 4.1.0'
 gem 'feedjira', '~> 1.5.0'
 
 group :development, :test do
+  gem 'binding_of_caller'
+  gem 'pry-rails'
   gem 'rspec-rails', '~> 3.0.0'
 end
 

@@ -12,7 +12,7 @@ class PhotoFilter
 
   private
   def filtered_query(json)
-    json.filtered do
+    json.bool do
       json.filter do
         json.term do
           json.set! @key, @value

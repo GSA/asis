@@ -30,7 +30,7 @@ describe API::V1::FlickrProfiles do
     end
 
     it "enqueues the importer to download and index photos" do
-      expect(FlickrPhotosImporter).to have_enqueued_job('61913304@N07', 'user')
+      expect(FlickrPhotosImporter).to have_enqueued_sidekiq_job('61913304@N07', 'user')
     end
 
     it 'returns created profile as JSON' do

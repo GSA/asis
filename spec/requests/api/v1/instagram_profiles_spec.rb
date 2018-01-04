@@ -30,7 +30,7 @@ describe API::V1::InstagramProfiles do
     end
 
     it "enqueues the importer to download and index photos" do
-      expect(InstagramPhotosImporter).to have_enqueued_job('192237852')
+      expect(InstagramPhotosImporter).to have_enqueued_sidekiq_job('192237852')
     end
 
     it 'returns created profile as JSON' do

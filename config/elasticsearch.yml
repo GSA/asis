@@ -1,2 +1,9 @@
-hosts:
-  - localhost
+development: &default
+  hosts:
+    - localhost
+  user: ''
+  password: ''
+  number_of_shards: 1
+
+test:
+  <<: *default
