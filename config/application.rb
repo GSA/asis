@@ -29,5 +29,7 @@ module Oasis
 
     # Disable the asset pipeline.
     config.assets.enabled = false
+
+    config.elasticsearch = config_for(:elasticsearch)
   end
 end

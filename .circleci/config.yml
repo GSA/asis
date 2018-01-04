@@ -28,9 +28,8 @@ jobs:
       - run:
           name: Install Elasticsearch
           command: |
-            curl -O https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.deb && sudo dpkg -i elasticsearch-1.7.2.deb && true
-            echo ''script.disable_dynamic: false'' | sudo tee --append /etc/elasticsearch/elasticsearch.yml
-            echo ''index.number_of_shards: 1'' | sudo tee --append /etc/elasticsearch/elasticsearch.yml
+            curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.5.deb && sudo dpkg -i --force-confnew elasticsearch-5.6.5.deb && true
+            printf "script:\n  inline: true\n  stored: true\n" | sudo tee --append /etc/elasticsearch/elasticsearch.yml
             sudo service elasticsearch start
 
       # Download and cache dependencies

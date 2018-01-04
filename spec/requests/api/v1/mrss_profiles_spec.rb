@@ -34,7 +34,7 @@ describe API::V1::MrssProfiles do
       end
 
       it "enqueues the importer to download and index photos" do
-        expect(MrssPhotosImporter).to have_enqueued_job(MrssProfile.all.last.name)
+        expect(MrssPhotosImporter).to have_enqueued_sidekiq_job(MrssProfile.all.last.name)
       end
 
       it 'returns created profile as JSON' do

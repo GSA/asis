@@ -41,9 +41,12 @@ class MrssPhotosImporter
     attributes = get_attributes(mrss_entry)
     MrssPhoto.create(attributes, { op_type: 'create' })
   rescue Elasticsearch::Transport::Transport::Errors::Conflict => e
-    params = { new_name: @mrss.name }
-    script = 'if (ctx._source.mrss_names.contains(new_name)) { ctx.op = "none" } else { ctx._source.mrss_names += new_name }'
-    MrssPhoto.gateway.update(mrss_entry.entry_id, lang: 'groovy', params: params, script: script)
+    script = {
+      source: 'if (ctx._source.mrss_names.contains(new_name)) { ctx.op = "none" } else { ctx._source.mrss_names += new_name }',
+      params: { new_name: @mrss.name },
+      lang: 'groovy'
+    }
+    MrssPhoto.gateway.update(mrss_entry.entry_id, script: script)
     nil
   rescue Exception => e
     Rails.logger.warn("Trouble storing MRSS photo #{mrss_entry}: #{e}")

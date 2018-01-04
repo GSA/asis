@@ -1,2 +1,4 @@
-script.disable_dynamic: false
-index.number_of_shards: 1
+script:
+  inline: true
+  stored: true
+xpack.security.enabled: false
