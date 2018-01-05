@@ -21,7 +21,7 @@ describe API::V1::FlickrProfiles do
 
   describe "POST /api/v1/flickr_profiles" do
     before do
-      post "/api/v1/flickr_profiles", id: '61913304@N07', name: 'commercegov', profile_type: 'user'
+      post "/api/v1/flickr_profiles", params: { id: '61913304@N07', name: 'commercegov', profile_type: 'user' }
       FlickrProfile.refresh_index!
     end
 

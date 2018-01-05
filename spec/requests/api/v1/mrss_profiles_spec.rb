@@ -26,7 +26,7 @@ describe API::V1::MrssProfiles do
   describe "POST /api/v1/mrss_profiles" do
     context 'when MRSS feed URL does not already exist in index' do
       before :each do
-        post "/api/v1/mrss_profiles", url: 'http://some.mrss.url/feed2.xml'
+        post "/api/v1/mrss_profiles", params: { url: 'http://some.mrss.url/feed2.xml' }
       end
 
       it "creates a MRSS profile" do
@@ -46,7 +46,7 @@ describe API::V1::MrssProfiles do
     context 'when MRSS feed URL already exists in index' do
       before do
         @mrss_profile = MrssProfile.create(id: 'http://some.mrss.url/already.xml')
-        post "/api/v1/mrss_profiles", url: 'http://some.mrss.url/already.xml'
+        post "/api/v1/mrss_profiles", params: { url: 'http://some.mrss.url/already.xml' }
       end
 
       it 'returns existing profile as JSON' do

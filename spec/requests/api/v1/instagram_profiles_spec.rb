@@ -21,7 +21,7 @@ describe API::V1::InstagramProfiles do
 
   describe "POST /api/v1/instagram_profiles" do
     before do
-      post "/api/v1/instagram_profiles", id: '192237852', username: 'bureau_of_reclamation'
+      post "/api/v1/instagram_profiles", params: { id: '192237852', username: 'bureau_of_reclamation' }
       InstagramProfile.refresh_index!
     end
 
