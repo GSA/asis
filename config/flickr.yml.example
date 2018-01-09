@@ -1,3 +1,6 @@
 # see https://www.flickr.com/services/api/auth.oauth.html
-api_key: "API KEY"
-shared_secret: "SHARED SECRET"
+development: &default
+  api_key: "API KEY"
+  shared_secret: "SHARED SECRET"
+test:
+  <<: *default

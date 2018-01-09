@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe FlickrPhotosImporter do
-  it { should be_retryable true }
-  it { should be_unique }
+  it { is_expected.to be_retryable true }
+  it { is_expected.to be_unique }
 
   describe "#perform" do
     before do

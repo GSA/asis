@@ -1,1 +1,7 @@
-api_key: 'set yours here'
+development:
+  project_id:
+  project_key:
+
+test:
+  project_id:
+  project_key:
