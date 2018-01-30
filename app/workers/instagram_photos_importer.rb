@@ -35,7 +35,7 @@ class InstagramPhotosImporter
     instagram_client = Instagram.client(access_token: Rails.configuration.instagram['access_token'])
     instagram_client.user_recent_media(profile_id, options)
   rescue Exception => e
-    Rails.logger.warn("Trouble fetching Flickr photos for profile_id: #{profile_id}, options: #{options}: #{e}")
+    Rails.logger.warn("Trouble fetching Instagram photos for profile_id: #{profile_id}, options: #{options}: #{e}")
     nil
   end
 
