@@ -5,77 +5,50 @@
 version: 2
 jobs:
   build:
-    environment:
-      CC_TEST_REPORTER_ID: 0643ac526557dd490bc6f0542cac608a8815d7538dd580261e67dd334c07cc87
-      COVERAGE: true
     docker:
-      # specify the version you desire here
-       - image: circleci/ruby:2.3.5-node-browsers
-         env:
-         - RAILS_ENV=test
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
-       - image: redis:3.2
-
-    working_directory: ~/asis
-
+      - image: circleci/ruby:2.3.5
+      - image: redis:3.2-alpine
+      - image: docker.elastic.co/elasticsearch/elasticsearch:5.6.5
+        environment:
+          - xpack.security.enabled: false
+          - script.inline: true
+          - script.stored: true
+    working_directory: ~/app
     steps:
       - checkout
-
       - run:
-          name: Install Elasticsearch
+          name: Copying config files for Flickr and Instagram
           command: |
-            curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.5.deb && sudo dpkg -i --force-confnew elasticsearch-5.6.5.deb && true
-            printf "script:\n  inline: true\n  stored: true\n" | sudo tee --append /etc/elasticsearch/elasticsearch.yml
-            sudo service elasticsearch start
-
-      # Download and cache dependencies
+            cp -p config/flickr.yml.example config/flickr.yml
+            cp -p config/instagram.yml.example config/instagram.yml
       - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "Gemfile.lock" }}
-          # fallback to using the latest cache if no exact match is found
-          #- v1-dependencies-
-
+          key: bundle-{{ checksum "Gemfile.lock" }}
       - run:
-          name: install dependencies
+          name: bundle install
           command: |
             bundle install --without development --jobs=4 --retry=3 --path vendor/bundle
-
       - save_cache:
+          key: bundle-{{ checksum "Gemfile.lock" }}
           paths:
-            - ./vendor/bundle
-          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
-
+            - ~/app/vendor/bundle
       - run:
           name: Install Code Climate Test Reporter
           command: |
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
-
-      # run tests!
       - run:
-          name: run tests
+          name: Waiting for Elasticsearch
+          command: dockerize --wait http://localhost:9200 -timeout 1m
+      - run:
+          name: Running Tests
+          environment:
+            CC_TEST_REPORTER_ID: 0643ac526557dd490bc6f0542cac608a8815d7538dd580261e67dd334c07cc87
           command: |
-            cp -p config/flickr.yml.example config/flickr.yml
-            cp -p config/instagram.yml.example config/instagram.yml
-
-            mkdir /tmp/test-results
             ./cc-test-reporter before-build
-
-            bundle exec rspec --format progress \
-                            --format RspecJunitFormatter \
-                            --out /tmp/test-results/rspec.xml \
-                            --format progress \
-                            $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
-            ./cc-test-reporter format-coverage --output coverage/codeclimate.json
-            ./cc-test-reporter upload-coverage
-
-      # collect reports
+            bundle exec rspec spec --format progress --format RspecJunitFormatter -o ~/rspec/rspec.xml
+            ./cc-test-reporter after-build
       - store_test_results:
-          path: /tmp/test-results
+          path: ~/rspec
       - store_artifacts:
-          path: /tmp/test-results
-          destination: test-results
+          path: ~/rspec
+          destination: ~/rspec
