@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Feedjira::Parser::Oasis::Mrss do
@@ -38,5 +40,4 @@ describe Feedjira::Parser::Oasis::Mrss do
       end
     end
   end
-
 end

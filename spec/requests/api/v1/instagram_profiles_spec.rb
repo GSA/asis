@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe API::V1::InstagramProfiles do
-  describe "GET /api/v1/instagram_profiles" do
+  describe 'GET /api/v1/instagram_profiles' do
     context 'when profiles exist' do
       before do
         InstagramProfile.delete_all
@@ -10,8 +12,8 @@ describe API::V1::InstagramProfiles do
         InstagramProfile.refresh_index!
       end
 
-      it "returns an array of indexed Instagram profiles" do
-        get "/api/v1/instagram_profiles"
+      it 'returns an array of indexed Instagram profiles' do
+        get '/api/v1/instagram_profiles'
         expect(response.status).to eq(200)
         expect(JSON.parse(response.body).first).to match(hash_including('username' => 'profile1', 'id' => '1'))
         expect(JSON.parse(response.body).last).to match(hash_including('username' => 'profile2', 'id' => '2'))
@@ -19,17 +21,17 @@ describe API::V1::InstagramProfiles do
     end
   end
 
-  describe "POST /api/v1/instagram_profiles" do
+  describe 'POST /api/v1/instagram_profiles' do
     before do
-      post "/api/v1/instagram_profiles", params: { id: '192237852', username: 'bureau_of_reclamation' }
+      post '/api/v1/instagram_profiles', params: { id: '192237852', username: 'bureau_of_reclamation' }
       InstagramProfile.refresh_index!
     end
 
-    it "creates a Instagram profile" do
+    it 'creates a Instagram profile' do
       expect(InstagramProfile.find('192237852')).to be_present
     end
 
-    it "enqueues the importer to download and index photos" do
+    it 'enqueues the importer to download and index photos' do
       expect(InstagramPhotosImporter).to have_enqueued_sidekiq_job('192237852')
     end
 
@@ -37,6 +39,5 @@ describe API::V1::InstagramProfiles do
       expect(response.status).to eq(201)
       expect(JSON.parse(response.body)).to match(hash_including('username' => 'bureau_of_reclamation', 'id' => '192237852'))
     end
-
   end
 end

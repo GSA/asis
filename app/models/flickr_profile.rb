@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FlickrProfile
   include Elasticsearch::Persistence::Model
   include AliasedIndex
@@ -10,5 +12,4 @@ class FlickrProfile
   validates :profile_type, presence: true
 
   after_save { Rails.logger.info "Successfuly saved #{self.class.name.tableize}: #{self}" }
-
 end

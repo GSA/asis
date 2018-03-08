@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe InstagramAlbumDetector do
@@ -5,22 +7,22 @@ describe InstagramAlbumDetector do
     before do
       5.times do |x|
         i = x + 1
-        InstagramPhoto.create(id: "photo #{i}", username: "username1",
+        InstagramPhoto.create(id: "photo #{i}", username: 'username1',
                               tags: ['alpha', 'bravo', 'charlie', i.ordinalize],
                               caption: "#{i.ordinalize} title from unverified data provided by the Bain News Service on the negatives or caption cards",
-                              taken_at: Date.parse("2014-09-16"), popularity: 100+i, url: "http://photo#{i}", thumbnail_url: "http://photo_thumbnail#{i}",
+                              taken_at: Date.parse('2014-09-16'), popularity: 100 + i, url: "http://photo#{i}", thumbnail_url: "http://photo_thumbnail#{i}",
                               album: "photo #{i}")
       end
       InstagramPhoto.refresh_index!
     end
 
-    let(:photo) { InstagramPhoto.find "photo 1" }
+    let(:photo) { InstagramPhoto.find 'photo 1' }
 
     it 'should assign them all to the same album' do
       AlbumDetector.detect_albums! photo
       5.times do |x|
         i = x + 1
-        expect(InstagramPhoto.find("photo #{i}").album).to eq("username1:2014-09-16:photo 1")
+        expect(InstagramPhoto.find("photo #{i}").album).to eq('username1:2014-09-16:photo 1')
       end
     end
   end

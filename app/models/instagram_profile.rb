@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InstagramProfile
   include Elasticsearch::Persistence::Model
   include AliasedIndex
@@ -8,5 +10,4 @@ class InstagramProfile
   validates :username, presence: true
 
   after_save { Rails.logger.info "Successfuly saved #{self.class.name.tableize}: #{self}" }
-
 end

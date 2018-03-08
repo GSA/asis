@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module API
   class Base < Grape::API
     rescue_from :all do |e|
@@ -5,7 +7,7 @@ module API
 
       Airbrake.notify(e)
 
-      Rack::Response.new({ message: e.message, backtrace: e.backtrace }, 500, { 'Content-type' => 'application/json' }).finish
+      Rack::Response.new({ message: e.message, backtrace: e.backtrace }, 500, 'Content-type' => 'application/json').finish
     end
 
     mount API::V1::Base

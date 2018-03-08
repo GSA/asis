@@ -1,17 +1,24 @@
+# frozen_string_literal: true
+
 class TopHits
   DEFAULT_PRE_TAG = '<strong>'
   DEFAULT_POST_TAG = '</strong>'
-  TEXT_FIELDS = %w(title description caption)
+  TEXT_FIELDS = %w[title description caption].freeze
 
-  CUTOFF_FOR_DECAY = "now-6w/w"
+  CUTOFF_FOR_DECAY = 'now-6w/w'
 
   # https://github.com/elastic/elasticsearch/pull/19102
   DECAY_SCALE = '28d'
   CUTOFF_WEIGHT = 0.119657286
 
   def initialize(query, size, from, flickr_groups, flickr_users, instagram_profiles, mrss_names)
-    @query, @size, @from = query, size, from
-    @flickr_groups, @flickr_users, @instagram_profiles, @mrss_names = flickr_groups, flickr_users, instagram_profiles, mrss_names
+    @query = query
+    @size = size
+    @from = from
+    @flickr_groups = flickr_groups
+    @flickr_users = flickr_users
+    @instagram_profiles = instagram_profiles
+    @mrss_names = mrss_names
   end
 
   def query_body(search_type: :query_then_fetch)
@@ -53,9 +60,9 @@ class TopHits
 
   def albums(json)
     json.terms do
-      json.field "album"
+      json.field 'album'
       json.order do
-        json.top_score "desc"
+        json.top_score 'desc'
       end
       json.size @from + @size + 1
     end
@@ -149,13 +156,14 @@ class TopHits
   def popularity_boost(json)
     json.child! do
       json.field_value_factor do
-        json.field "popularity"
-        json.modifier "log2p"
+        json.field 'popularity'
+        json.modifier 'log2p'
       end
     end
   end
 
   def filtered_query_filter(json)
+    return unless some_profile_specified?
     json.filter do
       json.bool do
         json.set! :should do
@@ -164,7 +172,7 @@ class TopHits
           should_mrss(json)
         end
       end
-    end if some_profile_specified?
+    end
   end
 
   def should_mrss(json)
@@ -176,21 +184,21 @@ class TopHits
   end
 
   def should_flickr(json)
-    json.child! { flickr_profiles_filter(json, @flickr_groups, @flickr_users) } if @flickr_users.present? or @flickr_groups.present?
+    json.child! { flickr_profiles_filter(json, @flickr_groups, @flickr_users) } if @flickr_users.present? || @flickr_groups.present?
   end
 
   def mrss_profiles_filter(json, mrss_names)
-    type_and_terms_filter(json, "mrss_photo", :mrss_names, mrss_names)
+    type_and_terms_filter(json, 'mrss_photo', :mrss_names, mrss_names)
   end
 
   def instagram_profiles_filter(json, profiles)
-    type_and_terms_filter(json, "instagram_photo", :username, profiles)
+    type_and_terms_filter(json, 'instagram_photo', :username, profiles)
   end
 
   def flickr_profiles_filter(json, flickr_groups, flickr_users)
     json.bool do
       json.must do
-        json.child! { json.term { json._type "flickr_photo" } }
+        json.child! { json.term { json._type 'flickr_photo' } }
       end
       json.set! :should do
         flickr_profiles_filter_child('owner', flickr_users, json)
@@ -219,7 +227,7 @@ class TopHits
     json.match do
       json.tags do
         json.query @query
-        json.analyzer "tag_analyzer"
+        json.analyzer 'tag_analyzer'
       end
     end
   end
@@ -228,8 +236,8 @@ class TopHits
     json.simple_query_string do
       json.fields TEXT_FIELDS
       json.query @query
-      json.analyzer "en_analyzer"
-      json.default_operator "AND"
+      json.analyzer 'en_analyzer'
+      json.default_operator 'AND'
     end
   end
 
@@ -242,7 +250,7 @@ class TopHits
   end
 
   def some_profile_specified?
-    @flickr_groups.present? or @flickr_users.present? or @instagram_profiles.present? or @mrss_names.present?
+    @flickr_groups.present? || @flickr_users.present? || @instagram_profiles.present? || @mrss_names.present?
   end
 
   def match_phrase_collection(json)
@@ -263,5 +271,4 @@ class TopHits
       end
     end
   end
-
 end

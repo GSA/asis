@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImageSearchResults
   attr_reader :total, :offset, :results, :suggestion
 
@@ -20,7 +22,7 @@ class ImageSearchResults
     suggestion = suggestions.first['options'].first
     suggestion.delete('score')
     suggestion
-  rescue NoMethodError => e
+  rescue NoMethodError
     nil
   end
 
@@ -38,7 +40,6 @@ class ImageSearchResults
   end
 
   def extract_title(type, hit)
-    type == "InstagramPhoto" ? hit['_source']['caption'] : hit['_source']['title']
+    type == 'InstagramPhoto' ? hit['_source']['caption'] : hit['_source']['title']
   end
-
 end

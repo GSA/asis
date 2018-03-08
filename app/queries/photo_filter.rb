@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 class PhotoFilter
   def initialize(key, value)
-    @key, @value = key, value
+    @key = key
+    @value = value
   end
 
   def query_body
@@ -11,6 +14,7 @@ class PhotoFilter
   end
 
   private
+
   def filtered_query(json)
     json.bool do
       json.filter do
@@ -20,5 +24,4 @@ class PhotoFilter
       end
     end
   end
-
 end

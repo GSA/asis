@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MrssProfile
   include Elasticsearch::Persistence::Model
   include AliasedIndex
@@ -21,17 +23,18 @@ class MrssProfile
   end
 
   def self.create_or_find_by_id(id)
-    MrssProfile.create({ id: id }, { op_type: 'create' })
-  rescue Elasticsearch::Transport::Transport::Errors::Conflict => e
+    MrssProfile.create({ id: id }, op_type: 'create')
+  rescue Elasticsearch::Transport::Transport::Errors::Conflict
     MrssProfile.find(id)
   end
 
   private
 
-  REDIS_KEY_NAME = "#{self.name}.name"
+  REDIS_KEY_NAME = "#{name}.name"
 
   def assign_name
+    # rubocop:disable Style/GlobalVars
     self.name = $redis.incr(REDIS_KEY_NAME)
+    # rubocop:enable Style/GlobalVars
   end
-
 end

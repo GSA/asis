@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 class TermsFilter
   def initialize(key, values)
-    @key, @values = key, values
+    @key = key
+    @values = values
   end
 
   def query_body
@@ -11,6 +14,7 @@ class TermsFilter
   end
 
   private
+
   def filtered_query(json)
     json.bool do
       json.filter do
@@ -20,5 +24,4 @@ class TermsFilter
       end
     end
   end
-
 end

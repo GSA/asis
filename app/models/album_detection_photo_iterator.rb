@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 class AlbumDetectionPhotoIterator
   def initialize(klass, query_body)
-    @klass, @query_body = klass, query_body
+    @klass = klass
+    @query_body = query_body
   end
 
   def run
