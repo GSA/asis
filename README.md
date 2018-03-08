@@ -2,7 +2,8 @@ ASIS Server
 ==============
 
 [![CircleCI](https://circleci.com/gh/GSA/asis.svg?style=shield)](https://circleci.com/gh/GSA/asis)
-[![Code Climate](https://codeclimate.com/github/GSA/oasis.png)](https://codeclimate.com/github/GSA/oasis)
+[![Code Climate](https://codeclimate.com/github/GSA/asis/badges/gpa.svg)](https://codeclimate.com/github/GSA/asis)
+[![Test Coverage](https://codeclimate.com/github/GSA/asis/badges/coverage.svg)](https://codeclimate.com/github/GSA/asis)
 
 ASIS (Advanced Social Image Search) indexes Flickr and Instagram images and provides a search API across both indexes.
 
