@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module API
   module V1
     class MrssProfiles < Grape::API
@@ -5,14 +7,14 @@ module API
       format :json
 
       resource :mrss_profiles do
-        desc "Return list of indexed MRSS profiles ordered by created_at timestamp"
+        desc 'Return list of indexed MRSS profiles ordered by created_at timestamp'
         get do
           MrssProfile.all(sort: :created_at)
         end
 
-        desc "Create an MRSS profile and enqueue backfilling photos."
+        desc 'Create an MRSS profile and enqueue backfilling photos.'
         params do
-          requires :url, type: String, desc: "MRSS feed URL."
+          requires :url, type: String, desc: 'MRSS feed URL.'
         end
         post do
           profile = MrssProfile.create_or_find_by_id(params[:url])

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MrssPhoto
   include Elasticsearch::Persistence::Model
   include IndexablePhoto
@@ -7,7 +9,6 @@ class MrssPhoto
   attribute :description, String, mapping: { type: 'text', analyzer: 'en_analyzer', copy_to: 'bigram' }
 
   def generate_album_name
-    [self.mrss_names, self.taken_at, self.id].join(':')
+    [mrss_names, taken_at, id].join(':')
   end
-
 end

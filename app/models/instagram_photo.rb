@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InstagramPhoto
   include Elasticsearch::Persistence::Model
   include IndexablePhoto
@@ -9,7 +11,6 @@ class InstagramPhoto
   validates :caption, presence: true
 
   def generate_album_name
-    [self.username, self.taken_at, self.id].join(':')
+    [username, taken_at, id].join(':')
   end
-
 end

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module TestServices
-  extend self
+  module_function
 
   def create_es_indexes
     Dir[Rails.root.join('app', 'models', '*.rb')].map do |f|
@@ -9,7 +11,8 @@ module TestServices
   end
 
   def delete_es_indexes
-    Elasticsearch::Persistence.client.indices.delete(index: "test-oasis-*") rescue nil
+    Elasticsearch::Persistence.client.indices.delete(index: 'test-oasis-*')
+  rescue StandardError
+    nil
   end
-
 end

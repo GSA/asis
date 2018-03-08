@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InstagramPhotosImporter
   include Sidekiq::Worker
   sidekiq_options unique: true
@@ -8,9 +10,9 @@ class InstagramPhotosImporter
     morepages = true
     max_id = nil
     options = {}
-    options.merge!(min_timestamp: days_ago.days.ago.to_i) if days_ago
-    while morepages do
-      options.merge!(max_id: max_id) if max_id
+    options[:min_timestamp] = days_ago.days.ago.to_i if days_ago
+    while morepages
+      options[:max_id] = max_id if max_id
       photos = get_photos(options, profile_id)
       if photos.present?
         max_id = photos.last.id
@@ -34,7 +36,7 @@ class InstagramPhotosImporter
   def get_photos(options, profile_id)
     instagram_client = Instagram.client(access_token: Rails.configuration.instagram['access_token'])
     instagram_client.user_recent_media(profile_id, options)
-  rescue Exception => e
+  rescue StandardError => e
     Rails.logger.warn("Trouble fetching Instagram photos for profile_id: #{profile_id}, options: #{options}: #{e}")
     nil
   end
@@ -42,18 +44,16 @@ class InstagramPhotosImporter
   def store_photos(photos)
     photos.collect do |photo|
       store_photo(photo)
-    end.compact.select do |photo|
-      photo.persisted?
-    end
+    end.compact.select(&:persisted?)
   end
 
   def store_photo(photo)
     attributes = get_attributes(photo)
-    InstagramPhoto.create(attributes, { op_type: 'create' })
-  rescue Elasticsearch::Transport::Transport::Errors::Conflict => e
+    InstagramPhoto.create(attributes, op_type: 'create')
+  rescue Elasticsearch::Transport::Transport::Errors::Conflict
     InstagramPhoto.gateway.update(id: photo.id, popularity: compute_popularity(photo))
     nil
-  rescue Exception => e
+  rescue StandardError => e
     Rails.logger.warn("Trouble storing Instagram photo #{photo}: #{e}")
     nil
   end
@@ -67,5 +67,4 @@ class InstagramPhotosImporter
   def compute_popularity(photo)
     photo.likes['count'] + photo.comments['count']
   end
-
 end

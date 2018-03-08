@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'instagram'
 
 Instagram.configure do |config|

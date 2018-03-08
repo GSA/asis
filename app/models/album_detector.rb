@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class AlbumDetector
-  MAX_PHOTOS_PER_ALBUM = 10000
+  MAX_PHOTOS_PER_ALBUM = 10_000
   MIN_SIMILAR_PHOTOS = 4
 
   def initialize(photo, query_fields_thresholds_hash, filter_fields)
@@ -10,7 +12,11 @@ class AlbumDetector
 
   def album
     album_results = more_like_this
-    first_bucket_size = album_results['aggregations']['scores_histogram']['buckets'].first['doc_count'] rescue 0
+    first_bucket_size = begin
+                          album_results['aggregations']['scores_histogram']['buckets'].first['doc_count']
+                        rescue StandardError
+                          0
+                        end
     first_bucket_size >= MIN_SIMILAR_PHOTOS ? album_results['hits']['hits'].first(first_bucket_size) : []
   end
 
@@ -29,7 +35,7 @@ class AlbumDetector
     ids
   end
 
-  private
+  private_class_method
 
   def self.assign_default_album(photo)
     options = photo._version.present? && photo._version > 1 ? { version: photo._version } : {}
@@ -52,6 +58,4 @@ class AlbumDetector
     params = { index: @photo.class.index_name, body: album_detection_query.query_body, size: MAX_PHOTOS_PER_ALBUM }
     Elasticsearch::Persistence.client.search(params)
   end
-
-
 end

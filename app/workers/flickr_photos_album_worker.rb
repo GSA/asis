@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FlickrPhotosAlbumWorker
   include Sidekiq::Worker
 
@@ -6,5 +8,4 @@ class FlickrPhotosAlbumWorker
     iterator = AlbumDetectionPhotoIterator.new(FlickrPhoto, photo_filter.query_body)
     iterator.run
   end
-
 end

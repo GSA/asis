@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InstagramPhotosAlbumWorker
   include Sidekiq::Worker
 
@@ -6,5 +8,4 @@ class InstagramPhotosAlbumWorker
     iterator = AlbumDetectionPhotoIterator.new(InstagramPhoto, photo_filter.query_body)
     iterator.run
   end
-
 end

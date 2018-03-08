@@ -1,5 +1,7 @@
-shared_examples "a model with an aliased index name" do
-  describe "alias_exists?" do
+# frozen_string_literal: true
+
+shared_examples 'a model with an aliased index name' do
+  describe 'alias_exists?' do
     context 'when alias exists' do
       it 'should return true' do
         expect(described_class.alias_exists?).to be_truthy

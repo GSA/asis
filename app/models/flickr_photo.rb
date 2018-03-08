@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FlickrPhoto
   include Elasticsearch::Persistence::Model
   include IndexablePhoto
@@ -11,7 +13,6 @@ class FlickrPhoto
   validates :title, presence: true
 
   def generate_album_name
-    [self.owner, self.taken_at, self.id].join(':')
+    [owner, taken_at, id].join(':')
   end
-
 end

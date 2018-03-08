@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MrssPhotosAlbumWorker
   include Sidekiq::Worker
 
@@ -6,5 +8,4 @@ class MrssPhotosAlbumWorker
     iterator = AlbumDetectionPhotoIterator.new(MrssPhoto, photo_filter.query_body)
     iterator.run
   end
-
 end

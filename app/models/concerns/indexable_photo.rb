@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 module IndexablePhoto
   extend ActiveSupport::Concern
   include AliasedIndex
 
   included do
-
     settings ElasticSettings::COMMON do
       mappings dynamic: 'false' do
         indexes :bigram, analyzer: 'bigram_analyzer', type: 'text'
@@ -19,6 +20,5 @@ module IndexablePhoto
     validates :url, presence: true
     validates :thumbnail_url, presence: true
     validates :taken_at, presence: true
-
   end
 end

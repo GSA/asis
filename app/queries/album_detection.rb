@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
 class AlbumDetection
   def initialize(photo, query_fields_thresholds_hash, filter_fields)
-    @photo, @query_fields_thresholds_hash, @filter_fields = photo, query_fields_thresholds_hash, filter_fields
+    @photo = photo
+    @query_fields_thresholds_hash = query_fields_thresholds_hash
+    @filter_fields = filter_fields
   end
 
   def query_body
@@ -43,6 +47,7 @@ class AlbumDetection
 
   # https://www.elastic.co/guide/en/elasticsearch/reference/2.0/breaking_20_query_dsl_changes.html#_more_like_this
   def more_like_this(json, query_field, minimum_should_match)
+    return if @photo.send(query_field).blank?
     json.child! do
       json.more_like_this do
         json.fields [query_field]
@@ -51,11 +56,12 @@ class AlbumDetection
         json.max_query_terms 500
         json.minimum_should_match percentize(minimum_should_match)
       end
-    end if @photo.send(query_field).present?
+    end
   end
 
   def term_filter_child(json, filter_field)
     filter_value = @photo.send(filter_field)
+    return if filter_value.blank?
     json.child! do
       if filter_value.is_a? Array
         json.terms do
@@ -66,7 +72,7 @@ class AlbumDetection
           json.set! filter_field, filter_value
         end
       end
-    end if filter_value.present?
+    end
   end
 
   def aggregations(json)
@@ -79,7 +85,7 @@ class AlbumDetection
           end
           json.interval 2
           json.order do
-            json._key "desc"
+            json._key 'desc'
           end
         end
       end

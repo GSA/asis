@@ -1,14 +1,17 @@
+# frozen_string_literal: true
+
 class FlickrPhotosImporter
   include Sidekiq::Worker
   sidekiq_options unique: true
 
   MAX_PHOTOS_PER_REQUEST = 500
   DAYS_BACK_TO_CHECK_FOR_UPDATES = 30
-  EXTRA_FIELDS = "description, date_upload, date_taken, owner_name, tags, views, url_q, url_o"
-  OPTIONS = { per_page: MAX_PHOTOS_PER_REQUEST, extras: EXTRA_FIELDS }
+  EXTRA_FIELDS = 'description, date_upload, date_taken, owner_name, tags, views, url_q, url_o'
+  OPTIONS = { per_page: MAX_PHOTOS_PER_REQUEST, extras: EXTRA_FIELDS }.freeze
 
   def perform(id, profile_type, days_ago = nil)
-    page, pages = 1, 1
+    page = 1
+    pages = 1
     min_ts = days_ago.present? ? days_ago.days.ago.to_i : 0
     oldest_retrieved_ts = Time.now.to_i
     while page <= pages && oldest_retrieved_ts >= min_ts
@@ -35,7 +38,7 @@ class FlickrPhotosImporter
   def get_photos(id, profile_type, options)
     method = "get_#{profile_type}_photos"
     send(method, id, options)
-  rescue Exception => e
+  rescue StandardError => e
     Rails.logger.warn("Trouble fetching Flickr photos for id: #{id}, profile_type: #{profile_type}, options: #{options}: #{e}")
     nil
   end
@@ -51,15 +54,13 @@ class FlickrPhotosImporter
   def store_photos(flickr_photo_structures, group_id)
     flickr_photo_structures.collect do |flickr_photo_structure|
       store_photo(flickr_photo_structure, group_id)
-    end.compact.select do |photo|
-      photo.persisted?
-    end
+    end.compact.select(&:persisted?)
   end
 
   def store_photo(flickr_photo_structure, group_id)
     attributes = get_attributes(flickr_photo_structure, group_id)
-    FlickrPhoto.create(attributes, { op_type: 'create' })
-  rescue Elasticsearch::Transport::Transport::Errors::Conflict => e
+    FlickrPhoto.create(attributes, op_type: 'create')
+  rescue Elasticsearch::Transport::Transport::Errors::Conflict
     script = {
       source: 'ctx._source.popularity = new_popularity',
       lang: 'groovy',
@@ -67,11 +68,11 @@ class FlickrPhotosImporter
     }
     if group_id.present?
       script[:params][:new_group] = group_id
-      script[:source] << '; ctx._source.groups=(ctx._source.groups+new_group).unique()'
+      script[:source] += '; ctx._source.groups=(ctx._source.groups+new_group).unique()'
     end
     FlickrPhoto.gateway.update(flickr_photo_structure.id, script: script)
     nil
-  rescue Exception => e
+  rescue StandardError => e
     Rails.logger.warn("Trouble storing Flickr photo #{flickr_photo_structure.inspect}: #{e}")
     nil
   end
@@ -90,7 +91,7 @@ class FlickrPhotosImporter
 
   def last_uploaded_ts(photos)
     photos.to_a.last.dateupload.to_i
-  rescue Exception => e
+  rescue StandardError => e
     Rails.logger.warn("Trouble getting oldest upload date from photo #{photos.to_a.last}: #{e}")
     Time.now.to_i
   end
@@ -100,7 +101,6 @@ class FlickrPhotosImporter
   end
 
   def normalize_date(datetaken)
-    datetaken.gsub("-00", "-01")
+    datetaken.gsub('-00', '-01')
   end
-
 end
