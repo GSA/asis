@@ -13,7 +13,7 @@ You are reading documentation for ASIS API v1.
 
 ## Contribute to the code
 
-The server code that runs the image search component of [DigitalGov Search](http://search.digitalgov.gov) is here on Github.
+The server code that runs the image search component of [Search.gov](https://search.gov/) is here on Github.
 [Fork this repo](https://github.com/GSA/oasis/fork) to add features like additional datasets, or to fix bugs.
 
 ### Ruby
@@ -196,7 +196,7 @@ Click around on the files that have < 100% coverage to see what lines weren't ex
 
 ## Code samples
 
-We "eat our own dog food" and use this ASIS API to display image results on the government websites that use [DigitalGov Search](https://search.digitalgov.gov).
+We "eat our own dog food" and use this ASIS API to display image results on the government websites that use [Search.gov](https://search.gov/).
 
 See the results for a search for [*moon* on DOI.gov](https://search.doi.gov/search/images?affiliate=doi.gov&query=moon).
 
