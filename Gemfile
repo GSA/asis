@@ -13,7 +13,7 @@ gem 'rails', '5.1.4'
 # #http://stackoverflow.com/questions/35893584/nomethoderror-undefined-method-last-comment-after-upgrading-to-rake-11
 gem 'rake', '~> 10.0'
 
-gem 'grape', '~> 1.0.0'
+gem 'grape', '~> 1.1.0'
 
 gem 'jbuilder', '~> 2.6.4'
 
