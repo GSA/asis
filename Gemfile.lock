@@ -107,7 +107,7 @@ GEM
     flickraw (0.9.9)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
-    grape (1.0.1)
+    grape (1.1.0)
       activesupport
       builder
       mustermann-grape (~> 1.0.0)
@@ -115,7 +115,7 @@ GEM
       rack-accept
       virtus (>= 1.0.0)
     hashie (3.5.7)
-    i18n (0.9.1)
+    i18n (0.9.5)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
     instagram-continued (1.4.0)
@@ -130,7 +130,7 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
-    loofah (2.2.2)
+    loofah (2.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.0)
@@ -138,7 +138,7 @@ GEM
     method_source (0.9.0)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
-    minitest (5.11.0)
+    minitest (5.11.3)
     mock_redis (0.17.3)
     multi_json (1.12.2)
     multipart-post (2.0.0)
@@ -150,7 +150,7 @@ GEM
     net-ssh (4.2.0)
     newrelic_rpm (4.2.0.334)
     nio4r (2.2.0)
-    nokogiri (1.8.3)
+    nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     pry (0.11.3)
       coderay (~> 1.1.0)
@@ -256,7 +256,7 @@ GEM
     thor (0.20.0)
     thread_safe (0.3.6)
     tilt (2.0.8)
-    tzinfo (1.2.4)
+    tzinfo (1.2.5)
       thread_safe (~> 0.1)
     virtus (1.0.5)
       axiom-types (~> 0.1)
@@ -289,7 +289,7 @@ DEPENDENCIES
   elasticsearch-transport (~> 6.0)
   feedjira (~> 2.1.1)
   flickraw (~> 0.9.8)
-  grape (~> 1.0.0)
+  grape (~> 1.1.0)
   hashie (~> 3.5.7)
   instagram-continued (~> 1.4.0)
   jbuilder (~> 2.6.4)
@@ -315,4 +315,4 @@ DEPENDENCIES
   whenever (~> 0.9.4)
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
