@@ -103,7 +103,7 @@ GEM
       faraday_middleware (>= 0.9)
       loofah (>= 2.0)
       sax-machine (>= 1.0)
-    ffi (1.9.18)
+    ffi (1.9.25)
     flickraw (0.9.9)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
