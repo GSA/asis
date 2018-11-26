@@ -158,7 +158,7 @@ GEM
     pry-rails (0.3.6)
       pry (>= 0.10.4)
     puma (3.11.0)
-    rack (2.0.5)
+    rack (2.0.6)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-protection (2.0.3)
