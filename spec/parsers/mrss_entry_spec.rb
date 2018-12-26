@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Feedjira::Parser::Oasis::MrssEntry do
   context 'when entry has media:thumbnail and media:description' do
     let(:entry) do
-      dma_mrss_xml = File.read(Rails.root.to_s + '/spec/sample_feeds/dma.xml')
+      dma_mrss_xml = file_fixture('dma.xml').read
       feed = Feedjira::Feed.parse(dma_mrss_xml)
       feed.entries.first
     end
@@ -34,7 +34,7 @@ describe Feedjira::Parser::Oasis::MrssEntry do
 
   context 'when entry has description and media:description' do
     let(:entries) do
-      mrss_xml = File.read(Rails.root.to_s + '/spec/sample_feeds/desc_plus_mediadesc.xml')
+      mrss_xml = file_fixture('desc_plus_mediadesc.xml').read
       feed = Feedjira::Feed.parse(mrss_xml)
       feed.entries
     end
@@ -49,7 +49,7 @@ describe Feedjira::Parser::Oasis::MrssEntry do
 
   context 'when the feed uses RSS content module' do
     let(:entry) do
-      mrss_xml = File.read(Rails.root.to_s + '/spec/sample_feeds/rss_with_content_module.xml')
+      mrss_xml = file_fixture('rss_with_content_module.xml').read
       feed = Feedjira::Feed.parse(mrss_xml)
       feed.entries.first
     end
@@ -63,7 +63,7 @@ describe Feedjira::Parser::Oasis::MrssEntry do
 
   context 'when URLs are missing scheme' do
     let(:entry) do
-      mrss_xml = File.read(Rails.root.to_s + '/spec/sample_feeds/missing_scheme.xml')
+      mrss_xml = file_fixture('missing_scheme.xml').read
       feed = Feedjira::Feed.parse(mrss_xml)
       feed.entries.first
     end

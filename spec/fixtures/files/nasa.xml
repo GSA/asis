@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?> <rss version="2.0" xml:base="http://www.nasa.gov/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:media="http://search.yahoo.com/mrss/"> <channel> <title>NASA Images</title>
+ <description>NASA Images</description>
+ <link>http://www.nasa.gov/</link>
+ <atom:link rel="self" href="http://www.nasa.gov/rss/dyn/nasa_image_features.rss" />
+ <language>en-us</language>
+ <managingEditor>yvette.smith-1@nasa.gov</managingEditor>
+ <webMaster>brian.dunbar@nasa.gov</webMaster>
+ <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+ <item> <title>Samantha Cristoforetti&#039;s Birthday Celebration</title>
+ <link>http://www.nasa.gov/archive/archive/content/samantha-cristoforettis-birthday-celebration</link>
+ <description>ISS043E142528 (04/26/2015) ---From the International Space Station NASA astronaut Terry Virts (right) tweeted this image of he and his crewmate Russian cosmonaut Anton Shkaplerov celebrating the birthday of ESA (European Space Agency) astronaut Samantha Cristoforetti (middle). His tweet commented: &quot;Happy Birthday @AstroSamantha! We had a great time celebrating as a crew.&quot;</description>
+ <media:content url="http://www.nasa.gov/sites/default/files/styles/946xvariable_height/public/thumbnails/image/17147956078_0b4b9761d6_k.jpg?itok=eahKKfQm" fileSize="1298669" type="image/jpeg" />
+ <guid isPermaLink="false">http://www.nasa.gov/archive/archive/content/samantha-cristoforettis-birthday-celebration</guid>
+ <pubDate>Mon, 04 May 2015</pubDate>
+ <source url="http://www.nasa.gov/rss/dyn/nasa_image_features.rss">NASA Images</source>
+ <media:thumbnail url="http://www.nasa.gov/sites/default/files/styles/100x75/public/thumbnails/image/17147956078_0b4b9761d6_k.jpg?itok=BmnIF3ZZ" />
+ <media:title type="plain">Samantha Cristoforetti&#039;s Birthday Celebration</media:title>
+ <media:description type="plain">ISS043E142528 (04/26/2015) ---From the International Space Station NASA astronaut Terry Virts (right) tweeted this image of he and his crewmate Russian cosmonaut Anton Shkaplerov celebrating the birthday of ESA (European Space Agency) astronaut Samantha Cristoforetti (middle). His tweet commented: &quot;Happy Birthday @AstroSamantha! We had a great time celebrating as a crew.&quot;</media:description>
+ <media:thumbnail url="http://www.nasa.gov/sites/default/files/styles/100x75/public/thumbnails/image/17147956078_0b4b9761d6_k.jpg?itok=BmnIF3ZZ" />
+</item>
+ <item> <title>Rising Sun</title>
+ <link>http://www.nasa.gov/archive/archive/content/rising-sun</link>
+ <description>ISS043E155854 (04/27/2015) --- A rising sun spreads across the Earth and through the green blooming aurora to silhouette the blackened outline of the International Space Station on the morning of Apr. 27, 2015.</description>
+ <media:content url="http://www.nasa.gov/sites/default/files/styles/946xvariable_height/public/thumbnails/image/17148171380_baefbe60a3_k.jpg?itok=MPhrHN1m" fileSize="870737" type="image/jpeg" />
+ <guid isPermaLink="false">http://www.nasa.gov/archive/archive/content/rising-sun</guid>
+ <pubDate>Mon, 04 May 2015</pubDate>
+ <source url="http://www.nasa.gov/rss/dyn/nasa_image_features.rss">NASA Images</source>
+ <media:thumbnail url="http://www.nasa.gov/sites/default/files/styles/100x75/public/thumbnails/image/17148171380_baefbe60a3_k.jpg?itok=5yWimABG" />
+ <media:title type="plain">Rising Sun</media:title>
+ <media:description type="plain">ISS043E155854 (04/27/2015) --- A rising sun spreads across the Earth and through the green blooming aurora to silhouette the blackened outline of the International Space Station on the morning of Apr. 27, 2015.</media:description>
+ <media:thumbnail url="http://www.nasa.gov/sites/default/files/styles/100x75/public/thumbnails/image/17148171380_baefbe60a3_k.jpg?itok=5yWimABG" />
+</item>
+ <item> <title>Name This Location</title>
+ <link>http://www.nasa.gov/archive/archive/content/name-this-location</link>
+ <description>ISS043E142265 (04/26/2015) --- NASA astronaut Scott Kelly on the International Space Station Apr.26, 2015 tweeted this image out of an Earth observation as part of his Space Geo contest &quot;name this location&quot; with this remark and clue: &quot;This frozen body of water is the world&#039;s oldest (25 million years) and deepest basin on Earth. Name it!&quot;</description>
+ <media:content url="http://www.nasa.gov/sites/default/files/styles/946xvariable_height/public/thumbnails/image/17125119417_37e71c2e16_k.jpg?itok=n07PhQ6L" fileSize="1230667" type="image/jpeg" />
+ <guid isPermaLink="false">http://www.nasa.gov/archive/archive/content/name-this-location</guid>
+ <pubDate>Fri, 01 May 2015</pubDate>
+ <source url="http://www.nasa.gov/rss/dyn/nasa_image_features.rss">NASA Images</source>
+ <media:thumbnail url="http://www.nasa.gov/sites/default/files/styles/100x75/public/thumbnails/image/17125119417_37e71c2e16_k.jpg?itok=Q0J9eYir" />
+ <media:title type="plain">Name This Location</media:title>
+ <media:description type="plain">ISS043E142265 (04/26/2015) --- NASA astronaut Scott Kelly on the International Space Station Apr.26, 2015 tweeted this image out of an Earth observation as part of his Space Geo contest &quot;name this location&quot; with this remark and clue: &quot;This frozen body of water is the world&#039;s oldest (25 million years) and deepest basin on Earth. Name it!&quot;</media:description>
+ <media:thumbnail url="http://www.nasa.gov/sites/default/files/styles/100x75/public/thumbnails/image/17125119417_37e71c2e16_k.jpg?itok=Q0J9eYir" />
+</item>
+ <item> <title>Potable Water</title>
+ <link>http://www.nasa.gov/archive/archive/content/potable-water</link>
+ <description>ISS043E128431 (04/22/2015) --- The International Space Station employs one of the most complex water recycling systems ever designed, reclaiming waste water from astronauts and the environment and turning it into potable water. NASA astronaut Scott Kelly tweeted out this image of part of the innovative device with this remark: &quot; Recycle Good to the last drop! Making pee potable and turning it into coffee on @space station. #NoPlaceLikeHome&quot;</description>
+ <media:content url="http://www.nasa.gov/sites/default/files/styles/946xvariable_height/public/thumbnails/image/17332565075_c3b1093af5_k.jpg?itok=f9iMn1fE" fileSize="819704" type="image/jpeg" />
+ <guid isPermaLink="false">http://www.nasa.gov/archive/archive/content/potable-water</guid>
+ <pubDate>Fri, 01 May 2015</pubDate>
+ <source url="http://www.nasa.gov/rss/dyn/nasa_image_features.rss">NASA Images</source>
+ <media:thumbnail url="http://www.nasa.gov/sites/default/files/styles/100x75/public/thumbnails/image/17332565075_c3b1093af5_k.jpg?itok=UC3do1pc" />
+ <media:title type="plain">Potable Water</media:title>
+ <media:description type="plain">ISS043E128431 (04/22/2015) --- The International Space Station employs one of the most complex water recycling systems ever designed, reclaiming waste water from astronauts and the environment and turning it into potable water. NASA astronaut Scott Kelly tweeted out this image of part of the innovative device with this remark: &quot; Recycle Good to the last drop! Making pee potable and turning it into coffee on @space station. #NoPlaceLikeHome&quot;</media:description>
+ <media:thumbnail url="http://www.nasa.gov/sites/default/files/styles/100x75/public/thumbnails/image/17332565075_c3b1093af5_k.jpg?itok=UC3do1pc" />
+</item>
+</channel>
+</rss>
