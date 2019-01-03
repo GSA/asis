@@ -4,8 +4,6 @@ class MrssPhotosImporter
   include Sidekiq::Worker
   sidekiq_options unique: true
 
-  FEEDJIRA_OPTIONS = { user_agent: 'Oasis', timeout: 20, compress: true, max_redirects: 3 }.freeze
-
   def perform(mrss_name)
     @mrss = MrssProfile.find_by_name mrss_name
     photos = get_photos
@@ -24,7 +22,8 @@ class MrssPhotosImporter
   private
 
   def get_photos
-    feed = Feedjira::Feed.fetch_and_parse(@mrss.id, FEEDJIRA_OPTIONS)
+    xml = fetch_xml(@mrss.id)
+    feed = Feedjira::Feed.parse(xml)
     feed.entries
   rescue StandardError => e
     Rails.logger.warn("Trouble fetching MRSS photos for URL: #{@mrss.id}: #{e}")
@@ -56,5 +55,9 @@ class MrssPhotosImporter
   def get_attributes(mrss_entry)
     { id: mrss_entry.entry_id, mrss_names: [@mrss.name], title: mrss_entry.title, description: mrss_entry.summary,
       taken_at: mrss_entry.published, url: mrss_entry.url, thumbnail_url: mrss_entry.thumbnail_url }
+  end
+
+  def fetch_xml(url)
+    HTTP.headers(user_agent: 'Oasis').timeout(30).follow.get(url).to_s
   end
 end

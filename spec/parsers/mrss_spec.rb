@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Feedjira::Parser::Oasis::Mrss do
   context 'for DMA feed' do
-    let(:dma_mrss_xml) { File.read(Rails.root.to_s + '/spec/sample_feeds/dma.xml') }
+    let(:dma_mrss_xml) { file_fixture('dma.xml').read }
 
     describe '#able_to_parse?' do
       context 'when first 2000 chars of XML contains MRSS text string' do
@@ -23,7 +23,7 @@ describe Feedjira::Parser::Oasis::Mrss do
   end
 
   context 'for RSS with content module' do
-    let(:mrss_xml) { File.read(Rails.root.to_s + '/spec/sample_feeds/rss_with_content_module.xml') }
+    let(:mrss_xml) { file_fixture('rss_with_content_module.xml').read }
 
     describe '#able_to_parse?' do
       context 'when first 2000 chars of XML contains the content namespace text string' do
