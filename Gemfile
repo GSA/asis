@@ -7,11 +7,9 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '5.1.4'
+gem 'rails', '5.1.6.1'
 
-# Temporarily limiting rake version:
-# #http://stackoverflow.com/questions/35893584/nomethoderror-undefined-method-last-comment-after-upgrading-to-rake-11
-gem 'rake', '~> 10.0'
+gem 'rake', '~> 12.3.2'
 
 gem 'grape', '~> 1.1.0'
 
@@ -39,7 +37,8 @@ gem 'whenever', '~> 0.9.4', require: false
 gem 'airbrake', '~> 7.1.1'
 gem 'newrelic_rpm', '~> 4.2.0.334'
 
-gem 'feedjira', '~> 2.1.1'
+gem 'feedjira', '~> 2.2.0'
+gem 'http', '~> 4.0.0'
 
 group :development, :test do
   gem 'puma', '~> 3.11'
@@ -60,6 +59,7 @@ end
 
 group :test do
   gem 'rspec-sidekiq', '~> 3.0.1'
-  gem 'rspec_junit_formatter', '~> 0.2.3'
+  gem 'rspec_junit_formatter', '~> 0.4.1'
   gem 'simplecov', '~> 0.7.1'
+  gem 'webmock', '~> 3.4.2'
 end
