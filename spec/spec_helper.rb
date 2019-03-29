@@ -5,6 +5,9 @@ require 'webmock/rspec'
 
 SimpleCov.start 'rails' do
   minimum_coverage 100
+  # Instagram is being decommissioned per
+  # https://cm-jira.usa.gov/browse/SRCH-50
+  add_filter %r{instagram}
 end
 
 WebMock.allow_net_connect!

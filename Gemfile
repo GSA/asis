@@ -45,7 +45,7 @@ group :development, :test do
 
   gem 'binding_of_caller'
   gem 'pry-rails'
-  gem 'rspec-rails', '~> 3.7.2'
+  gem 'rspec-rails', '~> 3.8.2'
 end
 
 group :development do
@@ -60,6 +60,6 @@ end
 group :test do
   gem 'rspec-sidekiq', '~> 3.0.1'
   gem 'rspec_junit_formatter', '~> 0.4.1'
-  gem 'simplecov', '~> 0.7.1'
+  gem 'simplecov', '~> 0.16'
   gem 'webmock', '~> 3.4.2'
 end
