@@ -1,19 +1,28 @@
-# Ruby CircleCI 2.0 configuration file
+# Ruby CircleCI 2.1 configuration file
 #
 # Check https://circleci.com/docs/2.0/language-ruby/ for more details
-#
-version: 2
-jobs:
-  build:
+version: 2.1
+
+executors:
+  test_executor:
     docker:
-      - image: circleci/ruby:2.3.8
+      - image: circleci/ruby:${RUBY_VERSION}
       - image: redis:3.2-alpine
-      - image: docker.elastic.co/elasticsearch/elasticsearch:5.6.5
+      - image: docker.elastic.co/elasticsearch/elasticsearch:5.6.16
         environment:
           - xpack.security.enabled: false
           - script.inline: true
           - script.stored: true
     working_directory: ~/app
+
+jobs:
+  build:
+    environment:
+      RUBY_VERSION: << parameters.ruby_version >>
+    executor: test_executor
+    parameters:
+      ruby_version:
+        type: string
     steps:
       - checkout
       - run:
@@ -52,3 +61,13 @@ jobs:
       - store_artifacts:
           path: ~/rspec
           destination: ~/rspec
+
+workflows:
+  build_and_test:
+    jobs:
+      - build:
+          ruby_version: 2.3.8
+      - build:
+          ruby_version: 2.5.5
+      - build:
+          ruby_version: 2.6.2

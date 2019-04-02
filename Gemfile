@@ -60,6 +60,6 @@ end
 group :test do
   gem 'rspec-sidekiq', '~> 3.0.1'
   gem 'rspec_junit_formatter', '~> 0.4.1'
-  gem 'simplecov', '~> 0.7.1'
-  gem 'webmock', '~> 3.4.2'
+  gem 'simplecov', '~> 0.16.1'
+  gem 'webmock', '~> 3.5.1'
 end
