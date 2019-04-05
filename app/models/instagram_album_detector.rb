@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Instagram is being decommissioned per
+# https://cm-jira.usa.gov/browse/SRCH-50
 class InstagramAlbumDetector < AlbumDetector
   QUERY_FIELDS_THRESHOLD_HASH = { tags: 0.75, caption: 0.8 }.freeze
   FILTER_FIELDS = %w[username taken_at].freeze
