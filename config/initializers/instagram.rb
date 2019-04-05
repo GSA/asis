@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Instagram is being decommissioned per
+# https://cm-jira.usa.gov/browse/SRCH-50
 require 'instagram'
 
 Instagram.configure do |config|
