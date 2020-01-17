@@ -62,7 +62,7 @@ class FlickrPhotosImporter
     FlickrPhoto.create(attributes, op_type: 'create')
   rescue Elasticsearch::Transport::Transport::Errors::Conflict
     script = {
-      source: 'ctx._source.popularity = params.new_popularity ;',
+      source: 'ctx._source.popularity = params.new_popularity;',
       lang: 'painless',
       params: { new_popularity: flickr_photo_structure.views }
     }
