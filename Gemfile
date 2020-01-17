@@ -41,7 +41,7 @@ gem 'feedjira', '~> 2.2.0'
 gem 'http', '~> 4.0.0'
 
 group :development, :test do
-  gem 'puma', '~> 3.11'
+  gem 'puma', '~> 3.12'
 
   gem 'binding_of_caller'
   gem 'pry-rails'
