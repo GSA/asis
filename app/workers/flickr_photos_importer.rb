@@ -69,7 +69,7 @@ class FlickrPhotosImporter
     if group_id.present?
       script[:params][:new_group] = group_id
       script[:source] += <<~SOURCE.squish
-        ctx._source.groups.add(params.new_group) ;
+        ctx._source.groups.add(params.new_group);
         ctx._source.groups = ctx._source.groups.stream().distinct().collect(Collectors.toList())
       SOURCE
     end
