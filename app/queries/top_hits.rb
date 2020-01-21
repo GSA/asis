@@ -51,7 +51,7 @@ class TopHits
           # https://www.elastic.co/guide/en/elasticsearch/reference/2.0/breaking_20_scripting_changes.html#_scripting_syntax
           json.script do
             json.source '_score'
-            json.lang 'groovy'
+            json.lang 'painless'
           end
         end
       end
