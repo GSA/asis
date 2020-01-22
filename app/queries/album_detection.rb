@@ -81,7 +81,7 @@ class AlbumDetection
         json.histogram do
           json.script do
             json.source '_score'
-            json.lang 'groovy'
+            json.lang 'painless'
           end
           json.interval 2
           json.order do
