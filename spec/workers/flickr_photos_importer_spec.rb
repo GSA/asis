@@ -7,12 +7,17 @@ describe FlickrPhotosImporter do
   it { is_expected.to be_unique }
 
   describe '#perform' do
+    subject(:perform) do
+      importer.perform(*args)
+      FlickrPhoto.refresh_index!
+    end
+    let(:args) { %w[flickr_id user] }
+    let(:importer) { FlickrPhotosImporter.new }
+
     before do
       FlickrPhoto.delete_all
       FlickrPhoto.refresh_index!
     end
-
-    let(:importer) { FlickrPhotosImporter.new }
 
     describe 'days_ago param' do
       before do
@@ -27,23 +32,44 @@ describe FlickrPhotosImporter do
         allow(batch1_photos).to receive(:pages).and_return(3)
         allow(batch2_photos).to receive(:pages).and_return(3)
         allow(batch3_photos).to receive(:pages).and_return(3)
-        allow(importer).to receive(:get_photos).with('flickr id', 'user', per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST, extras: FlickrPhotosImporter::EXTRA_FIELDS, page: 1).and_return(batch1_photos)
-        allow(importer).to receive(:get_photos).with('flickr id', 'user', per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST, extras: FlickrPhotosImporter::EXTRA_FIELDS, page: 2).and_return(batch2_photos)
-        allow(importer).to receive(:get_photos).with('flickr id', 'user', per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST, extras: FlickrPhotosImporter::EXTRA_FIELDS, page: 3).and_return(batch3_photos)
+        allow(importer).to receive(:get_photos).with(
+          'flickr_id',
+          'user',
+          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+          extras: FlickrPhotosImporter::EXTRA_FIELDS,
+          page: 1
+        ).and_return(batch1_photos)
+        allow(importer).to receive(:get_photos).with(
+          'flickr_id',
+          'user',
+          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+          extras: FlickrPhotosImporter::EXTRA_FIELDS,
+          page: 2
+        ).and_return(batch2_photos)
+        allow(importer).to receive(:get_photos).with(
+          'flickr_id',
+          'user',
+          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+          extras: FlickrPhotosImporter::EXTRA_FIELDS,
+          page: 3
+        ).and_return(batch3_photos)
       end
 
       context 'when days_ago is specified' do
+        let(:args) { ['flickr_id', 'user', 7] }
+
         it 'should stop fetching more photos when the last photo of the current batch is before days_ago' do
-          importer.perform('flickr id', 'user', 7)
+          perform
           FlickrPhoto.refresh_index!
           expect(FlickrPhoto.count).to eq(4)
         end
       end
 
       context 'when days_ago is not specified' do
+        let(:args) { %w[flickr_id user] }
+
         it 'should fetch all the pages available' do
-          importer.perform('flickr id', 'user')
-          FlickrPhoto.refresh_index!
+          perform
           expect(FlickrPhoto.count).to eq(5)
         end
       end
@@ -54,11 +80,17 @@ describe FlickrPhotosImporter do
         photo1 = Hashie::Mash.new(id: 'photo1', owner: 'owner1', tags: 'tag1 tag2', title: 'title1', description: 'description1', datetaken: '2014-07-09 12:34:56', views: 100, url_o: 'http://photo1', url_q: 'http://photo_thumbnail1', dateupload: 9.days.ago.to_i)
         batch1_photos = [photo1]
         allow(batch1_photos).to receive(:pages).and_return(1)
-        allow(importer).to receive(:get_photos).with('flickr id', 'user', per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST, extras: FlickrPhotosImporter::EXTRA_FIELDS, page: 1).and_return(batch1_photos)
+        allow(importer).to receive(:get_photos).with(
+          'flickr_id',
+          'user',
+          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+          extras: FlickrPhotosImporter::EXTRA_FIELDS,
+          page: 1
+        ).and_return(batch1_photos)
       end
 
       it 'should store and index them' do
-        importer.perform('flickr id', 'user')
+        perform
         first = FlickrPhoto.find('photo1')
         expect(first.id).to eq('photo1')
         expect(first.owner).to eq('owner1')
@@ -73,20 +105,28 @@ describe FlickrPhotosImporter do
     end
 
     context 'when group photos are returned' do
+      let(:args) { %w[flickr_group_id group] }
+
       before do
         photo1 = Hashie::Mash.new(id: 'group_photo1', owner: 'owner1', tags: 'tag1 tag2', title: 'title1', description: 'description1', datetaken: '2014-07-09 12:34:56', views: 100, url_o: 'http://photo1', url_q: 'http://photo_thumbnail1', dateupload: 9.days.ago.to_i)
         batch1_photos = [photo1]
         allow(batch1_photos).to receive(:pages).and_return(1)
-        allow(importer).to receive(:get_photos).with('flickr group id', 'group', per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST, extras: FlickrPhotosImporter::EXTRA_FIELDS, page: 1).and_return(batch1_photos)
+        allow(importer).to receive(:get_photos).with(
+          'flickr_group_id',
+          'group',
+          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+          extras: FlickrPhotosImporter::EXTRA_FIELDS,
+          page: 1
+        ).and_return(batch1_photos)
       end
 
       it 'should store and index them with their group assigned' do
-        importer.perform('flickr group id', 'group')
+        perform
         first = FlickrPhoto.find('group_photo1')
         expect(first.id).to eq('group_photo1')
         expect(first.owner).to eq('owner1')
         expect(first.tags).to eq(%w[tag1 tag2])
-        expect(first.groups).to eq(['flickr group id'])
+        expect(first.groups).to eq(['flickr_group_id'])
         expect(first.title).to eq('title1')
         expect(first.description).to eq('description1')
         expect(first.taken_at).to eq(Date.parse('2014-07-09'))
@@ -101,11 +141,17 @@ describe FlickrPhotosImporter do
         photo1 = Hashie::Mash.new(id: 'photo1', owner: 'owner1', tags: 'tag1 vision:people=099 vision:groupshot=099 xmlns:dc=httppurlorgdcelements11 dc:identifier=httphdllocgovlocpnpggbain22915 tag2', title: 'title1', description: 'description1', datetaken: '2014-07-09 12:34:56', views: 100, url_o: 'http://photo1', url_q: 'http://photo_thumbnail1', dateupload: 9.days.ago.to_i)
         batch1_photos = [photo1]
         allow(batch1_photos).to receive(:pages).and_return(1)
-        allow(importer).to receive(:get_photos).with('flickr id', 'user', per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST, extras: FlickrPhotosImporter::EXTRA_FIELDS, page: 1).and_return(batch1_photos)
+        allow(importer).to receive(:get_photos).with(
+          'flickr_id',
+          'user',
+          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+          extras: FlickrPhotosImporter::EXTRA_FIELDS,
+          page: 1
+        ).and_return(batch1_photos)
       end
 
       it 'should strip them' do
-        importer.perform('flickr id', 'user')
+        perform
         first = FlickrPhoto.find('photo1')
         expect(first.tags).to eq(%w[tag1 tag2])
       end
@@ -116,11 +162,17 @@ describe FlickrPhotosImporter do
         photo1 = Hashie::Mash.new(id: 'photo1', owner: 'owner1', tags: 'tag2', title: 'title1', description: 'description1', datetaken: '2014-00-00 00:00:00', views: 100, url_o: 'http://photo1', url_q: 'http://photo_thumbnail1', dateupload: 9.days.ago.to_i)
         batch1_photos = [photo1]
         allow(batch1_photos).to receive(:pages).and_return(1)
-        allow(importer).to receive(:get_photos).with('flickr id', 'user', per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST, extras: FlickrPhotosImporter::EXTRA_FIELDS, page: 1).and_return(batch1_photos)
+        allow(importer).to receive(:get_photos).with(
+          'flickr_id',
+          'user',
+          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+          extras: FlickrPhotosImporter::EXTRA_FIELDS,
+          page: 1
+        ).and_return(batch1_photos)
       end
 
       it 'should assign zero month as January and zero day as one' do
-        importer.perform('flickr id', 'user')
+        perform
         first = FlickrPhoto.find('photo1')
         expect(first.taken_at).to eq(Date.parse('2014-01-01'))
       end
@@ -131,11 +183,17 @@ describe FlickrPhotosImporter do
         photo1 = Hashie::Mash.new(id: 'photo1', owner: 'owner1', tags: 'tag1 tag2', title: '     title1    ', description: '             ', datetaken: '2014-07-09 12:34:56', views: 100, url_o: 'http://photo1', url_q: 'http://photo_thumbnail1', dateupload: 9.days.ago.to_i)
         batch1_photos = [photo1]
         allow(batch1_photos).to receive(:pages).and_return(1)
-        allow(importer).to receive(:get_photos).with('flickr id', 'user', per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST, extras: FlickrPhotosImporter::EXTRA_FIELDS, page: 1).and_return(batch1_photos)
+        allow(importer).to receive(:get_photos).with(
+          'flickr_id',
+          'user',
+          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+          extras: FlickrPhotosImporter::EXTRA_FIELDS,
+          page: 1
+        ).and_return(batch1_photos)
       end
 
       it 'should strip them' do
-        importer.perform('flickr id', 'user')
+        perform
         first = FlickrPhoto.find('photo1')
         expect(first.title).to eq('title1')
         expect(first.description).to eq('')
@@ -148,12 +206,18 @@ describe FlickrPhotosImporter do
         photo2 = Hashie::Mash.new(id: 'photo2', owner: 'owner2', tags: 'tag2 tag3', title: 'title2', description: 'description2', datetaken: '2024-07-09 22:34:56', views: 200, url_o: 'http://photo2', url_q: 'http://photo_thumbnail2', dateupload: 9.days.ago.to_i)
         batch1_photos = [photo1, photo2]
         allow(batch1_photos).to receive(:pages).and_return(1)
-        allow(importer).to receive(:get_photos).with('flickr id', 'user', per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST, extras: FlickrPhotosImporter::EXTRA_FIELDS, page: 1).and_return(batch1_photos)
+        allow(importer).to receive(:get_photos).with(
+          'flickr_id',
+          'user',
+          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+          extras: FlickrPhotosImporter::EXTRA_FIELDS,
+          page: 1
+        ).and_return(batch1_photos)
       end
 
       it 'should log the issue and move on to the next photo' do
         expect(Rails.logger).to receive(:warn)
-        importer.perform('flickr id', 'user')
+        perform
         expect(FlickrPhoto.find('photo2')).to be_present
       end
     end
@@ -163,12 +227,18 @@ describe FlickrPhotosImporter do
         photo1 = Hashie::Mash.new(id: 'already exists', owner: 'owner1', tags: nil, title: 'new title', description: 'tags are nil', datetaken: '2014-07-09 12:34:56', views: 101, url_o: 'http://photo1', url_q: 'http://photo_thumbnail1', dateupload: 9.days.ago.to_i)
         batch1_photos = [photo1]
         allow(batch1_photos).to receive(:pages).and_return(1)
-        allow(importer).to receive(:get_photos).with('flickr id', 'user', per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST, extras: FlickrPhotosImporter::EXTRA_FIELDS, page: 1).and_return(batch1_photos)
+        allow(importer).to receive(:get_photos).with(
+          'flickr_id',
+          'user',
+          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+          extras: FlickrPhotosImporter::EXTRA_FIELDS,
+          page: 1
+        ).and_return(batch1_photos)
         FlickrPhoto.create(id: 'already exists', owner: 'owner1', tags: [], title: 'initial title', description: 'desc 1', taken_at: Date.current, popularity: 100, url: 'http://photo1', thumbnail_url: 'http://photo_thumbnail1', album: 'album1', groups: [])
       end
 
       it 'should update the popularity field' do
-        importer.perform('flickr id', 'user')
+        perform
         already_exists = FlickrPhoto.find('already exists')
         expect(already_exists.popularity).to eq(101)
         expect(already_exists.album).to eq('album1')
@@ -176,38 +246,54 @@ describe FlickrPhotosImporter do
     end
 
     context 'when photo exists in the index and got fetched from a group pool' do
+      let(:args) { %w[flickr_group_id group] }
+
       before do
         photo1 = Hashie::Mash.new(id: 'already exists with group', owner: 'owner1', tags: nil, title: 'new title', description: 'tags are nil', datetaken: '2014-07-09 12:34:56', views: 101, url_o: 'http://photo1', url_q: 'http://photo_thumbnail1', dateupload: 9.days.ago.to_i)
         batch1_photos = [photo1]
         allow(batch1_photos).to receive(:pages).and_return(1)
-        allow(importer).to receive(:get_photos).with('flickr_group_id', 'group', per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST, extras: FlickrPhotosImporter::EXTRA_FIELDS, page: 1).and_return(batch1_photos)
+        allow(importer).to receive(:get_photos).with(
+          'flickr_group_id',
+          'group',
+          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+          extras: FlickrPhotosImporter::EXTRA_FIELDS,
+          page: 1
+        ).and_return(batch1_photos)
         FlickrPhoto.create(id: 'already exists with group', owner: 'owner1', tags: [], title: 'initial title', description: 'desc 1', taken_at: Date.current, popularity: 100, url: 'http://photo1', thumbnail_url: 'http://photo_thumbnail1', album: 'album1', groups: [])
       end
 
       it 'should update the popularity field' do
-        importer.perform('flickr_group_id', 'group')
+        perform
         already_exists = FlickrPhoto.find('already exists with group')
         expect(already_exists.popularity).to eq(101)
       end
 
       it 'should add the group_id to the unique set of groups' do
-        importer.perform('flickr_group_id', 'group')
+        perform
         already_exists = FlickrPhoto.find('already exists with group')
         expect(already_exists.groups).to eq(%w[flickr_group_id])
       end
     end
 
     context 'when photo exists in the index with a group and got fetched from the same group pool' do
+      let(:args) { %w[flickr_group_id group] }
+
       before do
         photo1 = Hashie::Mash.new(id: 'already exists with group', owner: 'owner1', tags: nil, title: 'new title', description: 'tags are nil', datetaken: '2014-07-09 12:34:56', views: 101, url_o: 'http://photo1', url_q: 'http://photo_thumbnail1', dateupload: 9.days.ago.to_i)
         batch1_photos = [photo1]
         allow(batch1_photos).to receive(:pages).and_return(1)
-        allow(importer).to receive(:get_photos).with('flickr_group_id', 'group', per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST, extras: FlickrPhotosImporter::EXTRA_FIELDS, page: 1).and_return(batch1_photos)
+        allow(importer).to receive(:get_photos).with(
+          'flickr_group_id',
+          'group',
+          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+          extras: FlickrPhotosImporter::EXTRA_FIELDS,
+          page: 1
+        ).and_return(batch1_photos)
         FlickrPhoto.create(id: 'already exists with group', owner: 'owner1', tags: [], title: 'initial title', description: 'desc 1', taken_at: Date.current, popularity: 100, url: 'http://photo1', thumbnail_url: 'http://photo_thumbnail1', album: 'album1', groups: %w[group1 flickr_group_id])
       end
 
       it 'should add the group_id to the unique set of groups' do
-        importer.perform('flickr_group_id', 'group')
+        perform
         already_exists = FlickrPhoto.find('already exists with group')
         expect(already_exists.groups).to match_array(%w[group1 flickr_group_id])
       end
@@ -228,8 +314,10 @@ describe FlickrPhotosImporter do
     end
 
     context 'when flickr owner is a group' do
+      let(:args) { %w[group1 group] }
       let(:flickr_group_client) { double('Flickr client for group call') }
       let(:no_results) { [] }
+
       before do
         allow(FlickRaw::Flickr).to receive(:new).and_return(flickr_group_client)
         allow(no_results).to receive(:pages).and_return 0
@@ -237,7 +325,7 @@ describe FlickrPhotosImporter do
 
       it 'should call the group section of the API' do
         expect(flickr_group_client).to receive_message_chain('groups.pools.getPhotos').and_return(no_results)
-        importer.perform('group1', 'group')
+        perform
       end
     end
 

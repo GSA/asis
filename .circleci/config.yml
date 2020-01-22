@@ -8,21 +8,24 @@ executors:
     docker:
       - image: circleci/ruby:${RUBY_VERSION}
       - image: redis:3.2-alpine
-      - image: docker.elastic.co/elasticsearch/elasticsearch:5.6.16
+      - image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTICSEARCH_VERSION}
         environment:
           - xpack.security.enabled: false
-          - script.inline: true
-          - script.stored: true
+          - discovery.type: single-node
     working_directory: ~/app
 
 jobs:
   build:
     environment:
       RUBY_VERSION: << parameters.ruby_version >>
+      ELASTICSEARCH_VERSION: << parameters.elasticsearch_version >>
     executor: test_executor
     parameters:
       ruby_version:
         type: string
+      elasticsearch_version:
+        type: string
+        default: 5.6.16
     steps:
       - checkout
       - run:
@@ -32,6 +35,7 @@ jobs:
             cp -p config/instagram.yml.example config/instagram.yml
       - restore_cache:
           key: bundle-{{ checksum "Gemfile.lock" }}
+      - run: gem install bundler:1.17.3
       - run:
           name: bundle install
           command: |
@@ -66,8 +70,15 @@ workflows:
   build_and_test:
     jobs:
       - build:
-          name: 'ruby 2.5.5'
+          name: 'ruby 2.5, ES 5.6'
           ruby_version: 2.5.5
       - build:
-          name: 'ruby 2.6.2'
+          name: 'ruby 2.5, ES 6.8'
+          ruby_version: 2.5.5
+          elasticsearch_version: 6.8.6
+      - build:
+          name: 'ruby 2.6, ES 5.6'
           ruby_version: 2.6.2
+      - build:
+          name: 'ruby 2.7, ES 5.6'
+          ruby_version: 2.7.0
