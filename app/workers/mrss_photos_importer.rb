@@ -41,9 +41,13 @@ class MrssPhotosImporter
     MrssPhoto.create(attributes, op_type: 'create')
   rescue Elasticsearch::Transport::Transport::Errors::Conflict
     script = {
-      source: 'if (ctx._source.mrss_names.contains(new_name)) { ctx.op = "none" } else { ctx._source.mrss_names += new_name }',
       params: { new_name: @mrss.name },
-      lang: 'groovy'
+      lang: 'painless',
+      source: <<~SOURCE.squish
+        if (ctx._source.mrss_names.contains(params.new_name))
+          { ctx.op = "none" }
+        else { ctx._source.mrss_names.add(params.new_name) }
+      SOURCE
     }
     MrssPhoto.gateway.update(mrss_entry.entry_id, script: script)
     nil
