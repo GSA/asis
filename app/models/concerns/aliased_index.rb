@@ -33,7 +33,12 @@ module AliasedIndex
     end
 
     def delete_all
-      Elasticsearch::Persistence.client.delete_by_query(index: alias_name, conflicts: :proceed, body: { query: { match_all: {} } })
+      refresh_index!
+      Elasticsearch::Persistence.client.delete_by_query(
+        index: alias_name,
+        conflicts: :proceed,
+        body: { query: { match_all: {} } }
+      )
     end
   end
 end

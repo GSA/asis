@@ -7,7 +7,10 @@ describe MrssPhotosImporter do
   it { is_expected.to be_unique }
 
   describe '#perform' do
-    subject(:perform) { importer.perform(mrss_profile.name) }
+    subject(:perform) do
+      importer.perform(mrss_profile.name)
+      MrssPhoto.refresh_index!
+    end
 
     let(:mrss_profile) do
       MrssProfile.create({ id: mrss_url }, refresh: true)
@@ -35,7 +38,9 @@ describe MrssPhotosImporter do
 
       it 'indexes the expected content' do
         perform
-        photo = MrssPhoto.all.first
+        photo = MrssPhoto.find(
+          'http://www.nasa.gov/archive/archive/content/samantha-cristoforettis-birthday-celebration'
+        )
 
         expect(photo.id).to eq(
           'http://www.nasa.gov/archive/archive/content/samantha-cristoforettis-birthday-celebration'
