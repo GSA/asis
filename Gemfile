@@ -11,7 +11,7 @@ gem 'rails', '~> 5.2.0'
 
 gem 'rake', '~> 12.3.2'
 
-gem 'grape', '~> 1.1.0'
+gem 'grape', '~> 1.3.2'
 
 gem 'jbuilder', '~> 2.6.4'
 
