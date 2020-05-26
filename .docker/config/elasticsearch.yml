@@ -1,4 +1,0 @@
-script:
-  inline: true
-  stored: true
-xpack.security.enabled: false
