@@ -16,14 +16,19 @@ You are reading documentation for ASIS API v1.
 The server code that runs the image search component of [Search.gov](https://search.gov/) is here on Github.
 [Fork this repo](https://github.com/GSA/oasis/fork) to add features like additional datasets, or to fix bugs.
 
+## Deprecation Warning: Instagram
+The Instagram features have been deprecated. Documentation and examples remain for clarity pending code and spec cleanup.
+
+## Dependencies
+
 ### Ruby
 
-This code is currently tested against [Ruby 2.3](http://www.ruby-lang.org/en/downloads/).
+This code is currently tested against [Ruby 2.5](http://www.ruby-lang.org/en/downloads/).
 
 ### Configuration
 
- 1. Copy `instagram.yml.example` to `instagram.yml` and update the fields with your Instagram credentials.
- 1. Copy `flickr.yml.example` to `flickr.yml` and update the fields with your Flickr credentials.
+ 1. Copy `config/instagram.yml.example` to `config/instagram.yml` and update the fields with your Instagram credentials.
+ 1. Copy `config/flickr.yml.example` to `config/flickr.yml` and update the fields with your Flickr credentials.
 
 ### Gems
 
@@ -34,50 +39,55 @@ We use bundler to manage gems. You can install bundler and other required gems l
 
 ### Elasticsearch
 
-We're using [Elasticsearch](http://www.elasticsearch.org/) (>= 5.6.5) for fulltext search. On a Mac, it's easy to
-install with [Homebrew](http://mxcl.github.com/homebrew/).
+We're using [Elasticsearch](http://www.elasticsearch.org/) (>= 6.8) for fulltext search. 
 
-    $ brew install elasticsearch@5.6
+Install [Docker](https://www.docker.com/products/docker-desktop) if you haven't done so yet. Once you have Docker installed on your machine, run the following command from the project root:
 
-Otherwise, follow the [instructions](http://www.elasticsearch.org/download/) to download and run it.
+    docker-compose up elasticsearch
 
-You can generally leave the defaults in elasticsearch.yml as they are, with the exception of:
+Verify that Elasticsearch 6.8.x is running on port 9200:
 
-#### Scripting
+```
+$ curl localhost:9200
+{
+  "name" : "wp9TsCe",
+  "cluster_name" : "docker-cluster",
+  "cluster_uuid" : "WGf_peYTTZarT49AtEgc3g",
+  "version" : {
+    "number" : "6.8.9",
+    "build_flavor" : "default",
+    "build_type" : "docker",
+    "build_hash" : "c63e621",
+    "build_date" : "2020-02-26T14:38:01.193138Z",
+    "build_snapshot" : false,
+    "lucene_version" : "7.7.2",
+    "minimum_wire_compatibility_version" : "5.6.0",
+    "minimum_index_compatibility_version" : "5.0.0"
+  },
+  "tagline" : "You Know, for Search"
+}
+```
 
-[Scripting](https://www.elastic.co/guide/en/elasticsearch/reference/5.6/modules-scripting-security.html#security-script-source) is disabled by default in Elasticsearch 5.6. Set both `script.inline` and `script.stored` to `true`:
+### Kibana
 
-    script:
-      inline: true
-      stored: true
+[Kibana](https://www.elastic.co/kibana) is not required, but it can very helpful for debugging your Elasticsearch cluster or data.
+You can also run Kibana using Docker:
 
-### Elasticsearch with Docker
+    docker-compose up kibana
 
-Install Docker if you haven't done so yet. Follow the instruction [here](https://www.docker.com/community-edition)
-Once you have Docker installed on your machine, run the following command from the project root
-
-    $ .docker/bin/elasticsearch-docker
-
-This will download an docker image containing elasticsearch=5.6 from docker.elastic.co, run it, and expose port 9200 & 9300 to your machine. You can verify your setup with the following command.
-
-    $ curl localhost:9200
-    {
-      "name" : ...random string...,
-      "cluster_name" : "elasticsearch",
-      "cluster_uuid" : ...uuid...
-      "version" : {
-        "number" : "5.6.5",
-        "build_hash" : "6a37571",
-        "build_timestamp" : "2017-12-04T07:50:10.466Z",
-        "build_snapshot" : false,
-        "lucene_version" : "6.6.1"
-      },
-      "tagline" : "You Know, for Search"
-    }
+Verify that you can access Kibana in your browser: [http://localhost:5601/](http://localhost:5601/)
 
 ### Redis
 
-Sidekiq (see below) uses [Redis](http://redis.io), so make sure you have that installed and running.
+Sidekiq (see below) uses [Redis](http://redis.io), so make sure you have that installed and running. You can install it it from the [Redis website](https://redis.io/download), or run it using Docker:
+
+    docker-compose up redis
+
+To run Elasticsearch, Kibana, and Redis, you can simply run:
+
+    docker-compose up
+    
+## Development/Usage
 
 ### Seed some image data
 
@@ -88,12 +98,9 @@ Sample lists are in `config/instagram_profiles.csv` and `config/flickr_profiles.
 
 You can keep the indexes up to date by periodically refreshing the last day's images. To do this manually via the Rails console:
 
+    MrssPhotosImporter.refresh
     FlickrPhotosImporter.refresh
     InstagramPhotosImporter.refresh
-    MrssPhotosImporter.refresh
-
-The Capistrano deploy script has [whenever](https://github.com/javan/whenever) hooks so this refresh happens automatically
-via cron in your production environment.
 
 ### Running it
 
@@ -113,7 +120,7 @@ You can add a new profile manually via the REST API:
 
     	curl -XPOST "http://localhost:3000/api/v1/instagram_profiles.json?username=deptofdefense&id=542835249"
     	curl -XPOST "http://localhost:3000/api/v1/flickr_profiles.json?name=commercegov&id=61913304@N07&profile_type=user"
-    	curl -XPOST "http://localhost:3000/api/v1/mrss_profiles.json?url=http%3A%2F%2Fremotesensing.usgs.gov%2Fgallery%2Frss.php%3Fcat%3Dall"
+    	curl -XPOST "http://localhost:3000/api/v1/mrss_profiles.json?url=https://share-ng.sandia.gov/news/resources/news_releases/feed/"
 
 MRSS profiles work a little differently than Flickr and Instagram profiles. When you create the MRSS profile, Oasis assigns a
 short name to it that you will use when performing searches. The JSON result from the POST request will look something like this:
@@ -122,7 +129,7 @@ short name to it that you will use when performing searches. The JSON result fro
         "created_at": "2014-10-26T18:25:21.167+00:00",
         "updated_at": "2014-10-26T18:25:21.173+00:00",
         "name": "72",
-        "id": "http:\/\/remotesensing.usgs.gov\/gallery\/rss.php?cat=all"
+        "id": "https://share-ng.sandia.gov/news/resources/news_releases/feed/"
       }
 
 ### Asynchronous job processing
@@ -134,6 +141,8 @@ We use [Sidekiq](http://sidekiq.org) for job processing. You can see all your Fl
 Kick off the indexing process:
 
     bundle exec sidekiq
+    
+### Searching
 
 In the Rails console, you can query each index manually using the Elasticsearch [Query DSL](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl.html):
 
@@ -141,9 +150,9 @@ In the Rails console, you can query each index manually using the Elasticsearch 
     InstagramPhoto.count
     FlickrPhoto.count
     MrssPhoto.count
-    InstagramPhoto.all(query:{term:{username:'usinterior'}})
-    FlickrPhoto.all(query:{term:{owner:'41555360@n03'}})
-    MrssPhoto.all(query:{term:{mrss_url:'http://remotesensing.usgs.gov/gallery/rss.php?cat=all'}})
+    InstagramPhoto.all(query:{term:{username:'usinterior'}}).results
+    FlickrPhoto.all(query:{term:{owner:'28634332@N05'}}).results
+    MrssPhoto.all(query:{match:{description:'air'}}).results
 
 ### Parameters
 
@@ -180,7 +189,7 @@ We support API versioning with the JSON format. The current version is v1. You c
 
     curl "http://localhost:3000/api/v1/image.json?flickr_groups=1058319@N21&flickr_users=35067687@n04,24662369@n07&instagram_profiles=nasa&mrss_names=72,73&query=earth"
 
-### Tests
+## Tests
 
 These require an [Elasticsearch](http://www.elasticsearch.org/) server and [Redis](http://redis.io) server to be running.
 
@@ -198,7 +207,7 @@ Click around on the files that have < 100% coverage to see what lines weren't ex
 
 We "eat our own dog food" and use this ASIS API to display image results on the government websites that use [Search.gov](https://search.gov/).
 
-See the results for a search for [*moon* on DOI.gov](https://search.doi.gov/search/images?affiliate=doi.gov&query=moon).
+See the results for a search for [*bird* on FWS.gov](https://search.usa.gov/search/images?affiliate=fws.gov&query=bird).
 
 Feedback
 --------
