@@ -27,8 +27,8 @@ This code is currently tested against [Ruby 2.5](http://www.ruby-lang.org/en/dow
 
 ### Configuration
 
- 1. Copy `instagram.yml.example` to `instagram.yml` and update the fields with your Instagram credentials.
- 1. Copy `flickr.yml.example` to `flickr.yml` and update the fields with your Flickr credentials.
+ 1. Copy `config/instagram.yml.example` to `config/instagram.yml` and update the fields with your Instagram credentials.
+ 1. Copy `config/flickr.yml.example` to `config/flickr.yml` and update the fields with your Flickr credentials.
 
 ### Gems
 
