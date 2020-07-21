@@ -1,3 +1,0 @@
-CONFIG="$(pwd)/$(dirname "${BASH_SOURCE[0]}")/../config/elasticsearch.yml"
-echo "Using $CONFIG"
-docker run -e "http.host=0.0.0.0" -e "transport.host=127.0.0.1" -v "$CONFIG":/usr/share/elasticsearch/config/elasticsearch.yml -p 9200:9200 -p 9300:9300 docker.elastic.co/elasticsearch/elasticsearch:5.6.5
