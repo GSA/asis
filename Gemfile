@@ -46,6 +46,8 @@ group :development, :test do
   gem 'binding_of_caller'
   gem 'pry-rails'
   gem 'rspec-rails', '~> 3.8.2'
+  #gem 'searchgov_style', git: 'https://github.com/GSA/searchgov_style', branch: 'main'
+  gem 'searchgov_style', path: '/Users/Moth/src/GSA/searchgov_style'
 end
 
 group :development do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'an album worker' do
   subject(:perform) { described_class.new.perform(id) }
   let(:iterator) { instance_double(AlbumDetectionPhotoIterator) }

@@ -16,9 +16,9 @@ describe AlbumDetectionPhotoIterator, 'run' do
     FlickrPhoto.refresh_index!
   end
 
-  let(:iterator) { AlbumDetectionPhotoIterator.new(FlickrPhoto, PhotoFilter.new('owner', 'owner1').query_body) }
+  let(:iterator) { described_class.new(FlickrPhoto, PhotoFilter.new('owner', 'owner1').query_body) }
 
-  it 'should run the album detector on each photo' do
+  it 'runs the album detector on each photo' do
     expect(AlbumDetector).to(receive(:detect_albums!).exactly(5).times { [] })
     iterator.run
   end
@@ -31,7 +31,7 @@ describe AlbumDetectionPhotoIterator, 'run' do
         expect(photo).to receive(:update).and_raise Elasticsearch::Transport::Transport::Errors::Conflict
       end
 
-      it 'should log a warning and continue' do
+      it 'logs a warning and continue' do
         expect(Rails.logger).to receive(:warn)
         AlbumDetector.detect_albums! photo
       end
