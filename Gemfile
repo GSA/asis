@@ -55,6 +55,13 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  # Updating Rubocop? Also update the Rubocop channel in .codeclimate.yml
+  # https://docs.codeclimate.com/docs/rubocop#section-using-rubocop-s-newer-versions
+  gem 'rubocop', '0.92.0', require: false
+  gem 'rubocop-performance', '~> 1.9', require: false
+  gem 'rubocop-rails', '~> 2.9', require: false
+  gem 'rubocop-rake', '~> 0.5', require: false
+  gem 'rubocop-rspec', '~> 1.0', require: false
 end
 
 group :test do

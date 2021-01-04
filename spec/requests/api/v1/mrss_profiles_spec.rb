@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe API::V1::MrssProfiles do
-  before :each do
+  before do
     MrssProfile.delete_all
     MrssProfile.refresh_index!
   end
@@ -27,7 +27,7 @@ describe API::V1::MrssProfiles do
 
   describe 'POST /api/v1/mrss_profiles' do
     context 'when MRSS feed URL does not already exist in index' do
-      before :each do
+      before do
         post '/api/v1/mrss_profiles', params: { url: 'http://some.mrss.url/feed2.xml' }
       end
 

@@ -1,7 +1,17 @@
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rake
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+
 Naming/AccessorMethodName:
   Enabled: false
-Metrics/LineLength:
-  Enabled: false
+Layout/LineLength:
+  Enabled: true
+  Max: 90
 Metrics/BlockLength:
   Enabled: false
 Metrics/AbcSize:
@@ -31,6 +41,16 @@ Rails/TimeZone:
 Style/MixinUsage:
   Exclude:
     - bin/*
+Layout/DotPosition:
+  Description: 'Checks the position of the dot in multi-line method calls.'
+  StyleGuide: '#consistent-multi-line-chains'
+  Enabled: true
+  VersionAdded: '0.49'
+  EnforcedStyle: trailing
+  SupportedStyles:
+    - leading
+    - trailing
+
 Rails/HttpPositionalArguments:
   # https://github.com/bbatsov/rubocop/issues/5624
   Exclude:

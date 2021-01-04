@@ -12,7 +12,7 @@ describe FlickrPhotosImporter do
       FlickrPhoto.refresh_index!
     end
     let(:args) { %w[flickr_id user] }
-    let(:importer) { FlickrPhotosImporter.new }
+    let(:importer) { described_class.new }
 
     before do
       FlickrPhoto.delete_all
@@ -58,7 +58,7 @@ describe FlickrPhotosImporter do
       context 'when days_ago is specified' do
         let(:args) { ['flickr_id', 'user', 7] }
 
-        it 'should stop fetching more photos when the last photo of the current batch is before days_ago' do
+        it 'stops fetching more photos when the last photo of the current batch is before days_ago' do
           perform
           FlickrPhoto.refresh_index!
           expect(FlickrPhoto.count).to eq(4)
@@ -68,7 +68,7 @@ describe FlickrPhotosImporter do
       context 'when days_ago is not specified' do
         let(:args) { %w[flickr_id user] }
 
-        it 'should fetch all the pages available' do
+        it 'fetches all the pages available' do
           perform
           expect(FlickrPhoto.count).to eq(5)
         end
@@ -89,7 +89,7 @@ describe FlickrPhotosImporter do
         ).and_return(batch1_photos)
       end
 
-      it 'should store and index them' do
+      it 'stores and indexes them' do
         perform
         first = FlickrPhoto.find('photo1')
         expect(first.id).to eq('photo1')
@@ -120,7 +120,7 @@ describe FlickrPhotosImporter do
         ).and_return(batch1_photos)
       end
 
-      it 'should store and index them with their group assigned' do
+      it 'stores and indexes them with their group assigned' do
         perform
         first = FlickrPhoto.find('group_photo1')
         expect(first.id).to eq('group_photo1')
@@ -150,7 +150,7 @@ describe FlickrPhotosImporter do
         ).and_return(batch1_photos)
       end
 
-      it 'should strip them' do
+      it 'strips them' do
         perform
         first = FlickrPhoto.find('photo1')
         expect(first.tags).to eq(%w[tag1 tag2])
@@ -171,7 +171,7 @@ describe FlickrPhotosImporter do
         ).and_return(batch1_photos)
       end
 
-      it 'should assign zero month as January and zero day as one' do
+      it 'assigns zero month as January and zero day as one' do
         perform
         first = FlickrPhoto.find('photo1')
         expect(first.taken_at).to eq(Date.parse('2014-01-01'))
@@ -192,7 +192,7 @@ describe FlickrPhotosImporter do
         ).and_return(batch1_photos)
       end
 
-      it 'should strip them' do
+      it 'strips them' do
         perform
         first = FlickrPhoto.find('photo1')
         expect(first.title).to eq('title1')
@@ -215,7 +215,7 @@ describe FlickrPhotosImporter do
         ).and_return(batch1_photos)
       end
 
-      it 'should log the issue and move on to the next photo' do
+      it 'logs the issue and moves on to the next photo' do
         expect(Rails.logger).to receive(:warn)
         perform
         expect(FlickrPhoto.find('photo2')).to be_present
@@ -237,7 +237,7 @@ describe FlickrPhotosImporter do
         FlickrPhoto.create(id: 'already exists', owner: 'owner1', tags: [], title: 'initial title', description: 'desc 1', taken_at: Date.current, popularity: 100, url: 'http://photo1', thumbnail_url: 'http://photo_thumbnail1', album: 'album1', groups: [])
       end
 
-      it 'should update the popularity field' do
+      it 'updates the popularity field' do
         perform
         already_exists = FlickrPhoto.find('already exists')
         expect(already_exists.popularity).to eq(101)
@@ -262,13 +262,13 @@ describe FlickrPhotosImporter do
         FlickrPhoto.create(id: 'already exists with group', owner: 'owner1', tags: [], title: 'initial title', description: 'desc 1', taken_at: Date.current, popularity: 100, url: 'http://photo1', thumbnail_url: 'http://photo_thumbnail1', album: 'album1', groups: [])
       end
 
-      it 'should update the popularity field' do
+      it 'updates the popularity field' do
         perform
         already_exists = FlickrPhoto.find('already exists with group')
         expect(already_exists.popularity).to eq(101)
       end
 
-      it 'should add the group_id to the unique set of groups' do
+      it 'adds the group_id to the unique set of groups' do
         perform
         already_exists = FlickrPhoto.find('already exists with group')
         expect(already_exists.groups).to eq(%w[flickr_group_id])
@@ -292,7 +292,7 @@ describe FlickrPhotosImporter do
         FlickrPhoto.create(id: 'already exists with group', owner: 'owner1', tags: [], title: 'initial title', description: 'desc 1', taken_at: Date.current, popularity: 100, url: 'http://photo1', thumbnail_url: 'http://photo_thumbnail1', album: 'album1', groups: %w[group1 flickr_group_id])
       end
 
-      it 'should add the group_id to the unique set of groups' do
+      it 'adds the group_id to the unique set of groups' do
         perform
         already_exists = FlickrPhoto.find('already exists with group')
         expect(already_exists.groups).to match_array(%w[group1 flickr_group_id])
@@ -307,7 +307,7 @@ describe FlickrPhotosImporter do
         allow(no_results).to receive(:pages).and_return 0
       end
 
-      it 'should call the user section of the API' do
+      it 'calls the user section of the API' do
         expect(flickr_user_client).to receive_message_chain('people.getPublicPhotos').and_return(no_results)
         importer.perform('user1', 'user')
       end
@@ -323,7 +323,7 @@ describe FlickrPhotosImporter do
         allow(no_results).to receive(:pages).and_return 0
       end
 
-      it 'should call the group section of the API' do
+      it 'calls the group section of the API' do
         expect(flickr_group_client).to receive_message_chain('groups.pools.getPhotos').and_return(no_results)
         perform
       end
@@ -334,7 +334,7 @@ describe FlickrPhotosImporter do
         expect(FlickRaw::Flickr).to receive_message_chain('new.people.getPublicPhotos').and_raise StandardError
       end
 
-      it 'should log a warning and continue' do
+      it 'logs a warning and continues' do
         expect(Rails.logger).to receive(:warn)
         importer.perform('user1', 'user')
       end
@@ -348,10 +348,10 @@ describe FlickrPhotosImporter do
         .and_yield(double(FlickrProfile, id: 'def', profile_type: 'group'))
     end
 
-    it 'should enqueue importing the last X days of photos' do
-      FlickrPhotosImporter.refresh
-      expect(FlickrPhotosImporter).to have_enqueued_sidekiq_job('abc', 'user', FlickrPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
-      expect(FlickrPhotosImporter).to have_enqueued_sidekiq_job('def', 'group', FlickrPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
+    it 'enqueues importing the last X days of photos' do
+      described_class.refresh
+      expect(described_class).to have_enqueued_sidekiq_job('abc', 'user', FlickrPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
+      expect(described_class).to have_enqueued_sidekiq_job('def', 'group', FlickrPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
     end
   end
 end

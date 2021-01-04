@@ -11,22 +11,22 @@ describe Feedjira::Parser::Oasis::MrssEntry do
     end
 
     describe 'a parsed entry' do
-      it 'should have the correct title stripped and squished' do
+      it 'has the correct title stripped and squished' do
         expect(entry.title).to eq('')
       end
-      it 'should have the correct summary stripped and squished' do
+      it 'has the correct summary stripped and squished' do
         expect(entry.summary).to eq('Official Photo- of something important (U.S. Air Force Photo)')
       end
-      it 'should have the correct url' do
+      it 'has the correct url' do
         expect(entry.url).to eq('http://www.af.mil/News/Photos.aspx?igphoto=2000949217')
       end
-      it 'should have the correct thumbnail url' do
+      it 'has the correct thumbnail url' do
         expect(entry.thumbnail_url).to eq('http://media.dma.mil/2014/Oct/22/2000949217/145/100/0/141022-F-PB123-223.JPG')
       end
-      it 'should have the correct entry_id' do
+      it 'has the correct entry_id' do
         expect(entry.entry_id).to eq('http://www.af.mil/News/Photos.aspx?igphoto=2000949217')
       end
-      it 'should have the correct published time' do
+      it 'has the correct published time' do
         expect(entry.published).to eq(Time.parse('2014-10-22 14:24:00Z'))
       end
     end
@@ -40,7 +40,7 @@ describe Feedjira::Parser::Oasis::MrssEntry do
     end
 
     describe 'a parsed entry' do
-      it 'should use whatever comes last in the XML' do
+      it 'uses whatever comes last in the XML' do
         expect(entries.first.summary).to eq('This came from description')
         expect(entries.last.summary).to eq('But this came from media:description')
       end
@@ -55,7 +55,7 @@ describe Feedjira::Parser::Oasis::MrssEntry do
     end
 
     describe 'a parsed entry' do
-      it 'should use the content:encoded field for the summary' do
+      it 'uses the content:encoded field for the summary' do
         expect(entry.summary).to eq('Sentence one. Sentence two. more...')
       end
     end
@@ -68,7 +68,7 @@ describe Feedjira::Parser::Oasis::MrssEntry do
       feed.entries.first
     end
 
-    it 'should prepend with http' do
+    it 'prepends with http' do
       expect(entry.url).to eq('http://www.af.mil/News/Photos.aspx?igphoto=2000949217')
       expect(entry.thumbnail_url).to eq('http://media.dma.mil/2014/Oct/22/2000949217/145/100/0/141022-F-PB123-223.JPG')
     end
