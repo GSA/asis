@@ -8,14 +8,14 @@ describe Feedjira::Parser::Oasis::Mrss do
 
     describe '#able_to_parse?' do
       context 'when first 2000 chars of XML contains MRSS text string' do
-        it 'should return true' do
-          expect(Feedjira::Parser::Oasis::Mrss.able_to_parse?(dma_mrss_xml)).to be_truthy
+        it 'returns true' do
+          expect(described_class.able_to_parse?(dma_mrss_xml)).to be_truthy
         end
       end
     end
 
     describe 'the parser' do
-      it 'should pull out the entries properly' do
+      it 'pulls out the entries properly' do
         feed = Feedjira::Feed.parse(dma_mrss_xml)
         expect(feed.entries.first.class).to eq(Feedjira::Parser::Oasis::MrssEntry)
       end
@@ -27,14 +27,14 @@ describe Feedjira::Parser::Oasis::Mrss do
 
     describe '#able_to_parse?' do
       context 'when first 2000 chars of XML contains the content namespace text string' do
-        it 'should return true' do
-          expect(Feedjira::Parser::Oasis::Mrss.able_to_parse?(mrss_xml)).to be_truthy
+        it 'returns true' do
+          expect(described_class.able_to_parse?(mrss_xml)).to be_truthy
         end
       end
     end
 
     describe 'the parser' do
-      it 'should pull out the entries properly' do
+      it 'pulls out the entries properly' do
         feed = Feedjira::Feed.parse(mrss_xml)
         expect(feed.entries.first.class).to eq(Feedjira::Parser::Oasis::MrssEntry)
       end

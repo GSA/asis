@@ -14,18 +14,18 @@ describe InstagramPhotosImporter do
       InstagramPhoto.refresh_index!
     end
 
-    let(:importer) { InstagramPhotosImporter.new }
+    let(:importer) { described_class.new }
     let(:instagram_client) { double('Instagram client') }
 
     context 'when days_ago is specified' do
-      it 'should convert that to a timestamp and use it when fetching the recent media' do
+      it 'converts that to a timestamp and uses it when fetching the recent media' do
         expect_any_instance_of(Instagram::Client).to receive(:user_recent_media).with('1234', min_timestamp: a_value_within(10).of(7.days.ago.to_i))
         importer.perform('1234', 7)
       end
     end
 
     context 'when days_ago is not specified' do
-      it 'should fetch the recent media' do
+      it 'fetches the recent media' do
         expect_any_instance_of(Instagram::Client).to receive(:user_recent_media).with('1234', {})
         importer.perform('1234')
       end
@@ -84,7 +84,7 @@ describe InstagramPhotosImporter do
         allow_any_instance_of(Instagram::Client).to receive(:user_recent_media).with('1234', max_id: '7808') { [] }
       end
 
-      it 'should store and index them' do
+      it 'stores and indexes them' do
         importer.perform('1234')
         first = InstagramPhoto.find('123456')
         expect(first.id).to eq('123456')
@@ -139,7 +139,7 @@ describe InstagramPhotosImporter do
         allow_any_instance_of(Instagram::Client).to receive(:user_recent_media).with('1234', max_id: '7890') { [] }
       end
 
-      it 'should log the issue and move on to the next photo' do
+      it 'logs the issue and moves on to the next photo' do
         expect(Rails.logger).to receive(:warn)
         importer.perform('1234')
 
@@ -169,7 +169,7 @@ describe InstagramPhotosImporter do
         allow_any_instance_of(Instagram::Client).to receive(:user_recent_media).with('1234', max_id: 'already exists') { [] }
       end
 
-      it 'should update the popularity field' do
+      it 'updates the popularity field' do
         importer.perform('1234')
 
         already_exists = InstagramPhoto.find('already exists')
@@ -183,7 +183,7 @@ describe InstagramPhotosImporter do
         expect_any_instance_of(Instagram::Client).to receive(:user_recent_media).and_raise StandardError
       end
 
-      it 'should log a warning and continue' do
+      it 'logs a warning and continues' do
         expect(Rails.logger).to receive(:warn)
         importer.perform('1234')
       end
@@ -195,10 +195,10 @@ describe InstagramPhotosImporter do
       allow(InstagramProfile).to receive(:find_each).and_yield(double(InstagramProfile, id: '123')).and_yield(double(InstagramProfile, id: '456'))
     end
 
-    it 'should enqueue importing the last X days of photos' do
-      InstagramPhotosImporter.refresh
-      expect(InstagramPhotosImporter).to have_enqueued_sidekiq_job('123', InstagramPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
-      expect(InstagramPhotosImporter).to have_enqueued_sidekiq_job('456', InstagramPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
+    it 'enqueues importing the last X days of photos' do
+      described_class.refresh
+      expect(described_class).to have_enqueued_sidekiq_job('123', InstagramPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
+      expect(described_class).to have_enqueued_sidekiq_job('456', InstagramPhotosImporter::DAYS_BACK_TO_CHECK_FOR_UPDATES)
     end
   end
 end

@@ -164,6 +164,7 @@ class TopHits
 
   def filtered_query_filter(json)
     return unless some_profile_specified?
+
     json.filter do
       json.bool do
         json.set! :should do

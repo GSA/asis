@@ -17,6 +17,7 @@ class FlickrPhotosImporter
     while page <= pages && oldest_retrieved_ts >= min_ts
       photos = get_photos(id, profile_type, OPTIONS.merge(page: page))
       return if photos.nil?
+
       Rails.logger.info("Storing #{photos.count} photos from page #{page} of #{pages} for Flickr #{profile_type} profile #{id}")
       group_id = (profile_type == 'group' ? id : nil)
       stored_photos = store_photos(photos, group_id)

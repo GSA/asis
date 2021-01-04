@@ -1,37 +1,20 @@
-Naming/AccessorMethodName:
-  Enabled: false
-Metrics/LineLength:
-  Enabled: false
-Metrics/BlockLength:
-  Enabled: false
-Metrics/AbcSize:
-  Enabled: false
-Metrics/MethodLength:
-  Enabled: false
-Metrics/ParameterLists:
-  Max: 7
-Metrics/CyclomaticComplexity:
-  Enabled: false
-Metrics/PerceivedComplexity:
-  Enabled: false
-Style/Documentation:
-  Enabled: false
-Metrics/ClassLength:
-  Enabled: false
-Rails/Output:
-  Enabled: false
-Style/DateTime:
-  Enabled: false
-Style/FormatStringToken:
-  Enabled: false
-Rails/FilePath:
-  Enabled: false
-Rails/TimeZone:
-  Enabled: false
-Style/MixinUsage:
+# Work around CodeClimate's inability to use Rubocop's inherit_gem directive:
+# https://github.com/codeclimate/codeclimate-rubocop/issues/71#issuecomment-635055223
+inherit_from:
+  - https://raw.githubusercontent.com/GSA/searchgov_style/main/.default.yml
+
+inherit_mode:
+  merge:
+    - Exclude
+
+AllCops:
   Exclude:
-    - bin/*
-Rails/HttpPositionalArguments:
-  # https://github.com/bbatsov/rubocop/issues/5624
+    # All Instagram-related code is deprecated and will be removed
+    - /**/**/instagram*
+
+# Always omit parentheses for methods that are part of an internal DSL
+# (e.g., Rake, Rails, RSpec)
+Style/MethodCallWithArgsParentheses:
   Exclude:
-    - spec/cors_spec.rb
+    # Exclude files relying on Jbuilder DSL
+    - app/queries/*

@@ -20,7 +20,7 @@ describe InstagramAlbumDetector do
 
     let(:photo) { InstagramPhoto.find 'photo 1' }
 
-    it 'should assign them all to the same album' do
+    it 'assigns them all to the same album' do
       AlbumDetector.detect_albums! photo
       5.times do |x|
         i = x + 1
