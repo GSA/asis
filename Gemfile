@@ -47,7 +47,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'rspec-rails', '~> 3.8.2'
   #gem 'searchgov_style', git: 'https://github.com/GSA/searchgov_style', branch: 'main'
-  gem 'searchgov_style', path: '/Users/Moth/src/GSA/searchgov_style'
+  gem 'searchgov_style', git: 'https://github.com/MothOnMars/searchgov_style', branch: 'asis_1882'
 end
 
 group :development do
