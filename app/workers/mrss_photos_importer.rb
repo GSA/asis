@@ -8,6 +8,7 @@ class MrssPhotosImporter
     @mrss = MrssProfile.find_by_name mrss_name
     photos = get_photos
     return if photos.blank?
+
     Rails.logger.info("Storing #{photos.count} photos for MRSS feed #{@mrss.id}")
     stored_photos = store_photos(photos)
     stored_photos.each { |photo| AlbumDetector.detect_albums!(photo) }

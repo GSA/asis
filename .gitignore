@@ -1,6 +1,8 @@
 /.bundle
 /log/*.log
 /tmp
+# Ignore the rubocop YAML file that is downloaded when running `rubocop` locally
+.rubocop*default-yml
 .ruby-version
 .ruby-gemset
 config/instagram.yml

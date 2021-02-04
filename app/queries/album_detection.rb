@@ -48,6 +48,7 @@ class AlbumDetection
   # https://www.elastic.co/guide/en/elasticsearch/reference/2.0/breaking_20_query_dsl_changes.html#_more_like_this
   def more_like_this(json, query_field, minimum_should_match)
     return if @photo.send(query_field).blank?
+
     json.child! do
       json.more_like_this do
         json.fields [query_field]
@@ -62,6 +63,7 @@ class AlbumDetection
   def term_filter_child(json, filter_field)
     filter_value = @photo.send(filter_field)
     return if filter_value.blank?
+
     json.child! do
       if filter_value.is_a? Array
         json.terms do

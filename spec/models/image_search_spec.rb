@@ -19,8 +19,8 @@ describe ImageSearch do
       MrssPhoto.refresh_index!
     end
 
-    it 'should return results from all indexes' do
-      image_search = ImageSearch.new('gas', {})
+    it 'returns results from all indexes' do
+      image_search = described_class.new('gas', {})
       image_search_results = image_search.search
       expect(image_search_results.results.collect(&:type).uniq).to match_array(%w[InstagramPhoto FlickrPhoto MrssPhoto])
     end
@@ -34,8 +34,8 @@ describe ImageSearch do
       InstagramPhoto.refresh_index!
     end
 
-    it 'should return results from both indexes' do
-      image_search = ImageSearch.new('apollo 11', {})
+    it 'returns results from both indexes' do
+      image_search = described_class.new('apollo 11', {})
       image_search_results = image_search.search
       expect(image_search_results.results.collect(&:type).uniq).to match_array(%w[InstagramPhoto FlickrPhoto])
     end
@@ -48,8 +48,8 @@ describe ImageSearch do
       FlickrPhoto.refresh_index!
     end
 
-    it 'should positively influence relevancy score' do
-      image_search = ImageSearch.new('jefferson memorial', {})
+    it 'positively influences the relevancy score' do
+      image_search = described_class.new('jefferson memorial', {})
       image_search_results = image_search.search
       expect(image_search_results.results.first.title).to eq('jefferson Memorial and township Petitions')
     end
@@ -63,8 +63,8 @@ describe ImageSearch do
       FlickrPhoto.refresh_index!
     end
 
-    it 'should return results for the close spelling' do
-      image_search = ImageSearch.new('casini', {})
+    it 'returns results for the close spelling' do
+      image_search = described_class.new('casini', {})
       image_search_results = image_search.search
       expect(image_search_results.results.first.title).to eq('photo of the cassini probe')
       expect(image_search_results.suggestion['text']).to eq('cassini')
@@ -78,16 +78,16 @@ describe ImageSearch do
       expect(Elasticsearch::Persistence.client).to receive(:search).and_return(result)
     end
 
-    it 'should not return a spelling suggestion' do
-      image_search = ImageSearch.new('accordion', {})
+    it 'does not return a spelling suggestion' do
+      image_search = described_class.new('accordion', {})
       image_search_results = image_search.search
       expect(image_search_results.suggestion).to be_nil
     end
   end
 
   context 'when there is some unforseen problem during the search' do
-    it 'should return a no results response' do
-      image_search = ImageSearch.new('uh oh', {})
+    it 'returns a no results response' do
+      image_search = described_class.new('uh oh', {})
       expect(Elasticsearch::Persistence).to receive(:client).and_return(nil)
       image_search_results = image_search.search
       expect(image_search_results.total).to eq(0)
@@ -108,35 +108,35 @@ describe ImageSearch do
       FlickrPhoto.refresh_index!
     end
 
-    it 'should filter on flickr users' do
-      image_search = ImageSearch.new('earth', flickr_users: ['owner1'])
+    it 'filters on flickr users' do
+      image_search = described_class.new('earth', flickr_users: ['owner1'])
       image_search_results = image_search.search
       expect(image_search_results.total).to eq(1)
       expect(image_search_results.results.first.title).to eq('title1 earth')
     end
 
-    it 'should filter on flickr groups' do
-      image_search = ImageSearch.new('earth', flickr_groups: ['group1'])
+    it 'filters on flickr groups' do
+      image_search = described_class.new('earth', flickr_groups: ['group1'])
       image_search_results = image_search.search
       expect(image_search_results.total).to eq(1)
       expect(image_search_results.results.first.title).to eq('title2 earth')
     end
 
-    it 'should filter on the union of flickr groups and users' do
-      image_search = ImageSearch.new('earth', flickr_groups: ['group1'], flickr_users: ['owner1'])
+    it 'filters on the union of flickr groups and users' do
+      image_search = described_class.new('earth', flickr_groups: ['group1'], flickr_users: ['owner1'])
       image_search_results = image_search.search
       expect(image_search_results.total).to eq(2)
     end
 
-    it 'should filter on instagram profiles' do
-      image_search = ImageSearch.new('earth', instagram_profiles: ['user1'])
+    it 'filters on instagram profiles' do
+      image_search = described_class.new('earth', instagram_profiles: ['user1'])
       image_search_results = image_search.search
       expect(image_search_results.total).to eq(1)
       expect(image_search_results.results.first.title).to eq('first photo of earth')
     end
 
-    it 'should filter on MRSS feeds' do
-      image_search = ImageSearch.new('earth', mrss_names: [MrssProfile.all.last.name])
+    it 'filters on MRSS feeds' do
+      image_search = described_class.new('earth', mrss_names: [MrssProfile.all.last.name])
       image_search_results = image_search.search
       expect(image_search_results.total).to eq(1)
       expect(image_search_results.results.first.title).to eq('mrss earth title')

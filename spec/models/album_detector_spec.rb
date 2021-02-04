@@ -16,9 +16,9 @@ describe AlbumDetector do
         expect(photo._version).to eq(1)
       end
 
-      it 'should not care about versioning the update' do
+      it 'does not care about versioning the update' do
         expect(photo).to receive(:update).with({ album: photo.generate_album_name }, {})
-        AlbumDetector.detect_albums! photo
+        described_class.detect_albums! photo
       end
     end
 
@@ -34,9 +34,9 @@ describe AlbumDetector do
         expect(photo).to receive(:update).and_raise Elasticsearch::Transport::Transport::Errors::Conflict
       end
 
-      it 'should log a warning and continue' do
+      it 'logs a warning and continue' do
         expect(Rails.logger).to receive(:warn)
-        AlbumDetector.detect_albums! photo
+        described_class.detect_albums! photo
       end
     end
   end
