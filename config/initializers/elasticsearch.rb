@@ -10,12 +10,14 @@ Elasticsearch::Persistence.client = Elasticsearch::Client.new(
   reload_connections: true
 )
 
-logger = ActiveSupport::Logger.new("log/#{Rails.env}.log")
-logger.level = Rails.configuration.elasticsearch['log_level']
-logger.formatter = proc do |severity, time, _progname, msg|
-  "\e[2m[ES][#{time.utc.iso8601(6)}][#{severity}] #{msg}\n\e[0m"
+if Rails.configuration.elasticsearch['log']
+  logger = ActiveSupport::Logger.new("log/#{Rails.env}.log")
+  logger.level = Rails.configuration.elasticsearch['log_level']
+  logger.formatter = proc do |severity, time, _progname, msg|
+    "\e[2m[ES][#{time.utc.iso8601(6)}][#{severity}] #{msg}\n\e[0m"
+  end
+  Elasticsearch::Persistence.client.transport.logger = logger
 end
-Elasticsearch::Persistence.client.transport.logger = logger
 
 if Rails.env.development?
   puts 'Ensuring Elasticsearch development indexes and aliases are available....'
