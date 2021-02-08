@@ -17,7 +17,7 @@ describe MrssPhotosImporter do
     end
     let(:mrss_xml) { file_fixture('nasa.xml').read }
     let(:mrss_url) { 'http://some.mrss.url/importme.xml' }
-    let(:importer) { MrssPhotosImporter.new }
+    let(:importer) { described_class.new }
 
     before do
       stub_request(:get, mrss_url).to_return(body: mrss_xml)
@@ -82,7 +82,7 @@ describe MrssPhotosImporter do
         allow(Feedjira::Feed).to receive(:parse).with(mrss_xml) { feed }
       end
 
-      it 'should log the issue and move on to the next photo' do
+      it 'logs the issue and moves on to the next photo' do
         expect(Rails.logger).to receive(:warn)
         importer.perform(mrss_profile.name)
 
@@ -119,7 +119,7 @@ describe MrssPhotosImporter do
                          album: 'album3')
       end
 
-      it 'should add the mrss_name to the mrss_names array and leave other meta data alone' do
+      it 'adds the mrss_name to the mrss_names array and leaves other meta data alone' do
         importer.perform(mrss_profile.name)
 
         already_exists = MrssPhoto.find('already exists')
@@ -139,7 +139,7 @@ describe MrssPhotosImporter do
         allow(Feedjira::Feed).to receive(:parse).and_raise StandardError
       end
 
-      it 'should log a warning and continue' do
+      it 'logs a warning and continues' do
         expect(Rails.logger).to receive(:warn)
         importer.perform(mrss_profile.name)
       end
@@ -153,10 +153,10 @@ describe MrssPhotosImporter do
         and_yield(double(MrssProfile, name: '4', id: 'http://some/mrss.url/feed.xml2'))
     end
 
-    it 'should enqueue importing the photos' do
-      MrssPhotosImporter.refresh
-      expect(MrssPhotosImporter).to have_enqueued_sidekiq_job('3')
-      expect(MrssPhotosImporter).to have_enqueued_sidekiq_job('4')
+    it 'enqueues importing the photos' do
+      described_class.refresh
+      expect(described_class).to have_enqueued_sidekiq_job('3')
+      expect(described_class).to have_enqueued_sidekiq_job('4')
     end
   end
 end

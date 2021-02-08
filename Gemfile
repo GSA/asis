@@ -42,7 +42,6 @@ gem 'http', '~> 4.0.0'
 
 group :development, :test do
   gem 'puma', '~> 3.12'
-
   gem 'binding_of_caller'
   gem 'pry-rails'
   gem 'rspec-rails', '~> 3.8.2'
@@ -55,6 +54,9 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  # Bumping searchgov_style? Be sure to update the Rubocop channel in .codeclimate.yml
+  # to match the channel in searchgov_style
+  gem 'searchgov_style', '~> 0.1', require: false
 end
 
 group :test do

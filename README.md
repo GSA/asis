@@ -203,6 +203,10 @@ After running your tests, view the report by opening `coverage/index.html`.
 
 Click around on the files that have < 100% coverage to see what lines weren't exercised.
 
+### Code Quality
+
+We use [Rubocop](https://rubocop.org/) for static code analysis. Settings specific to ASIS are configured via [.rubocop.yml](.rubocop.yml). Settings that can be shared among all Search.gov repos should be configured via the [searchgov_style](https://github.com/GSA/searchgov_style) gem.
+
 ## Code samples
 
 We "eat our own dog food" and use this ASIS API to display image results on the government websites that use [Search.gov](https://search.gov/).
