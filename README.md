@@ -23,7 +23,7 @@ The Instagram features have been deprecated. Documentation and examples remain f
 
 ### Ruby
 
-This code is currently tested against [Ruby 2.5](http://www.ruby-lang.org/en/downloads/).
+This code is currently tested against [Ruby](http://www.ruby-lang.org/en/downloads/) 2.5 and 2.6.
 
 ### Configuration
 
@@ -39,7 +39,7 @@ We use bundler to manage gems. You can install bundler and other required gems l
 
 ### Elasticsearch
 
-We're using [Elasticsearch](http://www.elasticsearch.org/) (>= 6.8) for fulltext search. 
+We're using [Elasticsearch](http://www.elasticsearch.org/) (>= 6.8) for fulltext search.
 
 Install [Docker](https://www.docker.com/products/docker-desktop) if you haven't done so yet. Once you have Docker installed on your machine, run the following command from the project root:
 
@@ -86,7 +86,7 @@ Sidekiq (see below) uses [Redis](http://redis.io), so make sure you have that in
 To run Elasticsearch, Kibana, and Redis, you can simply run:
 
     docker-compose up
-    
+
 ## Development/Usage
 
 ### Seed some image data
@@ -118,9 +118,9 @@ Here are the profiles you have just bootstrapped. Note: Chrome does a nice job o
 
 You can add a new profile manually via the REST API:
 
-    	curl -XPOST "http://localhost:3000/api/v1/instagram_profiles.json?username=deptofdefense&id=542835249"
-    	curl -XPOST "http://localhost:3000/api/v1/flickr_profiles.json?name=commercegov&id=61913304@N07&profile_type=user"
-    	curl -XPOST "http://localhost:3000/api/v1/mrss_profiles.json?url=https://share-ng.sandia.gov/news/resources/news_releases/feed/"
+        curl -XPOST "http://localhost:3000/api/v1/instagram_profiles.json?username=deptofdefense&id=542835249"
+        curl -XPOST "http://localhost:3000/api/v1/flickr_profiles.json?name=commercegov&id=61913304@N07&profile_type=user"
+        curl -XPOST "http://localhost:3000/api/v1/mrss_profiles.json?url=https://share-ng.sandia.gov/news/resources/news_releases/feed/"
 
 MRSS profiles work a little differently than Flickr and Instagram profiles. When you create the MRSS profile, Oasis assigns a
 short name to it that you will use when performing searches. The JSON result from the POST request will look something like this:
@@ -141,7 +141,7 @@ We use [Sidekiq](http://sidekiq.org) for job processing. You can see all your Fl
 Kick off the indexing process:
 
     bundle exec sidekiq
-    
+
 ### Searching
 
 In the Rails console, you can query each index manually using the Elasticsearch [Query DSL](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl.html):
