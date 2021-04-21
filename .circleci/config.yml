@@ -25,7 +25,7 @@ jobs:
         type: string
       elasticsearch_version:
         type: string
-        default: 6.8.9
+        default: 6.8.15
     steps:
       - checkout
       - run:
