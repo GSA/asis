@@ -25,7 +25,7 @@ jobs:
         type: string
       elasticsearch_version:
         type: string
-        default: 6.8.9
+        default: 6.8.15
     steps:
       - checkout
       - run:
@@ -35,7 +35,7 @@ jobs:
             cp -p config/instagram.yml.example config/instagram.yml
       - restore_cache:
           key: bundle-{{ checksum "Gemfile.lock" }}
-      - run: gem install bundler:1.17.3
+      - run: gem install bundler:2.2.15
       - run:
           name: bundle install
           command: |
@@ -79,7 +79,7 @@ workflows:
       #     elasticsearch_version: 7.7.0
       - build:
           name: 'ruby 2.6, ES 6.8'
-          ruby_version: 2.6.2
+          ruby_version: 2.6.6
       - build:
           name: 'ruby 2.7, ES 6.8'
           ruby_version: 2.7.0
