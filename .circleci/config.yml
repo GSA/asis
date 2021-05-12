@@ -77,5 +77,8 @@ workflows:
           name: "Ruby << matrix.ruby_version >>, ES << matrix.elasticsearch_version >>"
           matrix:
             parameters:
-              ruby_version: ["2.6.6"]
-              elasticsearch_version: ["6.8.15"]
+              ruby_version:
+                - 2.6.6
+                - 2.7.3
+              elasticsearch_version:
+                - 6.8.15
