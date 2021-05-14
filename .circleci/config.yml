@@ -25,7 +25,6 @@ jobs:
         type: string
       elasticsearch_version:
         type: string
-        default: 6.8.15
     steps:
       - checkout
       - run:
@@ -69,17 +68,17 @@ jobs:
 workflows:
   build_and_test:
     jobs:
-      - build:
-          name: 'ruby 2.5, ES 6.8'
-          ruby_version: 2.5.5
       # SRCH-1253
       # - build:
       #     name: 'ruby 2.5, ES 7.7'
       #     ruby_version: 2.5.5
       #     elasticsearch_version: 7.7.0
       - build:
-          name: 'ruby 2.6, ES 6.8'
-          ruby_version: 2.6.6
-      - build:
-          name: 'ruby 2.7, ES 6.8'
-          ruby_version: 2.7.0
+          name: "Ruby << matrix.ruby_version >>, ES << matrix.elasticsearch_version >>"
+          matrix:
+            parameters:
+              ruby_version:
+                - 2.6.6
+                - 2.7.3
+              elasticsearch_version:
+                - 6.8.15
