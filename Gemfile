@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 5.2.0'
+gem 'rails', '~> 6.0.0'
 
 gem 'rake', '~> 12.3.2'
 
@@ -34,8 +34,8 @@ gem 'sidekiq-unique-jobs', '3.0.11' # sidekiq-unique-jobs > 3.0.11 broke spec
 gem 'sinatra', '~> 2.0.2', require: nil
 gem 'whenever', '~> 0.9.4', require: false
 
-gem 'airbrake', '~> 7.1.1'
-gem 'newrelic_rpm', '~> 4.2.0.334'
+gem 'airbrake', '~> 11.0.3'
+gem 'newrelic_rpm', '~> 7.0.0'
 
 gem 'feedjira', '~> 2.2.0'
 gem 'http', '~> 4.0.0'
