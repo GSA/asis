@@ -2,7 +2,7 @@
 
 # Instagram is being decommissioned per
 # https://cm-jira.usa.gov/browse/SRCH-50
-module API
+module Api
   module V1
     class InstagramProfiles < Grape::API
       version 'v1'

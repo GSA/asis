@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module API
+module Api
   class Base < Grape::API
     rescue_from :all do |e|
       Rails.logger.error "#{e.message}\n\n#{e.backtrace.join("\n")}"
@@ -10,6 +10,6 @@ module API
       Rack::Response.new({ message: e.message, backtrace: e.backtrace }, 500, 'Content-type' => 'application/json').finish
     end
 
-    mount API::V1::Base
+    mount Api::V1::Base
   end
 end

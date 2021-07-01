@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe API::V1::ImageSearches do
+describe Api::V1::ImageSearches do
   describe 'GET /api/v1/image_searches' do
     context 'when all params passed in' do
       let(:image_search) { double(ImageSearch) }

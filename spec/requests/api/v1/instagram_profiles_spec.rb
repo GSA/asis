@@ -4,7 +4,7 @@
 # https://cm-jira.usa.gov/browse/SRCH-50
 require 'rails_helper'
 
-describe API::V1::InstagramProfiles do
+describe Api::V1::InstagramProfiles do
   describe 'GET /api/v1/instagram_profiles' do
     context 'when profiles exist' do
       before do

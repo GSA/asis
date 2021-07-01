@@ -26,9 +26,12 @@ module Oasis
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
-    # Turn on the classic autoloader, because zeitwerk blows
-    # up. SRCH-2185 is the ticket to move asis to zeitwerk.
-    config.autoloader = :classic
+    config.eager_load_paths += Dir[config.root.join('lib').to_s + '/']
+    config.eager_load_paths += Dir[config.root.join('lib', 'tasks').to_s + '/']
+    config.eager_load_paths += Dir[config.root.join('lib', 'assets').to_s + '/']
+    config.eager_load_paths += Dir[config.root.join('lib', 'capistrano').to_s + '/']
+    config.eager_load_paths += Dir[config.root.join('lib', 'capistrano', 'tasks').to_s + '/']
+    config.eager_load_paths += Dir[config.root.join('app', 'workers').to_s + '/']
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
