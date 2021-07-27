@@ -190,7 +190,7 @@ GEM
     net-scp (3.0.0)
       net-ssh (>= 2.6.5, < 7.0.0)
     net-ssh (6.1.0)
-    newrelic_rpm (4.2.0.334)
+    newrelic_rpm (6.15.0)
     nio4r (2.5.7)
     nokogiri (1.11.7)
       mini_portile2 (~> 2.5.0)
@@ -386,7 +386,7 @@ DEPENDENCIES
   jbuilder (~> 2.6.4)
   listen (>= 3.0.5, < 3.2)
   mock_redis (~> 0.17.3)
-  newrelic_rpm (~> 4.2.0.334)
+  newrelic_rpm (~> 6.15.0)
   pry-rails
   puma (~> 5.3)
   rails (~> 5.2.0)
