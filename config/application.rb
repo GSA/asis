@@ -26,19 +26,11 @@ module Oasis
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
-    config.eager_load_paths += Dir[config.root.join('lib').to_s + '/']
-    config.eager_load_paths += Dir[config.root.join('lib', 'tasks').to_s + '/']
-    config.eager_load_paths += Dir[config.root.join('lib', 'assets').to_s + '/']
-    config.eager_load_paths += Dir[config.root.join('lib', 'capistrano').to_s + '/']
-    config.eager_load_paths += Dir[config.root.join('lib', 'capistrano', 'tasks').to_s + '/']
-    config.eager_load_paths += Dir[config.root.join('app', 'workers').to_s + '/']
-
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
     config.autoload_paths += Dir[config.root.join('lib', '**/').to_s]
-    config.autoload_paths += Dir[config.root.join('app', 'workers', '**/').to_s]
 
     config.airbrake      = config_for(:airbrake)
     config.elasticsearch = config_for(:elasticsearch)
