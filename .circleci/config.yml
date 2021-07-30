@@ -3,6 +3,9 @@
 # Check https://circleci.com/docs/2.0/language-ruby/ for more details
 version: 2.1
 
+orbs:
+  ruby: circleci/ruby@1.1.4
+
 executors:
   test_executor:
     docker:
@@ -32,17 +35,8 @@ jobs:
           command: |
             cp -p config/flickr.yml.example config/flickr.yml
             cp -p config/instagram.yml.example config/instagram.yml
-      - restore_cache:
-          key: bundle-{{ checksum "Gemfile.lock" }}
-      - run: gem install bundler:2.2.15
-      - run:
-          name: bundle install
-          command: |
-            bundle install --without development --jobs=4 --retry=3 --path vendor/bundle
-      - save_cache:
-          key: bundle-{{ checksum "Gemfile.lock" }}
-          paths:
-            - ~/app/vendor/bundle
+      # Install gems with Bundler
+      - ruby/install-deps
       - run:
           name: Install Code Climate Test Reporter
           command: |
