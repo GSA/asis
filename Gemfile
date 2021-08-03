@@ -35,7 +35,7 @@ gem 'sinatra', '~> 2.0.2', require: nil
 gem 'whenever', '~> 0.9.4', require: false
 
 gem 'airbrake', '~> 7.1.1'
-gem 'newrelic_rpm', '~> 4.2.0.334'
+gem 'newrelic_rpm', '~> 6.15.0'
 
 gem 'feedjira', '~> 2.2.0'
 gem 'http', '~> 4.0.0'
