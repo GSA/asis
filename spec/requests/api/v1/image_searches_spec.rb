@@ -33,11 +33,6 @@ describe Api::V1::ImageSearches do
         get '/api/v1/image', params: params
       end
 
-      it 'attempts to report the error to Airbrake' do
-        expect(Airbrake).to receive(:notify)
-        get '/api/v1/image', params: params
-      end
-
       it 'returns 500 error' do
         get '/api/v1/image', params: params
         expect(response.status).to eq(500)

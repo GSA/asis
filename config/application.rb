@@ -32,7 +32,6 @@ module Oasis
     # the framework and any gems in your application.
     config.autoload_paths += Dir[config.root.join('lib', '**/').to_s]
 
-    config.airbrake      = config_for(:airbrake)
     config.elasticsearch = config_for(:elasticsearch)
     config.flickr        = config_for(:flickr)
     config.instagram     = config_for(:instagram)
