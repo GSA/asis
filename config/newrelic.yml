@@ -178,6 +178,11 @@ common: &default_settings
   # implications if your memcached keys are sensitive
   # capture_memcache_keys: true
 
+  # Newrelic recommends setting this to true if possible. They default
+  # to false because it can interfere with other gems which monkey
+  # patch ActiveRecord. See the release notes for newrelic_rpm 6.5.0.
+  backport_fast_active_record_connection_lookup: true
+
 # Application Environments
 # ------------------------------------------
 # Environment-specific settings are in this section.
