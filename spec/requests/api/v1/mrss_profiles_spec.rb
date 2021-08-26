@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe API::V1::MrssProfiles do
+describe Api::V1::MrssProfiles do
   before do
     MrssProfile.delete_all
     MrssProfile.refresh_index!

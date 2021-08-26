@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe API::V1::FlickrProfiles do
+describe Api::V1::FlickrProfiles do
   describe 'GET /api/v1/flickr_profiles' do
     context 'when profiles exist' do
       before do

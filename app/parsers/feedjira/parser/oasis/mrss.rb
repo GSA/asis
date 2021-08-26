@@ -15,7 +15,7 @@ module Feedjira
 
         attr_accessor :feed_url
 
-        REGEX_MATCH = %r{http://purl.org/rss/1.0/modules/content/|http://search.yahoo.com/mrss/}
+        REGEX_MATCH = %r{http://purl.org/rss/1.0/modules/content/|http://search.yahoo.com/mrss/}.freeze
 
         def self.able_to_parse?(first_2k_xml)
           first_2k_xml =~ REGEX_MATCH
