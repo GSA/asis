@@ -28,11 +28,11 @@ module Feedjira
         element 'content:encoded', as: :summary
 
         def title
-          sanitize @title
+          sanitize(@title)
         end
 
         def summary
-          sanitize @summary
+          sanitize(@summary)
         end
 
         def url
@@ -51,7 +51,8 @@ module Feedjira
         end
 
         def ensure_scheme_present(link)
-          link =~ %r{^https?://}i ? link : "http://#{link}"
+          scheme_regex = %r{^https?://}i
+          scheme_regex.match?(link) ? link : "http://#{link}"
         end
       end
     end
