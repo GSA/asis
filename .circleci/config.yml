@@ -4,12 +4,12 @@
 version: 2.1
 
 orbs:
-  ruby: circleci/ruby@1.1.4
+  ruby: circleci/ruby@1.2.0
 
 executors:
   test_executor:
     docker:
-      - image: circleci/ruby:${RUBY_VERSION}
+      - image: cimg/ruby:${RUBY_VERSION}
       - image: redis:3.2-alpine
       - image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTICSEARCH_VERSION}
         environment:
@@ -36,7 +36,10 @@ jobs:
             cp -p config/flickr.yml.example config/flickr.yml
             cp -p config/instagram.yml.example config/instagram.yml
       # Install gems with Bundler
-      - ruby/install-deps
+      - ruby/install-deps:
+          # Need to clear the gem cache? Set or bump the CACHE_VERSION in your
+          # CircleCi project: Project Settings > Environment Variables
+          key: gems-ruby-<< parameters.ruby_version >>-v{{ .Environment.CACHE_VERSION }}
       - run:
           name: Install Code Climate Test Reporter
           command: |
@@ -73,6 +76,10 @@ workflows:
             parameters:
               ruby_version:
                 - 2.6.6
+                - 2.7.1
+                - 2.7.2
                 - 2.7.3
+                - 2.7.4
+                - 2.7.5
               elasticsearch_version:
                 - 6.8.15
