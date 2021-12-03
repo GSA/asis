@@ -6,28 +6,24 @@ version: 2.1
 orbs:
   ruby: circleci/ruby@1.2.0
 
-executors:
-  test_executor:
-    docker:
-      - image: cimg/ruby:${RUBY_VERSION}
-      - image: redis:3.2-alpine
-      - image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTICSEARCH_VERSION}
-        environment:
-          - xpack.security.enabled: false
-          - discovery.type: single-node
-    working_directory: ~/app
-
 jobs:
-  build:
-    environment:
-      RUBY_VERSION: << parameters.ruby_version >>
-      ELASTICSEARCH_VERSION: << parameters.elasticsearch_version >>
-    executor: test_executor
+  build_and_test:
     parameters:
       ruby_version:
         type: string
       elasticsearch_version:
         type: string
+
+    docker:
+      - image: cimg/ruby:<< parameters.ruby_version >>
+      - image: redis:3.2-alpine
+      - image: docker.elastic.co/elasticsearch/elasticsearch:<< parameters.elasticsearch_version >>
+        environment:
+          - xpack.security.enabled: false
+          - discovery.type: single-node
+
+    working_directory: ~/app
+
     steps:
       - checkout
       - run:
@@ -49,7 +45,7 @@ jobs:
           name: Waiting for Elasticsearch
           command: dockerize --wait http://localhost:9200 -timeout 1m
       - run:
-          name: Running Tests
+          name: RSpec
           environment:
             CC_TEST_REPORTER_ID: 0643ac526557dd490bc6f0542cac608a8815d7538dd580261e67dd334c07cc87
           command: |
@@ -65,12 +61,7 @@ jobs:
 workflows:
   build_and_test:
     jobs:
-      # SRCH-1253
-      # - build:
-      #     name: 'ruby 2.5, ES 7.7'
-      #     ruby_version: 2.5.5
-      #     elasticsearch_version: 7.7.0
-      - build:
+      - build_and_test:
           name: "Ruby << matrix.ruby_version >>, ES << matrix.elasticsearch_version >>"
           matrix:
             parameters:
@@ -81,5 +72,8 @@ workflows:
                 - 2.7.3
                 - 2.7.4
                 - 2.7.5
+                # not yet compatible with Ruby 3.x
               elasticsearch_version:
                 - 6.8.15
+                # not yet compatible with Elasticsearch 7.x
+                # https://cm-jira.usa.gov/browse/SRCH-1253
