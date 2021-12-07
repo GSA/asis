@@ -23,7 +23,7 @@ The Instagram features have been deprecated. Documentation and examples remain f
 
 ### Ruby
 
-This code is currently tested against [Ruby](http://www.ruby-lang.org/en/downloads/) 2.5 and 2.6.
+Use [rvm](https://rvm.io/) to install the version of Ruby specified in `.ruby-version`.
 
 ### Configuration
 
