@@ -28,7 +28,7 @@ gem 'hashie', '~> 3.5.7'
 gem 'instagram-continued', '~> 1.4.0'
 gem 'mock_redis', '~> 0.17.3'
 gem 'redis-namespace', '~> 1.6.0' # use redis database index instead?
-gem 'sidekiq', '< 6'
+gem 'sidekiq', '< 7'
 gem 'sidekiq-failures', '~> 1.0.0'
 gem 'sidekiq-unique-jobs', '3.0.11' # sidekiq-unique-jobs > 3.0.11 broke spec
 gem 'sinatra', '~> 2.0.2', require: nil
