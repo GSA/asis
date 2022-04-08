@@ -25,19 +25,19 @@ module ElasticSettings
             type: 'custom',
             tokenizer: 'standard',
             char_filter: %w[ignore_chars],
-            filter: %w[standard asciifolding lowercase en_stop_filter en_protected_filter en_stem_filter en_synonym]
+            filter: %w[asciifolding lowercase en_stop_filter en_protected_filter en_stem_filter en_synonym]
           },
           bigram_analyzer: {
             type: 'custom',
             tokenizer: 'standard',
             char_filter: %w[ignore_chars],
-            filter: %w[standard asciifolding lowercase bigram_filter]
+            filter: %w[asciifolding lowercase bigram_filter]
           },
           tag_analyzer: {
             type: 'custom',
             tokenizer: 'standard',
             char_filter: %w[strip_whitespace],
-            filter: %w[standard asciifolding lowercase]
+            filter: %w[asciifolding lowercase]
           }
         },
         normalizer: {
