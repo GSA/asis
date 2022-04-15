@@ -7,11 +7,6 @@ inherit_mode:
   merge:
     - Exclude
 
-AllCops:
-  Exclude:
-    # All Instagram-related code is deprecated and will be removed
-    - /**/**/instagram*
-
 # Always omit parentheses for methods that are part of an internal DSL
 # (e.g., Rake, Rails, RSpec)
 Style/MethodCallWithArgsParentheses:

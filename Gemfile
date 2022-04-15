@@ -15,17 +15,12 @@ gem 'grape', '~> 1.3.2'
 
 gem 'jbuilder', '~> 2.6.4'
 
-gem 'capistrano', '~> 3.3.5'
-gem 'capistrano-bundler', '~> 1.1.3'
-gem 'capistrano-sidekiq', '~> 0.4.0'
-
 gem 'elasticsearch-api', '~> 6.0'
 gem 'elasticsearch-model', '~> 5.0'
 gem 'elasticsearch-persistence', '~> 5.0', require: 'elasticsearch/persistence/model'
 gem 'elasticsearch-transport', '~> 6.0'
 gem 'flickraw', '~> 0.9.8'
 gem 'hashie', '~> 3.5.7'
-gem 'instagram-continued', '~> 1.4.0'
 gem 'mock_redis', '~> 0.17.3'
 gem 'redis-namespace', '~> 1.6.0' # use redis database index instead?
 gem 'sidekiq', '< 6'
