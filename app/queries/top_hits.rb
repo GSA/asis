@@ -205,6 +205,8 @@ class TopHits
         flickr_profiles_filter_child('owner', flickr_users, json)
         flickr_profiles_filter_child('groups', flickr_groups, json)
       end
+
+      json.minimum_should_match 1
     end
   end
 
