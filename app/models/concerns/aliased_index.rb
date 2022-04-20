@@ -22,6 +22,18 @@ module AliasedIndex
 
     def create_index_and_alias!
       current_name = timestamped_index_name
+      # We *should* be able to simplify this as: `create_index!(index: current_name)`.
+      # However, elasticsearch-model 5.x does not support the include_type_name option,
+      # which is necessary for compatibility with Elasticsearch 7.x. Until our gems
+      # are upgraded, we're using a more verbose request via the client:
+      Elasticsearch::Persistence.client.indices.create(
+        index: current_name,
+        body: {
+          mappings: mappings,
+          settings: settings
+        },
+        include_type_name: true
+      )
       create_index!(index: current_name)
       Elasticsearch::Persistence.client.indices.put_alias index: current_name, name: alias_name
     end
