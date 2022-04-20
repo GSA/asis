@@ -9,7 +9,7 @@ module AliasedIndex
 
   module ClassMethods
     def timestamped_index_name
-      [base_name, Time.now.to_s(:number)].join('-')
+      [base_name, Time.current.to_s(:number)].join('-')
     end
 
     def alias_name
@@ -35,7 +35,7 @@ module AliasedIndex
         include_type_name: true
       )
       create_index!(index: current_name)
-      Elasticsearch::Persistence.client.indices.put_alias index: current_name, name: alias_name
+      Elasticsearch::Persistence.client.indices.put_alias(index: current_name, name: alias_name)
     end
 
     def alias_exists?
