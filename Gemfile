@@ -9,7 +9,7 @@ end
 
 gem 'rails', '~> 6.1.0'
 
-gem 'rake', '~> 12.3.2'
+gem 'rake', '~> 13.0.6'
 
 gem 'grape', '~> 1.3.2'
 
@@ -37,7 +37,6 @@ gem 'whenever', '~> 0.9.4', require: false
 gem 'newrelic_rpm', '~> 6.15.0'
 
 gem 'feedjira', '~> 2.2.0'
-gem 'http', '~> 4.0.0'
 
 group :development, :test do
   gem 'puma', '~> 5.3'
@@ -53,9 +52,10 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  # Bumping searchgov_style? Be sure to update the Rubocop channel in .codeclimate.yml
-  # to match the channel in searchgov_style
+  # Bumping searchgov_style? Be sure to update rubocop, if possible,
+  # and set the Rubocop channel in .codeclimate.yml to match the updated rubocop version.
   gem 'searchgov_style', '~> 0.1', require: false
+  gem 'rubocop', '1.23.0', require: false
 end
 
 group :test do

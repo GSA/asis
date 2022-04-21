@@ -63,6 +63,12 @@ class MrssPhotosImporter
   end
 
   def fetch_xml(url)
-    HTTP.headers(user_agent: 'Oasis').timeout(30).follow.get(url).to_s
+    connection = Faraday.new do |faraday|
+      faraday.use(FaradayMiddleware::FollowRedirects)
+      faraday.adapter(:net_http)
+      faraday.headers['User-Agent'] = 'Oasis'
+      faraday.options.timeout = 30
+    end
+    connection.get(url).body
   end
 end

@@ -31,6 +31,19 @@ describe MrssPhotosImporter do
         to have_been_made
     end
 
+    context 'when the URL has been redirected' do
+      let(:new_url) { 'https://some.mrss.url/new.xml' }
+
+      before do
+        stub_request(:get, mrss_url).to_return(status: 301, headers: { location: new_url })
+        stub_request(:get, new_url).to_return(body: mrss_xml)
+      end
+
+      it 'indexes the photos' do
+        expect { perform }.to change{ MrssPhoto.count }.from(0).to(4)
+      end
+    end
+
     context 'when MRSS photo entries are returned' do
       it 'indexes the photos' do
         expect { perform }.to change{ MrssPhoto.count }.from(0).to(4)
