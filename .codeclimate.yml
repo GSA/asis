@@ -15,11 +15,13 @@ plugins:
     config:
       languages:
       - ruby
+    exclude_patterns:
+    - spec/
   fixme:
     enabled: true
   rubocop:
     enabled: true
-    channel: rubocop-1-8-1
+    channel: rubocop-1-23-0
 exclude_patterns:
 - config/
 - coverage/
