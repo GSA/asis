@@ -5,7 +5,7 @@ ASIS Server
 [![Code Climate](https://codeclimate.com/github/GSA/asis/badges/gpa.svg)](https://codeclimate.com/github/GSA/asis)
 [![Test Coverage](https://codeclimate.com/github/GSA/asis/badges/coverage.svg)](https://codeclimate.com/github/GSA/asis)
 
-ASIS (Advanced Social Image Search) indexes Flickr and Instagram images and provides a search API across both indexes.
+ASIS (Advanced Social Image Search) indexes Flickr and MRSS images and provides a search API across both indexes.
 
 ## Current version
 
@@ -16,9 +16,6 @@ You are reading documentation for ASIS API v1.
 The server code that runs the image search component of [Search.gov](https://search.gov/) is here on Github.
 [Fork this repo](https://github.com/GSA/oasis/fork) to add features like additional datasets, or to fix bugs.
 
-## Deprecation Warning: Instagram
-The Instagram features have been deprecated. Documentation and examples remain for clarity pending code and spec cleanup.
-
 ## Dependencies
 
 ### Ruby
@@ -27,7 +24,6 @@ Use [rvm](https://rvm.io/) to install the version of Ruby specified in `.ruby-ve
 
 ### Configuration
 
- 1. Copy `config/instagram.yml.example` to `config/instagram.yml` and update the fields with your Instagram credentials.
  1. Copy `config/flickr.yml.example` to `config/flickr.yml` and update the fields with your Flickr credentials.
 
 ### Gems
@@ -91,8 +87,8 @@ To run Elasticsearch, Kibana, and Redis, you can simply run:
 
 ### Seed some image data
 
-You can bootstrap the system with some government Flickr/Instagram profiles and MRSS feeds to see the system working.
-Sample lists are in `config/instagram_profiles.csv` and `config/flickr_profiles.csv` and `config/mrss_profiles.csv`.
+You can bootstrap the system with some government Flickr profiles and MRSS feeds to see the system working.
+Sample lists are in config/flickr_profiles.csv` and `config/mrss_profiles.csv`.
 
     bundle exec rake oasis:seed_profiles
 
@@ -100,7 +96,6 @@ You can keep the indexes up to date by periodically refreshing the last day's im
 
     MrssPhotosImporter.refresh
     FlickrPhotosImporter.refresh
-    InstagramPhotosImporter.refresh
 
 ### Running it
 
@@ -110,19 +105,16 @@ Fire up a server and try it all out.
 
 Here are the profiles you have just bootstrapped. Note: Chrome does a nice job of pretty-printing the JSON response.
 
-<http://localhost:3000/api/v1/instagram_profiles.json>
-
 <http://localhost:3000/api/v1/flickr_profiles.json>
 
 <http://localhost:3000/api/v1/mrss_profiles.json>
 
 You can add a new profile manually via the REST API:
 
-        curl -XPOST "http://localhost:3000/api/v1/instagram_profiles.json?username=deptofdefense&id=542835249"
         curl -XPOST "http://localhost:3000/api/v1/flickr_profiles.json?name=commercegov&id=61913304@N07&profile_type=user"
         curl -XPOST "http://localhost:3000/api/v1/mrss_profiles.json?url=https://share-ng.sandia.gov/news/resources/news_releases/feed/"
 
-MRSS profiles work a little differently than Flickr and Instagram profiles. When you create the MRSS profile, Oasis assigns a
+MRSS profiles work a little differently than Flickr profiles. When you create the MRSS profile, Oasis assigns a
 short name to it that you will use when performing searches. The JSON result from the POST request will look something like this:
 
       {
@@ -134,7 +126,7 @@ short name to it that you will use when performing searches. The JSON result fro
 
 ### Asynchronous job processing
 
-We use [Sidekiq](http://sidekiq.org) for job processing. You can see all your Flickr and Instagram jobs queued up here:
+We use [Sidekiq](http://sidekiq.org) for job processing. You can see all your jobs queued up here:
 
 <http://localhost:3000/sidekiq>
 
@@ -147,10 +139,8 @@ Kick off the indexing process:
 In the Rails console, you can query each index manually using the Elasticsearch [Query DSL](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl.html):
 
     bin/rails c
-    InstagramPhoto.count
     FlickrPhoto.count
     MrssPhoto.count
-    InstagramPhoto.all(query:{term:{username:'usinterior'}}).results
     FlickrPhoto.all(query:{term:{owner:'28634332@N05'}}).results
     MrssPhoto.all(query:{match:{description:'air'}}).results
 
@@ -161,7 +151,6 @@ These parameters are accepted for the blended search API:
 1. query
 2. flickr_groups (comma separated)
 2. flickr_users (comma separated)
-2. instagram_profiles (comma separated)
 2. mrss_names (comma separated list of Oasis-assigned names)
 4. size
 5. from
@@ -177,7 +166,7 @@ The top level JSON contains these fields:
 
 Each result contains these fields:
 
-* `type`: FlickrPhoto | InstagramPhoto
+* `type`: FlickrPhoto
 * `title`
 * `url`
 * `thumbnail_url`
@@ -187,7 +176,7 @@ Each result contains these fields:
 
 We support API versioning with the JSON format. The current version is v1. You can specify a specific JSON API version like this:
 
-    curl "http://localhost:3000/api/v1/image.json?flickr_groups=1058319@N21&flickr_users=35067687@n04,24662369@n07&instagram_profiles=nasa&mrss_names=72,73&query=earth"
+    curl "http://localhost:3000/api/v1/image.json?flickr_groups=1058319@N21&flickr_users=35067687@n04,24662369@n07&mrss_names=72,73&query=earth"
 
 ## Tests
 

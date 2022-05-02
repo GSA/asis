@@ -11,13 +11,12 @@ class TopHits
   DECAY_SCALE = '28d'
   CUTOFF_WEIGHT = 0.119657286
 
-  def initialize(query, size, from, flickr_groups, flickr_users, instagram_profiles, mrss_names)
+  def initialize(query, size, from, flickr_groups, flickr_users, mrss_names)
     @query = query
     @size = size
     @from = from
     @flickr_groups = flickr_groups
     @flickr_users = flickr_users
-    @instagram_profiles = instagram_profiles
     @mrss_names = mrss_names
   end
 
@@ -169,7 +168,6 @@ class TopHits
       json.bool do
         json.set! :should do
           should_flickr(json)
-          should_instagram(json)
           should_mrss(json)
         end
       end
@@ -180,20 +178,12 @@ class TopHits
     json.child! { mrss_profiles_filter(json, @mrss_names) } if @mrss_names.present?
   end
 
-  def should_instagram(json)
-    json.child! { instagram_profiles_filter(json, @instagram_profiles) } if @instagram_profiles.present?
-  end
-
   def should_flickr(json)
     json.child! { flickr_profiles_filter(json, @flickr_groups, @flickr_users) } if @flickr_users.present? || @flickr_groups.present?
   end
 
   def mrss_profiles_filter(json, mrss_names)
     type_and_terms_filter(json, 'mrss_photo', :mrss_names, mrss_names)
-  end
-
-  def instagram_profiles_filter(json, profiles)
-    type_and_terms_filter(json, 'instagram_photo', :username, profiles)
   end
 
   def flickr_profiles_filter(json, flickr_groups, flickr_users)
@@ -253,7 +243,7 @@ class TopHits
   end
 
   def some_profile_specified?
-    @flickr_groups.present? || @flickr_users.present? || @instagram_profiles.present? || @mrss_names.present?
+    @flickr_groups.present? || @flickr_users.present? || @mrss_names.present?
   end
 
   def match_phrase_collection(json)

@@ -7,5 +7,4 @@
 .ruby-gemset
 config/instagram.yml
 config/flickr.yml
-.capistrano/metrics
 /coverage
