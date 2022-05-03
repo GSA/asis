@@ -27,10 +27,9 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Copying config files for Flickr and Instagram
+          name: Copying config files for Flickr
           command: |
             cp -p config/flickr.yml.example config/flickr.yml
-            cp -p config/instagram.yml.example config/instagram.yml
       # Install gems with Bundler
       - ruby/install-deps:
           # Need to clear the gem cache? Set or bump the CACHE_VERSION in your

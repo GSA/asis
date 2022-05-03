@@ -5,16 +5,13 @@ require 'rails_helper'
 describe ImageSearch do
   before do
     FlickrPhoto.delete_all
-    InstagramPhoto.delete_all
     MrssPhoto.delete_all
   end
 
-  context 'when relevant results exist in Instagram, Flickr, and MRSS indexes' do
+  context 'when relevant results exist in Flickr and MRSS indexes' do
     before do
       FlickrPhoto.create(id: 'photo1', owner: 'owner1', tags: [], title: 'title1 petrol', description: 'desc 1', taken_at: Date.current, popularity: 100, url: 'http://photo1', thumbnail_url: 'http://photo_thumbnail1', album: 'album1', groups: [])
       FlickrPhoto.refresh_index!
-      InstagramPhoto.create(id: '123456', username: 'user1', tags: %w[tag1 tag2], caption: 'first photo of petrol', taken_at: Date.current, popularity: 101, url: 'http://photo2', thumbnail_url: 'http://photo_thumbnail2', album: 'album2')
-      InstagramPhoto.refresh_index!
       MrssPhoto.create(id: 'guid', mrss_names: ['some url'], tags: %w[tag1 tag2], title: 'petrol title', description: 'initial description', taken_at: Date.current, popularity: 0, url: 'http://mrssphoto2', thumbnail_url: 'http://mrssphoto_thumbnail2', album: 'album3')
       MrssPhoto.refresh_index!
     end
@@ -22,22 +19,22 @@ describe ImageSearch do
     it 'returns results from all indexes' do
       image_search = described_class.new('gas', {})
       image_search_results = image_search.search
-      expect(image_search_results.results.collect(&:type).uniq).to match_array(%w[InstagramPhoto FlickrPhoto MrssPhoto])
+      expect(image_search_results.results.collect(&:type).uniq).to match_array(%w[FlickrPhoto MrssPhoto])
     end
   end
 
-  context 'when smooshed user query matches tag in either Instagram or Flickr indexes' do
+  context 'when smooshed user query matches tag in either Mrss or Flickr indexes' do
     before do
       FlickrPhoto.create(id: 'photo1', owner: 'owner1', tags: %w[apollo11 space], title: 'title1 earth', description: 'desc 1', taken_at: Date.current, popularity: 100, url: 'http://photo1', thumbnail_url: 'http://photo_thumbnail1', album: 'album1', groups: [])
       FlickrPhoto.refresh_index!
-      InstagramPhoto.create(id: '123456', username: 'user1', tags: %w[earth apollo11], caption: 'first photo of earth', taken_at: Date.current, popularity: 101, url: 'http://photo2', thumbnail_url: 'http://photo_thumbnail2', album: 'album2')
-      InstagramPhoto.refresh_index!
+      MrssPhoto.create(id: '123456', username: 'user1', tags: %w[earth apollo11], caption: 'first photo of earth', taken_at: Date.current, popularity: 101, url: 'http://photo2', thumbnail_url: 'http://photo_thumbnail2', album: 'album2')
+      MrssPhoto.refresh_index!
     end
 
     it 'returns results from both indexes' do
       image_search = described_class.new('apollo 11', {})
       image_search_results = image_search.search
-      expect(image_search_results.results.collect(&:type).uniq).to match_array(%w[InstagramPhoto FlickrPhoto])
+      expect(image_search_results.results.collect(&:type).uniq).to match_array(%w[MrssPhoto FlickrPhoto])
     end
   end
 
@@ -58,8 +55,8 @@ describe ImageSearch do
   context 'when search term yields no results but a similar spelling does have results' do
     before do
       FlickrPhoto.create(id: 'photo1', owner: 'owner1', tags: [], title: 'title1 earth', description: 'desc 1', taken_at: Date.current, popularity: 100, url: 'http://photo1', thumbnail_url: 'http://photo_thumbnail1', album: 'album1', groups: [])
-      InstagramPhoto.create(id: '123456', username: 'user1', tags: %w[tag1 tag2], caption: 'photo of the cassini probe', taken_at: Date.current, popularity: 101, url: 'http://photo2', thumbnail_url: 'http://photo_thumbnail2', album: 'album2')
-      InstagramPhoto.refresh_index!
+      MrssPhoto.create(id: '123456', username: 'user1', tags: %w[tag1 tag2], title: 'photo of the cassini probe', taken_at: Date.current, popularity: 101, url: 'http://photo2', thumbnail_url: 'http://photo_thumbnail2', album: 'album2')
+      MrssPhoto.refresh_index!
       FlickrPhoto.refresh_index!
     end
 
@@ -95,16 +92,14 @@ describe ImageSearch do
     end
   end
 
-  describe 'filtering on flickr/instagram/mrss profiles' do
+  describe 'filtering on flickr/mrss profiles' do
     before do
       FlickrPhoto.create(id: 'photo1', owner: 'owner1', tags: [], title: 'title1 earth', description: 'desc 1', taken_at: Date.current, popularity: 100, url: 'http://photo1', thumbnail_url: 'http://photo_thumbnail1', album: 'album1')
       FlickrPhoto.create(id: 'photo2', owner: 'owner2', tags: [], title: 'title2 earth', description: 'desc 2', taken_at: Date.current, popularity: 100, url: 'http://photo2', thumbnail_url: 'http://photo_thumbnail2', album: 'album2', groups: %w[group1])
-      InstagramPhoto.create(id: '123456', username: 'user1', tags: %w[tag1 tag2], caption: 'first photo of earth', taken_at: Date.current, popularity: 101, url: 'http://instaphoto2', thumbnail_url: 'http://instaphoto_thumbnail2', album: 'album3')
       mrss_profile = MrssProfile.create(id: 'http://some/mrss.url/feed.xml3')
       MrssProfile.refresh_index!
       MrssPhoto.create(id: 'guid1', mrss_names: [mrss_profile.name], tags: %w[tag1 tag2], title: 'mrss earth title', description: 'initial description', taken_at: Date.current, popularity: 0, url: 'http://mrssphoto2', thumbnail_url: 'http://mrssphoto_thumbnail2', album: 'album3')
       MrssPhoto.refresh_index!
-      InstagramPhoto.refresh_index!
       FlickrPhoto.refresh_index!
     end
 
@@ -126,13 +121,6 @@ describe ImageSearch do
       image_search = described_class.new('earth', flickr_groups: ['group1'], flickr_users: ['owner1'])
       image_search_results = image_search.search
       expect(image_search_results.total).to eq(2)
-    end
-
-    it 'filters on instagram profiles' do
-      image_search = described_class.new('earth', instagram_profiles: ['user1'])
-      image_search_results = image_search.search
-      expect(image_search_results.total).to eq(1)
-      expect(image_search_results.results.first.title).to eq('first photo of earth')
     end
 
     it 'filters on MRSS feeds' do
