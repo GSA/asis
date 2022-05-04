@@ -34,6 +34,5 @@ module Oasis
 
     config.elasticsearch = config_for(:elasticsearch)
     config.flickr        = config_for(:flickr)
-    config.instagram     = config_for(:instagram)
   end
 end
