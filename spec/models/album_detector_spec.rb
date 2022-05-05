@@ -8,7 +8,7 @@ describe AlbumDetector do
 
     let(:photo) do
       FlickrPhoto.create(
-        id: 'flickr photo',
+        id: 'flickr_photo',
         owner: 'owner1',
         tags: [],
         title: 'title1 earth',
@@ -37,7 +37,7 @@ describe AlbumDetector do
       it 'logs the error' do
         detect_albums
         expect(Rails.logger).to have_received(:error).
-          with("Unable to assign album to photo 'flickr photo': failure")
+          with("Unable to assign album to photo 'flickr_photo': failure")
       end
 
       it 'does not raise an error' do

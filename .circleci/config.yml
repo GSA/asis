@@ -4,7 +4,7 @@
 version: 2.1
 
 orbs:
-  ruby: circleci/ruby@1.4.0
+  ruby: circleci/ruby@1.7.1
 
 jobs:
   build_and_test:
@@ -27,7 +27,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Copying config files for Flickr
+          name: Copy config files for Flickr
           command: |
             cp -p config/flickr.yml.example config/flickr.yml
       # Install gems with Bundler
@@ -36,26 +36,24 @@ jobs:
           # CircleCi project: Project Settings > Environment Variables
           key: gems-ruby-<< parameters.ruby_version >>-v{{ .Environment.CACHE_VERSION }}
       - run:
-          name: Install Code Climate Test Reporter
+          name: Prepare Code Climate Test Reporter
           command: |
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
+            ./cc-test-reporter before-build
       - run:
-          name: Waiting for Elasticsearch
+          name: Wait for Elasticsearch
           command: dockerize --wait http://localhost:9200 -timeout 1m
+      - ruby/rspec-test:
+          # Need to temporarily test with a particular seed? Use:
+          # order: rand:123
+          order: rand
       - run:
-          name: RSpec
+          name: Report Test Results
           environment:
             CC_TEST_REPORTER_ID: 0643ac526557dd490bc6f0542cac608a8815d7538dd580261e67dd334c07cc87
           command: |
-            ./cc-test-reporter before-build
-            bundle exec rspec spec --format progress --format RspecJunitFormatter -o ~/rspec/rspec.xml
             ./cc-test-reporter after-build
-      - store_test_results:
-          path: ~/rspec
-      - store_artifacts:
-          path: ~/rspec
-          destination: ~/rspec
 
 workflows:
   build_and_test:
@@ -68,6 +66,5 @@ workflows:
                 - 2.7.5
                 # not yet compatible with Ruby 3.x
               elasticsearch_version:
-                - 6.8.15
-                # not yet compatible with Elasticsearch 7.x
-                # https://cm-jira.usa.gov/browse/SRCH-1253
+                - 6.8.23
+                - 7.17.3
