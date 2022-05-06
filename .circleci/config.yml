@@ -50,8 +50,6 @@ jobs:
           order: rand
       - run:
           name: Report Test Results
-          environment:
-            CC_TEST_REPORTER_ID: 0643ac526557dd490bc6f0542cac608a8815d7538dd580261e67dd334c07cc87
           command: |
             ./cc-test-reporter after-build
 
