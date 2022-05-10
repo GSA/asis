@@ -44,6 +44,8 @@ module AliasedIndex
       false
     end
 
+    # For use in test and development environments. Purging existing indices is
+    # significantly faster than deleting and recreating them.
     def delete_all
       refresh_index!
       Elasticsearch::Persistence.client.delete_by_query(
@@ -51,6 +53,8 @@ module AliasedIndex
         conflicts: :proceed,
         body: { query: { match_all: {} } }
       )
+      # purge deleted documents from the index to avoid polluting tests
+      Elasticsearch::Persistence.client.indices.forcemerge(index: alias_name)
     end
   end
 end
