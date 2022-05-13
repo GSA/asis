@@ -53,8 +53,6 @@ module AliasedIndex
         conflicts: :proceed,
         body: { query: { match_all: {} } }
       )
-      # purge deleted documents from the index to avoid polluting tests
-      Elasticsearch::Persistence.client.indices.forcemerge(index: alias_name)
     end
   end
 end
