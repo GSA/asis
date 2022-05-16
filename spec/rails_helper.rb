@@ -43,6 +43,10 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
 
+  # Between indivdual specs, we use the "AliasedIndex#delete_all" method to purge documents
+  # from the indices. This is significantly faster than recreating the indices each time.
+  # However, the deleted documents can leave behind cruft that can cause some specs to fail
+  # intermittently. The workaround for those specs is to fully recreate the indices as below.
   config.before(:suite) do
     TestServices.delete_es_indexes
     TestServices.create_es_indexes
