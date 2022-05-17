@@ -44,6 +44,8 @@ module AliasedIndex
       false
     end
 
+    # For use in test and development environments. Purging existing indices is
+    # significantly faster than deleting and recreating them.
     def delete_all
       refresh_index!
       Elasticsearch::Persistence.client.delete_by_query(

@@ -54,6 +54,11 @@ describe ImageSearch do
 
   context 'when search term yields no results but a similar spelling does have results' do
     before do
+      # This spec can fail intermittently due to cruft from deleted documents.
+      # To avoid this, we completely recreate the indices (see note in spec/rails_helper.rb):
+      TestServices.delete_es_indexes
+      TestServices.create_es_indexes
+
       FlickrPhoto.create(id: 'photo1', owner: 'owner1', tags: [], title: 'title1 earth', description: 'desc 1', taken_at: Date.current, popularity: 100, url: 'http://photo1', thumbnail_url: 'http://photo_thumbnail1', album: 'album1', groups: [])
       MrssPhoto.create(id: '123456', username: 'user1', tags: %w[tag1 tag2], title: 'photo of the cassini probe', taken_at: Date.current, popularity: 101, url: 'http://photo2', thumbnail_url: 'http://photo_thumbnail2', album: 'album2')
       MrssPhoto.refresh_index!
