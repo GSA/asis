@@ -33,21 +33,9 @@ We use bundler to manage gems. You can install bundler and other required gems l
     gem install bundler
     bundle install
 
-### Docker Services
+### Services
 
-The required services (MySQL, Elasticsearch, etc.) can be run using Docker. Please refer to [searchgov-services](https://github.com/GSA/search-services) for detailed instructions on centralized configuration for services.
-
-* [Elasticsearch](http://www.elasticsearch.org/) - for fulltext search.
-
-We have configured Elasticsearch to run on the default port [9200](http://localhost:9200/). To use a different host (with or without port) or set of hosts, set the `ES_HOSTS` environmental variable. For example, use following command to run the specs using Elasticsearch running on `localhost:9207`:
-
-    ES_HOSTS=localhost:9207 bin/rspec spec
-
-* [Kibana] (https://www.elastic.co/kibana) is not required, but it can very helpful for debugging your Elasticsearch cluster or data. Verify that you can access Kibana in your browser: [http://localhost:5601/](http://localhost:5601/)
-
-### Redis
-
-Sidekiq (see below) uses [Redis](http://redis.io), so make sure you have that installed and running. 
+The required services (MySQL, Elasticsearch, & Redis) can be run using Docker. Refer to [search-services](https://github.com/GSA/search-services) for detailed instructions.
 
 ## Development/Usage
 
