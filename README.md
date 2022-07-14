@@ -33,55 +33,13 @@ We use bundler to manage gems. You can install bundler and other required gems l
     gem install bundler
     bundle install
 
-### Elasticsearch
+### Services
 
-We're using [Elasticsearch](http://www.elasticsearch.org/) (>= 6.8) for fulltext search.
+The required services (MySQL, Elasticsearch, & Redis) can be run using Docker. Refer to [search-services](https://github.com/GSA/search-services) for detailed instructions.
 
-Install [Docker](https://www.docker.com/products/docker-desktop) if you haven't done so yet. Once you have Docker installed on your machine, run the following command from the project root:
+The Elasticsearch services provided by `searchgov-services` is configured to run on the default port, [9200](http://localhost:9200/). To use a different host (with or without port) or set of hosts, set the `ES_HOSTS` environment variable. For example, use following command to run the specs using Elasticsearch running on `localhost:9207`:
 
-    docker-compose up elasticsearch
-
-Verify that Elasticsearch 6.8.x is running on port 9200:
-
-```
-$ curl localhost:9200
-{
-  "name" : "wp9TsCe",
-  "cluster_name" : "docker-cluster",
-  "cluster_uuid" : "WGf_peYTTZarT49AtEgc3g",
-  "version" : {
-    "number" : "6.8.9",
-    "build_flavor" : "default",
-    "build_type" : "docker",
-    "build_hash" : "c63e621",
-    "build_date" : "2020-02-26T14:38:01.193138Z",
-    "build_snapshot" : false,
-    "lucene_version" : "7.7.2",
-    "minimum_wire_compatibility_version" : "5.6.0",
-    "minimum_index_compatibility_version" : "5.0.0"
-  },
-  "tagline" : "You Know, for Search"
-}
-```
-
-### Kibana
-
-[Kibana](https://www.elastic.co/kibana) is not required, but it can very helpful for debugging your Elasticsearch cluster or data.
-You can also run Kibana using Docker:
-
-    docker-compose up kibana
-
-Verify that you can access Kibana in your browser: [http://localhost:5601/](http://localhost:5601/)
-
-### Redis
-
-Sidekiq (see below) uses [Redis](http://redis.io), so make sure you have that installed and running. You can install it it from the [Redis website](https://redis.io/download), or run it using Docker:
-
-    docker-compose up redis
-
-To run Elasticsearch, Kibana, and Redis, you can simply run:
-
-    docker-compose up
+    ES_HOSTS=localhost:9207 bundle exec rspec spec
 
 ## Development/Usage
 
