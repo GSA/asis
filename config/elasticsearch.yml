@@ -1,8 +1,8 @@
 development: &default
   hosts:
-    - localhost
-  user: ''
-  password: ''
+    - <%= ENV['ES_HOSTS'] || 'localhost:9200' %>
+  user: elastic
+  password: changeme
   number_of_shards: 1
   log: true
   log_level: DEBUG
