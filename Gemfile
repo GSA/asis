@@ -37,6 +37,7 @@ group :development, :test do
   gem 'binding_of_caller'
   gem 'pry-rails'
   gem 'rspec-rails', '~> 3.8.2'
+  gem 'debug'
 end
 
 group :development do
