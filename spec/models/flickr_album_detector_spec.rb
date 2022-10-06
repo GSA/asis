@@ -24,6 +24,7 @@ describe FlickrAlbumDetector do
         i = x + 1
         expect(FlickrPhoto.find("photo#{i}").album).to eq('owner1:2014-09-16:photo1')
       end
+
     end
   end
 end
