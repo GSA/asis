@@ -8,20 +8,7 @@ describe ImageSearch do
     MrssPhoto.delete_all
   end
 
-  context 'when relevant results exist in Flickr and MRSS indexes' do
-    before do
-      FlickrPhoto.create(id: 'photo1', owner: 'owner1', tags: [], title: 'title1 petrol', description: 'desc 1', taken_at: Date.current, popularity: 100, url: 'http://photo1', thumbnail_url: 'http://photo_thumbnail1', album: 'album1', groups: [])
-      FlickrPhoto.refresh_index!
-      MrssPhoto.create(id: 'guid', mrss_names: ['some url'], tags: %w[tag1 tag2], title: 'petrol title', description: 'initial description', taken_at: Date.current, popularity: 0, url: 'http://mrssphoto2', thumbnail_url: 'http://mrssphoto_thumbnail2', album: 'album3')
-      MrssPhoto.refresh_index!
-    end
-
-    it 'returns results from all indexes' do
-      image_search = described_class.new('gas', {})
-      image_search_results = image_search.search
-      expect(image_search_results.results.collect(&:type).uniq).to match_array(%w[FlickrPhoto MrssPhoto])
-    end
-  end
+  
 
   context 'when smooshed user query matches tag in either Mrss or Flickr indexes' do
     before do
