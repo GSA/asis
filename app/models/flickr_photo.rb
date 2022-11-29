@@ -15,4 +15,8 @@ class FlickrPhoto
   def generate_album_name
     [owner, taken_at, id].join(':')
   end
+  
+  def foo
+    'foo'
+  end
 end
