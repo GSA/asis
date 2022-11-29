@@ -13,6 +13,7 @@ class FlickrPhoto
   validates :title, presence: true
 
   def generate_album_name
-    [owner, taken_at, id].join(':')
+#foo
+       [owner, taken_at, id].join(':')
   end
 end
