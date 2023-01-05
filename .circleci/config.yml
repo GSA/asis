@@ -64,5 +64,5 @@ workflows:
                 - 2.7.5
                 # not yet compatible with Ruby 3.x
               elasticsearch_version:
-                - 6.8.23
-                - 7.17.3
+                - 7.17.7
+                # not yet compatible with Elasticsearch 8
