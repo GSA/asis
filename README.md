@@ -37,7 +37,7 @@ We use bundler to manage gems. You can install bundler and other required gems l
 
 The required services (MySQL, Elasticsearch, & Redis) can be run using Docker. Refer to [search-services](https://github.com/GSA/search-services) for detailed instructions.
 
-The Elasticsearch services provided by `searchgov-services` is configured to run on the default port, [9200](http://localhost:9200/). To use a different host (with or without port) or set of hosts, set the `ES_HOSTS` environment variable. For example, use following command to run the specs using Elasticsearch running on `localhost:9207`:
+The Elasticsearch service provided by `searchgov-services` is configured to run on the default port, [9200](http://localhost:9200/). To use a different host (with or without port) or set of hosts, set the `ES_HOSTS` environment variable. For example, use following command to run the specs using Elasticsearch running on `localhost:9207`:
 
     ES_HOSTS=localhost:9207 bundle exec rspec spec
 
