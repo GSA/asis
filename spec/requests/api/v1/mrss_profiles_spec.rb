@@ -18,7 +18,7 @@ describe Api::V1::MrssProfiles do
 
       it 'returns an array of indexed MRSS profiles ordered by name' do
         get '/api/v1/mrss_profiles'
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body).first).to match(hash_including('id' => 'http://some.mrss.url/feed2.xml'))
         expect(JSON.parse(response.body).last).to match(hash_including('id' => 'http://some.mrss.url/feed1.xml'))
       end
@@ -40,7 +40,7 @@ describe Api::V1::MrssProfiles do
       end
 
       it 'returns created profile as JSON' do
-        expect(response.status).to eq(201)
+        expect(response).to have_http_status(:created)
         expect(JSON.parse(response.body)).to match(hash_including('id' => 'http://some.mrss.url/feed2.xml', 'name' => an_instance_of(String)))
       end
     end
@@ -52,7 +52,7 @@ describe Api::V1::MrssProfiles do
       end
 
       it 'returns existing profile as JSON' do
-        expect(response.status).to eq(201)
+        expect(response).to have_http_status(:created)
         expect(JSON.parse(response.body)).to match(hash_including('id' => 'http://some.mrss.url/already.xml',
                                                                   'name' => @mrss_profile.name))
       end
