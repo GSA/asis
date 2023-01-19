@@ -33,6 +33,7 @@ describe Api::V1::ImageSearches do
       end
 
       it 'returns 500 error' do
+        expect(ImageSearch).to receive(:new).and_raise
         get '/api/v1/image', params: params
         expect(response).to have_http_status(:internal_server_error)
       end
