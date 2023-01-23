@@ -27,7 +27,7 @@ class AlbumDetector
     assign_default_album(photo)
     album_detector = album_detector_klass.new(photo)
     album = album_detector.album
-    ids = album.collect { |hit| hit['_id'] }
+    ids = album.pluck('_id')
     if ids.present?
       Rails.logger.info "Setting #{photo_klass.name} album: #{photo.album} for ids: #{ids}"
       bulk_assign(ids, photo.album, photo.class.index_name, photo._type)
