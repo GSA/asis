@@ -15,9 +15,9 @@ module ElasticSettings
         },
         filter: {
           bigram_filter: { type: 'shingle' },
-          en_stop_filter: { type: 'stop', stopwords: File.readlines(Rails.root.join('config', 'locales', 'analysis', 'en_stopwords.txt')) },
-          en_synonym: { type: 'synonym', synonyms: File.readlines(Rails.root.join('config', 'locales', 'analysis', 'en_synonyms.txt')).map(&:chomp) },
-          en_protected_filter: { type: 'keyword_marker', keywords: File.readlines(Rails.root.join('config', 'locales', 'analysis', 'en_protwords.txt')).map(&:chomp) },
+          en_stop_filter: { type: 'stop', stopwords: Rails.root.join('config/locales/analysis/en_stopwords.txt').readlines },
+          en_synonym: { type: 'synonym', synonyms: Rails.root.join('config/locales/analysis/en_synonyms.txt').readlines.map(&:chomp) },
+          en_protected_filter: { type: 'keyword_marker', keywords: Rails.root.join('config/locales/analysis/en_protwords.txt').readlines.map(&:chomp) },
           en_stem_filter: { type: 'stemmer', name: 'minimal_english' }
         },
         analyzer: {
