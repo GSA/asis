@@ -5,7 +5,7 @@ class MrssPhotosImporter
   sidekiq_options unique: true
 
   def perform(mrss_name)
-    @mrss = MrssProfile.find_by_name mrss_name
+    @mrss = MrssProfile.find_by_mrss_profile_name(name: mrss_name)
     photos = get_photos
     return if photos.blank?
 
