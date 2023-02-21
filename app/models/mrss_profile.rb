@@ -17,7 +17,7 @@ class MrssProfile
     super(options)
   end
 
-  def self.find_by_name(mrss_name)
+  def self.find_by_mrss_profile_name(mrss_name)
     mrss_names_filter = TermsFilter.new('name', [mrss_name])
     all(query: mrss_names_filter.query_body).first
   end
@@ -30,7 +30,7 @@ class MrssProfile
 
   private
 
-  REDIS_KEY_NAME = "#{name}.name"
+  REDIS_KEY_NAME = "#{name}.name".freeze
 
   def assign_name
     # rubocop:disable Style/GlobalVars

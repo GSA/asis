@@ -8,14 +8,14 @@ namespace :deploy do
     run_locally do
       Dir.chdir('config') do
         Dir.glob('*.yml') do |file_name|
-          cksum = capture 'cksum', File.join(Dir.pwd, file_name)
+          cksum = capture('cksum', File.join(Dir.pwd, file_name))
           config_files[file_name] = cksum
         end
       end
     end
 
     on roles(:all) do
-      config_path = File.join shared_path, 'config'
+      config_path = File.join(shared_path, 'config')
       execute "mkdir -p #{config_path}"
 
       config_files.each do |file_name, local_cksum|
@@ -25,7 +25,7 @@ namespace :deploy do
         lsum, _lsize, lpath = local_cksum.split
 
         if test("[ -f #{remote_file_name} ]")
-          remote_cksum = capture 'cksum', remote_file_name
+          remote_cksum = capture('cksum', remote_file_name)
           rsum, _rsize, _rpath = remote_cksum.split
 
           if lsum != rsum

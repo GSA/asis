@@ -11,9 +11,9 @@ gem 'rails', '~> 6.1.0'
 
 gem 'rake', '~> 13.0.6'
 
-gem 'grape', '~> 1.3.2'
+gem 'grape', '~> 1.7.0'
 
-gem 'jbuilder', '~> 2.6.4'
+gem 'jbuilder', '~> 2.11.5'
 
 gem 'elasticsearch-api', '~> 6.0'
 gem 'elasticsearch-model', '~> 5.0'
@@ -41,9 +41,7 @@ group :development, :test do
 end
 
 group :development do
-  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
-  gem 'listen', '>= 3.0.5', '< 3.2'
-  gem 'web-console', '>= 3.3.0'
+  gem 'listen', '~> 3.8.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
@@ -57,5 +55,5 @@ group :test do
   gem 'rspec-sidekiq', '~> 3.0.1'
   gem 'rspec_junit_formatter', '~> 0.4.1'
   gem 'simplecov', '~> 0.16.1'
-  gem 'webmock', '~> 3.5.1'
+  gem 'webmock', '~> 3.18'
 end
