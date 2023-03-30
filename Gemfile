@@ -22,7 +22,7 @@ gem 'elasticsearch-transport', '~> 6.0'
 gem 'flickraw', '~> 0.9.8'
 gem 'hashie', '~> 3.5.7'
 gem 'mock_redis', '~> 0.17.3'
-gem 'redis-namespace', '~> 1.6.0' # use redis database index instead?
+gem 'redis-namespace', '~> 1.10.0' # use redis database index instead?
 gem 'sidekiq', '< 6'
 gem 'sidekiq-failures', '~> 1.0.0'
 gem 'sidekiq-unique-jobs', '3.0.11' # sidekiq-unique-jobs > 3.0.11 broke spec
