@@ -84,4 +84,7 @@ RSpec.configure do |config|
   #     # a real object. This is generally recommended.
   #     mocks.verify_partial_doubles = true
   #   end
+
+  # Only run certain slow integration specs in CI
+  config.exclusion_filter = { slow: true } unless ENV['CIRCLECI']
 end
