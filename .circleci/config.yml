@@ -61,7 +61,7 @@ workflows:
           matrix:
             parameters:
               ruby_version:
-                - 3.0.5
+                - 3.0.6
                 # not yet compatible with 3.1 or 3.2
               elasticsearch_version:
                 - 7.17.7
