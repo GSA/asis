@@ -3,7 +3,9 @@
 require 'open3'
 
 describe 'sidekiq CLI' do
-  it 'runs without errors', slow: true do
+  it 'runs without errors' do
+    skip 'this slow integration spec only runs in CI' unless ENV['CIRCLECI']
+
     # Inspired by: https://github.com/sidekiq/sidekiq/issues/3214
     # Kick off sidekiq, wait a bit, and make sure the output doesn't include errors.
     # It's slow, but appears to be the only way to detect errors outside the workers.
