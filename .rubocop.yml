@@ -7,6 +7,10 @@ inherit_mode:
   merge:
     - Exclude
 
+RSpec/DescribeClass:
+  Exclude:
+    - spec/sidekiq_cli_spec.rb
+
 # Always omit parentheses for methods that are part of an internal DSL
 # (e.g., Rake, Rails, RSpec)
 Style/MethodCallWithArgsParentheses:
