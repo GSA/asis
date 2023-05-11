@@ -11,4 +11,4 @@ ENV BUNDLE_PATH /gems
 RUN bundle install
 
 COPY . /usr/src/app/
-CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
