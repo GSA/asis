@@ -1,7 +1,8 @@
 FROM ruby:3.0.6
-
 WORKDIR /usr/src/app
-EXPOSE 3300
+EXPOSE 3000
+
+ENV OPENSSL_CONF /etc/ssl/
 
 RUN apt install -y curl
 
