@@ -4,11 +4,11 @@ EXPOSE 3000
 
 ENV OPENSSL_CONF /etc/ssl/
 
-RUN apt install -y curl
+RUN apt install -y curl \
+  && gem install bundler:2.4.7 
 
 COPY Gemfile* /usr/src/app/
 ENV BUNDLE_PATH /gems
 RUN bundle install
 
 COPY . /usr/src/app/
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
