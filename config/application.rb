@@ -35,5 +35,6 @@ module Oasis
     config.elasticsearch = config_for(:elasticsearch)
     config.sidekiq       = config_for(:sidekiq)
     config.flickr        = config_for(:flickr)
+    config.hosts         << "asis"
   end
 end
