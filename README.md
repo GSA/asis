@@ -32,7 +32,7 @@ Docker can be used to: 1) run just the required services (MySQL, Elasticsearch, 
 
 When running in a Docker container (option 2 above), the `asis` application is configured to run on port [3300](http://localhost:3300/). Required dependencies - ([Ruby](https://github.com/GSA/asis#ruby), and [Gems](https://github.com/GSA/asis#ruby)) - are installed using Docker. However, other data or configuration may need to be setup manually, which can be done in the running container using `bash`.
 
-Using bash to perform any operations on asis application running in Docker container, below command needs to be run in `search-services`.
+Any operations (using rails console, running rake commands, etc.) on ASIS application running in Docker container can be performed by executing below command in `search-services`.
 
     $ docker compose run asis bash
 
