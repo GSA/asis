@@ -26,20 +26,31 @@ Use [rvm](https://rvm.io/) to install the version of Ruby specified in `.ruby-ve
 
  1. Copy `config/flickr.yml.example` to `config/flickr.yml` and update the fields with your Flickr credentials.
 
+### Docker
+
+Docker can be used to: 1) run just the required services (MySQL, Elasticsearch, etc.) while [running the asis application in your local machine](https://github.com/GSA/asis#developmentusage), and/or 2) run the entire `asis` application in a Docker container.  Please refer to [searchgov-services](https://github.com/GSA/search-services) for detailed instructions on centralized configuration for the services.
+
+When running in a Docker container (option 2 above), the `asis` application is configured to run on port [3300](http://localhost:3300/). Required dependencies - ([Ruby](https://github.com/GSA/asis#ruby), and [Gems](https://github.com/GSA/asis#ruby)) - are installed using Docker. However, other data or configuration may need to be setup manually, which can be done in the running container using `bash`.
+
+Any operations (using rails console, running rake commands, etc.) on ASIS application running in Docker container can be performed by executing below command in `search-services`.
+
+    $ docker compose run asis bash
+
+For example, to setup DB in Docker:
+
+    $ docker compose run asis bash
+    $ bin/rails oasis:seed_profiles
+
+The Elasticsearch service provided by `searchgov-services` is configured to run on the default port, [9200](http://localhost:9200/). To use a different host (with or without port) or set of hosts, set the `ES_HOSTS` environment variable. For example, use following command to run the specs using Elasticsearch running on `localhost:9207`:
+
+    ES_HOSTS=localhost:9207 bundle exec rspec spec
+
 ### Gems
 
 We use bundler to manage gems. You can install bundler and other required gems like this:
 
     gem install bundler
     bundle install
-
-### Services
-
-The required services (MySQL, Elasticsearch, & Redis) can be run using Docker. Refer to [search-services](https://github.com/GSA/search-services) for detailed instructions.
-
-The Elasticsearch service provided by `searchgov-services` is configured to run on the default port, [9200](http://localhost:9200/). To use a different host (with or without port) or set of hosts, set the `ES_HOSTS` environment variable. For example, use following command to run the specs using Elasticsearch running on `localhost:9207`:
-
-    ES_HOSTS=localhost:9207 bundle exec rspec spec
 
 ## Development/Usage
 
