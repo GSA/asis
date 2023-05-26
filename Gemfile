@@ -48,7 +48,7 @@ group :development do
   # Bumping searchgov_style? Be sure to update rubocop, if possible,
   # and set the Rubocop channel in .codeclimate.yml to match the updated rubocop version.
   gem 'searchgov_style', '~> 0.1', require: false
-  gem 'rubocop', '1.39.0', require: false
+  gem 'rubocop', '1.48.1', require: false
 end
 
 group :test do
