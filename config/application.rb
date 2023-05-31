@@ -33,8 +33,6 @@ module Oasis
     config.autoload_paths += Dir[config.root.join('lib', '**/').to_s]
 
     config.elasticsearch = config_for(:elasticsearch)
-    config.sidekiq       = config_for(:sidekiq)
     config.flickr        = config_for(:flickr)
-    config.hosts         << "asis" if ENV["DOCKER"]
   end
 end

@@ -1,7 +1,2 @@
-development: &default
-  namespace: oasis
-  redis_url: <%= ENV['REDIS_HOST'] || 'redis://localhost:6379' %>
-
-test:
-  namespace: oasis
-  redis_url: <%= ENV['REDIS_HOST'] || 'redis://localhost:6379' %>
+url: redis://localhost:6379
+namespace: oasis
