@@ -7,5 +7,5 @@ test:
   redis_url: <%= ENV['REDIS_HOST'] || 'redis://localhost:6379' %>
 
 production:
-  namespace: oasis
-  redis_url: ENV['REDIS_HOST']
+  # Changes to the production configuration must be
+  # made in the cookbooks
