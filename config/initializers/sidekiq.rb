@@ -7,9 +7,9 @@ else
 end
 
 Sidekiq.configure_server do |config|
-  config.redis = { url: sidekiq['redis_url'], namespace: sidekiq['namespace'] }
+  config.redis = { url: sidekiq['url'], namespace: sidekiq['namespace'] }
 end
 
 Sidekiq.configure_client do |config|
-  config.redis = { url: sidekiq['redis_url'], namespace: sidekiq['namespace'] }
+  config.redis = { url: sidekiq['url'], namespace: sidekiq['namespace'] }
 end
