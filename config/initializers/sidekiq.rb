@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
-yaml = YAML.load_file("#{Rails.root}/config/sidekiq.yml")
+if Rails.env.production?
+  sidekiq = YAML.load_file("#{Rails.root}/config/sidekiq.yml")
+else
+  sidekiq = Rails.configuration.sidekiq
+end
 
 Sidekiq.configure_server do |config|
-  config.redis = { url: yaml['url'], namespace: yaml['namespace'] }
+  config.redis = { url: sidekiq['redis_url'], namespace: sidekiq['namespace'] }
 end
 
 Sidekiq.configure_client do |config|
-  config.redis = { url: yaml['url'], namespace: yaml['namespace'] }
+  config.redis = { url: sidekiq['redis_url'], namespace: sidekiq['namespace'] }
 end
