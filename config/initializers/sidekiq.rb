@@ -7,9 +7,14 @@ else
 end
 
 Sidekiq.configure_server do |config|
-  config.redis = { url: sidekiq['url'], namespace: sidekiq['namespace'] }
+  if ENV['OLD']
+    # We'll continue to poll for old scheduled jobs and retries
+    config.redis = { url: 'redis://localhost:6379/0', namespace: sidekiq['namespace']}
+  else
+    config.redis = { url: sidekiq['url'] }
+  end
 end
 
 Sidekiq.configure_client do |config|
-  config.redis = { url: sidekiq['url'], namespace: sidekiq['namespace'] }
+  config.redis = { url: sidekiq['url'] }
 end

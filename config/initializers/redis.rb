@@ -7,5 +7,5 @@ else
 end
 
 # rubocop:disable Style/GlobalVars
-$redis = Redis.new(url: sidekiq['url'], namespace: sidekiq['namespace'])
+$redis = Redis.new(url: sidekiq['url'])
 # rubocop:enable Style/GlobalVars
