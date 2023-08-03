@@ -60,7 +60,7 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
-    addressable (2.8.4)
+    addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
     axiom-types (0.1.1)
@@ -207,7 +207,7 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
-    newrelic_rpm (8.12.0)
+    newrelic_rpm (8.16.0)
     nio4r (2.5.9)
     nokogiri (1.15.3)
       mini_portile2 (~> 2.8.2)
@@ -245,7 +245,7 @@ GEM
       bundler (>= 1.15.0)
       railties (= 6.1.7.4)
       sprockets-rails (>= 2.0.0)
-    rails-dom-testing (2.1.1)
+    rails-dom-testing (2.2.0)
       activesupport (>= 5.0.0)
       minitest
       nokogiri (>= 1.6)
@@ -377,7 +377,7 @@ GEM
     websocket-extensions (0.1.5)
     whenever (0.9.7)
       chronic (>= 0.6.3)
-    zeitwerk (2.6.10)
+    zeitwerk (2.6.11)
 
 PLATFORMS
   ruby
@@ -396,7 +396,7 @@ DEPENDENCIES
   jbuilder (~> 2.11.5)
   listen (~> 3.8.0)
   mock_redis (~> 0.17.3)
-  newrelic_rpm (~> 8.12.0)
+  newrelic_rpm (~> 8.16)
   pry-rails
   puma (~> 5.3)
   rails (~> 6.1.0)

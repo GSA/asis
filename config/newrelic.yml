@@ -3,7 +3,7 @@
 # .NET, PHP, Python, Node, and Go applications with deep visibility and low
 # overhead.  For more information, visit www.newrelic.com.
 
-# Generated July 21, 2023, for version 8.12.0
+# Generated August 03, 2023, for version 8.16.0
 #
 # For full documentation of agent configuration options, please refer to
 # https://docs.newrelic.com/docs/agents/ruby-agent/installation-configuration/ruby-agent-configuration
@@ -29,6 +29,13 @@ common: &default_settings
 
   # All of the following configuration options are optional. Review them, and
   # uncomment or edit them if they appear relevant to your application needs.
+
+  # An array of ActiveSupport custom events names to subscribe to and provide
+  # instrumentation for. For example,
+  #   - my.custom.event
+  #   - another.event
+  #   - a.third.event
+  # active_support_custom_events_names: ""
 
   # If `true`, all logging-related features for the agent can be enabled or disabled
   # independently. If `false`, all logging-related features are disabled.
@@ -159,14 +166,27 @@ common: &default_settings
   # or  port_path_or_id parameters to transaction or slow SQL traces.
   # datastore_tracer.instance_reporting.enabled: true
 
+  # If true, when the agent is in an application using Ruby on Rails, it will start after
+  # config/initializers have run.
+  # defer_rails_initialization: false
+
   # If true, disables Action Cable instrumentation.
   # disable_action_cable_instrumentation: false
 
-  # If true, disables instrumentation for Active Record 4, 5, and 6.
+  # If true, disables Action Mailbox instrumentation.
+  # disable_action_mailbox: false
+
+  # If true, disables Action Mailer instrumentation.
+  # disable_action_mailer: false
+
+  # If true, disables instrumentation for Active Record 4+
   # disable_active_record_notifications: false
 
   # If true, disables Active Storage instrumentation.
   # disable_active_storage: false
+
+  # If true, disables Active Support instrumentation.
+  # disable_active_support: false
 
   # If true, disables Active Job instrumentation.
   # disable_activejob: false
@@ -176,6 +196,9 @@ common: &default_settings
 
   # If true, the agent won't sample the CPU usage of the host process.
   # disable_cpu_sampler: false
+
+  # If true, disables ActiveSupport custom events instrumentation.
+  # disable_custom_events_instrumentation: false
 
   # If true, disables DataMapper instrumentation.
   # disable_data_mapper: false
@@ -307,16 +330,20 @@ common: &default_settings
 
   # Configure the compression level for data sent to the Trace Observer
   # May be one of [none|low|medium|high]
-  # By default, compression is not used (level = none)
-  # infinite_tracing.compression_level: none
+  # 'high' is the default. Set the level to 'none' to disable compression
+  # infinite_tracing.compression_level: high
 
-  # If true, data sent to the Trace Observer will be batched instead of
-  # the default of each span being sent individually
-  # infinite_tracing.batching: false
+  # If true (the default), data sent to the Trace Observer will be batched
+  # instead of each span being sent individually
+  # infinite_tracing.batching: true
 
   # Controls auto-instrumentation of bunny at start up.
   # May be one of [auto|prepend|chain|disabled].
   # instrumentation.bunny: auto
+
+  # Controls auto-instrumentation of concurrent_ruby at start up.
+  # May be one of [auto|prepend|chain|disabled]
+  # instrumentation.concurrent_ruby: auto
 
   # Controls auto-instrumentation of Curb at start up.
   # May be one of [auto|prepend|chain|disabled].
