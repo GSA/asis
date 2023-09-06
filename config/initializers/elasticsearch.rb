@@ -2,10 +2,6 @@
 
 ES_CONFIG = Rails.application.config_for(:elasticsearch).freeze
 
-def config
-
-end
-
 Elasticsearch::Persistence.client = Elasticsearch::Client.new(ES_CONFIG.merge({ randomize_hosts: true, retry_on_failure: true, reload_connections: true}))
 
 if Rails.configuration.elasticsearch['log']
