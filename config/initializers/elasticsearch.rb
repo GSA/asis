@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-DEFAULT_CONFIG = Rails.application.config_for(:elasticsearch).freeze
+ES_CONFIG = Rails.application.config_for(:elasticsearch).freeze
 
 def config
 
 end
 
-Elasticsearch::Persistence.client = Elasticsearch::Client.new(DEFAULT_CONFIG.merge({ randomize_hosts: true, retry_on_failure: true, reload_connections: true}))
+Elasticsearch::Persistence.client = Elasticsearch::Client.new(ES_CONFIG.merge({ randomize_hosts: true, retry_on_failure: true, reload_connections: true}))
 
 if Rails.configuration.elasticsearch['log']
   logger = ActiveSupport::Logger.new("log/#{Rails.env}.log")
