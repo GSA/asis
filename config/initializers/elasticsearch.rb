@@ -1,14 +1,8 @@
 # frozen_string_literal: true
 
-Elasticsearch::Persistence.client = Elasticsearch::Client.new(
-  log: Rails.configuration.elasticsearch['log'],
-  hosts: Rails.configuration.elasticsearch['hosts'],
-  user: Rails.configuration.elasticsearch['user'],
-  password: Rails.configuration.elasticsearch['password'],
-  randomize_hosts: true,
-  retry_on_failure: true,
-  reload_connections: true
-)
+ES_CONFIG = Rails.application.config_for(:elasticsearch).freeze
+
+Elasticsearch::Persistence.client = Elasticsearch::Client.new(ES_CONFIG.merge({ randomize_hosts: true, retry_on_failure: true, reload_connections: true}))
 
 if Rails.configuration.elasticsearch['log']
   logger = ActiveSupport::Logger.new("log/#{Rails.env}.log")
