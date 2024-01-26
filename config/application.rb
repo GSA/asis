@@ -30,7 +30,9 @@ module Oasis
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
-    config.autoload_paths += Dir[config.root.join('lib', '**/').to_s]
+
+    config.autoload_paths   << config.root.join('lib')
+    config.eager_load_paths << config.root.join('lib')
 
     config.elasticsearch = config_for(:elasticsearch)
     config.sidekiq       = config_for(:sidekiq)
