@@ -1,3 +1,7 @@
 # frozen_string_literal: true
 
-Feedjira::Feed.add_feed_class(Feedjira::Parser::Oasis::Mrss)
+require "feedjira/parser/oasis/mrss"
+
+Feedjira.configure do |config|
+  config.parsers.unshift(Feedjira::Parser::Oasis::Mrss)
+end

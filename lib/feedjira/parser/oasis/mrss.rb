@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "feedjira/parser/oasis/mrss_entry"
+
 module Feedjira
   module Parser
     module Oasis
