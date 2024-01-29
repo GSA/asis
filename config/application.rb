@@ -4,7 +4,7 @@ require_relative 'boot'
 
 require "rails"
 # Pick the frameworks you want:
-require "active_model/railtie"
+# require "active_model/railtie"
 # require "active_job/railtie"
 # require "active_record/railtie"
 # require "active_storage/engine"
@@ -31,8 +31,9 @@ module Oasis
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
-    config.eager_load_paths += Dir[config.root.join('lib', '**/').to_s]
-    config.autoload_once_paths += %W(#{config.root}/app/parsers)
+
+    config.active_support.disable_to_s_conversion = false
+    config.generators.system_tests = nil
     config.elasticsearch = config_for(:elasticsearch)
     config.sidekiq       = config_for(:sidekiq)
     config.flickr        = config_for(:flickr)
