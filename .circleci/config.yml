@@ -38,10 +38,10 @@ jobs:
       - run:
           name: Prepare Code Climate Test Reporter
           command: |
-          # Commented out for now
-          # curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-          # chmod +x ./cc-test-reporter
-          # ./cc-test-reporter before-build
+            # Commented out for now
+            # curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            # chmod +x ./cc-test-reporter
+            # ./cc-test-reporter before-build
       - run:
           name: Wait for Elasticsearch
           command: dockerize --wait http://localhost:9200 -timeout 1m
