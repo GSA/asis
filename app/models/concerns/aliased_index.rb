@@ -9,7 +9,7 @@ module AliasedIndex
 
   module ClassMethods
     def timestamped_index_name
-      [base_name, Time.current.to_s(:number)].join('-')
+      [base_name, Time.current.strftime('%Y%m%d%H%M%S%L')].join('-')
     end
 
     def alias_name
