@@ -22,6 +22,8 @@ gem 'elasticsearch-transport', '~> 6.0'
 gem 'flickraw', '~> 0.9.8'
 gem 'hashie', '~> 3.5.7'
 gem 'mock_redis', '~> 0.17.3'
+# Keeping a version of nokogiri that supports both Rails 6 and 7
+gem 'nokogiri', '~> 1.15.3'
 gem 'redis-namespace', '~> 1.10.0' # use redis database index instead?
 gem 'sidekiq', '~> 7.1.2'
 gem 'sidekiq-failures', '~> 1.0.0'
