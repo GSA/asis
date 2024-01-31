@@ -33,7 +33,7 @@ gem 'newrelic_rpm', '~> 8.16'
 gem 'feedjira', '~> 2.2.0'
 
 group :development, :test do
-  gem 'puma', '~> 5.3'
+  gem 'puma', '~> 5.6'
   gem 'binding_of_caller'
   gem 'pry-rails'
   gem 'rspec-rails', '~> 3.8.2'
