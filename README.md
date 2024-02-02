@@ -54,6 +54,12 @@ We use bundler to manage gems. You can install bundler and other required gems l
 
 ## Development/Usage
 
+### Create indexes
+
+```ruby
+rails oasis:create_index
+```
+
 ### Seed some image data
 
 You can bootstrap the system with some government Flickr profiles and MRSS feeds to see the system working.

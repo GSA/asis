@@ -1,7 +1,16 @@
 # frozen_string_literal: true
 
 require 'csv'
+
 namespace :oasis do
+  desc 'Create elasticsearch indexes'
+  task create_index: :environment do
+    Dir[Rails.root.join('app', 'models', '*.rb')].map do |f|
+      klass = File.basename(f, '.*').camelize.constantize
+      klass.create_index_and_alias! if klass.respond_to?(:create_index_and_alias!) && !klass.alias_exists?
+    end
+  end
+
   desc 'Create initial batch of Flickr & MRSS profiles from CSV files'
   task seed_profiles: :environment do
     CSV.foreach("#{Rails.root}/config/flickr_profiles.csv") do |row|

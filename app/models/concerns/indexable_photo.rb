@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'elastic_settings'
+
 module IndexablePhoto
   extend ActiveSupport::Concern
   include AliasedIndex
