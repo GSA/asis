@@ -34,7 +34,6 @@ module Oasis
 
     # Set default cache format
     config.active_support.cache_format_version = 7.0
-
     config.active_support.disable_to_s_conversion = false
     config.generators.system_tests = nil
     config.elasticsearch = config_for(:elasticsearch)
