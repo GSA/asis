@@ -12,11 +12,3 @@ if Rails.configuration.elasticsearch['log']
   end
   Elasticsearch::Persistence.client.transport.logger = logger
 end
-
-if Rails.env.development?
-  puts 'Ensuring Elasticsearch development indexes and aliases are available....'
-  Dir[Rails.root.join('app', 'models', '*.rb')].map do |f|
-    klass = File.basename(f, '.*').camelize.constantize
-    klass.create_index_and_alias! if klass.respond_to?(:create_index_and_alias!) && !klass.alias_exists?
-  end
-end
