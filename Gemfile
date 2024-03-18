@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 6.1.0'
+gem 'rails', '~> 7.0.0', '>= 7.0.1'
 
 gem 'rake', '~> 13.0.6'
 
@@ -33,7 +33,7 @@ gem 'newrelic_rpm', '~> 8.16'
 gem 'feedjira', '~> 2.2.0'
 
 group :development, :test do
-  gem 'puma', '~> 5.3'
+  gem 'puma', '~> 5.6'
   gem 'binding_of_caller'
   gem 'pry-rails'
   gem 'rspec-rails', '~> 3.8.2'
