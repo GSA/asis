@@ -25,7 +25,7 @@ gem 'mock_redis', '~> 0.17.3'
 gem 'redis-namespace', '~> 1.10.0' # use redis database index instead?
 gem 'sidekiq', '~> 7.1.3'
 gem 'sidekiq-failures', '~> 1.0.0'
-gem 'sidekiq-unique-jobs', '3.0.11' # sidekiq-unique-jobs > 3.0.11 broke spec
+gem 'sidekiq-unique-jobs', '~> 8.0.9'
 gem 'whenever', '~> 0.9.4', require: false
 
 gem 'newrelic_rpm', '~> 8.16'
