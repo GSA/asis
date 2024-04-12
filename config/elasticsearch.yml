@@ -1,4 +1,4 @@
-development: &default
+default: &DEFAULT
   hosts:
     - <%= ENV['ES_HOSTS'] || 'localhost:9200' %>
   user: elastic
@@ -7,9 +7,14 @@ development: &default
   log: true
   log_level: DEBUG
 
+development:
+  <<: *DEFAULT
+
 test:
-  <<: *default
+  <<: *DEFAULT
 
 production:
-  # Changes to the production configuration must be
-  # made in the cookbooks
+  hosts:
+    - <%= ENV['ES_HOSTS'] %>
+  user: <%= ENV['ES_USERNAME'] %>
+  password: <%= ENV['ES_PASSWORD'] %>
