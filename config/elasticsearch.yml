@@ -1,11 +1,13 @@
 default: &DEFAULT
-  hosts:
-    - <%= ENV['ES_HOSTS'] || 'localhost:9200' %>
-  user: elastic
-  password: changeme
+  hosts: <%= ENV['ES_HOSTS'] || 'localhost:9200' %>
+  user: <%= ENV['ES_USERNAME'] || 'elastic' %>
+  password: <%= ENV['ES_PASSWORD'] || 'changeme' %>
   number_of_shards: 1
   log: true
   log_level: DEBUG
+  transport_options:
+    ssl:
+      verify: <% ENV['SSL_VERIFY'] || 'false' %>
 
 development:
   <<: *DEFAULT
@@ -14,7 +16,5 @@ test:
   <<: *DEFAULT
 
 production:
-  hosts:
-    - <%= ENV['ES_HOSTS'] %>
-  user: <%= ENV['ES_USERNAME'] %>
-  password: <%= ENV['ES_PASSWORD'] %>
+  <<: *DEFAULT
+  number_of_shards: 3
