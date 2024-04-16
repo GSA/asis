@@ -1,0 +1,13 @@
+# see https://www.flickr.com/services/api/auth.oauth.html
+default: &DEFAULT
+  api_key: <%= ENV['FLICKR_API_KEY'] %>
+  shared_secret: <%= ENV['FLICKR_SHARED_SECRET'] %>
+
+development:
+  <<: *DEFAULT
+
+test:
+  <<: *DEFAULT
+
+production:
+  <<: *DEFAULT
