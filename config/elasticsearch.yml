@@ -1,15 +1,20 @@
-development: &default
-  hosts:
-    - <%= ENV['ES_HOSTS'] || 'localhost:9200' %>
-  user: elastic
-  password: changeme
+default: &DEFAULT
+  hosts: <%= ENV['ES_HOSTS'] || 'localhost:9200' %>
+  user: <%= ENV['ES_USERNAME'] || 'elastic' %>
+  password: <%= ENV['ES_PASSWORD'] || 'changeme' %>
   number_of_shards: 1
   log: true
   log_level: DEBUG
+  transport_options:
+    ssl:
+      verify: <% ENV['SSL_VERIFY'] || 'false' %>
+
+development:
+  <<: *DEFAULT
 
 test:
-  <<: *default
+  <<: *DEFAULT
 
 production:
-  # Changes to the production configuration must be
-  # made in the cookbooks
+  <<: *DEFAULT
+  number_of_shards: 3

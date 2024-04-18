@@ -1,11 +1,12 @@
-development: &default
+default: &DEFAULT
   namespace: oasis
   url: <%= ENV['REDIS_HOST'] || 'redis://localhost:6379' %>
+
+development:
+  <<: *DEFAULT
 
 test:
-  namespace: oasis
-  url: <%= ENV['REDIS_HOST'] || 'redis://localhost:6379' %>
+  <<: *DEFAULT
 
 production:
-  # Changes to the production configuration must be
-  # made in the cookbooks
+  <<: *DEFAULT
