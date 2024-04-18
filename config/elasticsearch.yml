@@ -15,6 +15,9 @@ development:
 test:
   <<: *DEFAULT
 
+staging:
+  <<: *DEFAULT
+
 production:
   <<: *DEFAULT
   number_of_shards: 3
