@@ -9,5 +9,8 @@ development:
 test:
   <<: *DEFAULT
 
+staging:
+  <<: *DEFAULT
+
 production:
   <<: *DEFAULT

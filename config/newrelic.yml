@@ -710,10 +710,8 @@ test:
   # It doesn't make sense to report to New Relic from automated test runs.
   monitor_mode: false
 
-# Staging uses the same configuration as production
-# staging:
-#   <<: *default_settings
-#   app_name: i14y (Staging)
+staging:
+  <<: *default_settings
 
 production:
   <<: *default_settings

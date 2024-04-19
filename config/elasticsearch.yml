@@ -5,14 +5,14 @@ default: &DEFAULT
   number_of_shards: 1
   log: true
   log_level: DEBUG
-  transport_options:
-    ssl:
-      verify: <% ENV['SSL_VERIFY'] || 'false' %>
 
 development:
   <<: *DEFAULT
 
 test:
+  <<: *DEFAULT
+
+staging:
   <<: *DEFAULT
 
 production:
