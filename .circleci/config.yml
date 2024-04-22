@@ -61,7 +61,6 @@ workflows:
           matrix:
             parameters:
               ruby_version:
-                - 3.0.5
                 - 3.0.6
                 - 3.3.0
                 # not yet compatible with 3.1 or 3.2
