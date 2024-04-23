@@ -12,6 +12,7 @@ Elasticsearch::Persistence.client = Elasticsearch::Client.new(ES_CONFIG.merge({ 
                                                                                   }
                                                                                 } }))
 
+
 if Rails.configuration.elasticsearch['log']
   logger = ActiveSupport::Logger.new("log/#{Rails.env}.log")
   logger.level = Rails.configuration.elasticsearch['log_level']
