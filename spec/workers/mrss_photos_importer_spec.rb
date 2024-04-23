@@ -141,9 +141,7 @@ describe MrssPhotosImporter do
         expect(already_exists.title).to eq('initial title')
         expect(already_exists.description).to eq('initial description')
         expect(already_exists.tags).to match_array(%w[tag1 tag2])
-        expect(already_exists.mrss_names).to match_array(
-          ['existing_mrss_name', mrss_profile.name]
-        )
+        expect(already_exists.mrss_names).to match_array(['existing_mrss_name', mrss_profile.name])
       end
     end
 

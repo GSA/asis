@@ -59,7 +59,7 @@ class MrssPhotosImporter
 
   def get_attributes(mrss_entry)
     { id: mrss_entry.entry_id, mrss_names: [@mrss.name], title: mrss_entry.title, description: mrss_entry.summary,
-      taken_at: mrss_entry.pub_date, url: mrss_entry.url, thumbnail_url: mrss_entry.thumbnail_url }
+      taken_at: mrss_entry.pub_date || mrss_entry.published, url: mrss_entry.url, thumbnail_url: mrss_entry.thumbnail_url }
   end
 
   def fetch_xml(url)
