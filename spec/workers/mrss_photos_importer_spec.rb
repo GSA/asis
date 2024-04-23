@@ -40,13 +40,13 @@ describe MrssPhotosImporter do
       end
 
       it 'indexes the photos' do
-        expect { perform }.to change{ MrssPhoto.count }.from(0).to(4)
+        expect { perform }.to change { MrssPhoto.count }.from(0).to(4)
       end
     end
 
     context 'when MRSS photo entries are returned' do
       it 'indexes the photos' do
-        expect { perform }.to change{ MrssPhoto.count }.from(0).to(4)
+        expect { perform }.to change { MrssPhoto.count }.from(0).to(4)
       end
 
       it 'indexes the expected content' do
@@ -89,7 +89,7 @@ describe MrssPhotosImporter do
         [photo1, photo2]
       end
 
-      let(:feed) { double(Feedjira::Parser::Oasis::Mrss, entries: photos) }
+      let(:feed) { instance_double(Feedjira::Parser::Oasis::Mrss, entries: photos) }
 
       before do
         allow(Feedjira::Feed).to receive(:parse).with(mrss_xml) { feed }

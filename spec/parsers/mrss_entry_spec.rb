@@ -32,7 +32,7 @@ describe Feedjira::Parser::Oasis::MrssEntry do
       end
 
       it 'has the correct published time' do
-        expect(entry.published).to eq(Time.parse('2014-10-22 14:24:00Z'))
+        expect(entry.pub_date.to_time).to eq(Time.parse('2014-10-22 14:24:00Z'))
       end
     end
   end
