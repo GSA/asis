@@ -40,13 +40,13 @@ describe MrssPhotosImporter do
       end
 
       it 'indexes the photos' do
-        expect { perform }.to change{ MrssPhoto.count }.from(0).to(4)
+        expect { perform }.to change { MrssPhoto.count }.from(0).to(4)
       end
     end
 
     context 'when MRSS photo entries are returned' do
       it 'indexes the photos' do
-        expect { perform }.to change{ MrssPhoto.count }.from(0).to(4)
+        expect { perform }.to change { MrssPhoto.count }.from(0).to(4)
       end
 
       it 'indexes the expected content' do
@@ -89,7 +89,7 @@ describe MrssPhotosImporter do
         [photo1, photo2]
       end
 
-      let(:feed) { double(Feedjira::Parser::Oasis::Mrss, entries: photos) }
+      let(:feed) { instance_double(Feedjira::Parser::Oasis::Mrss, entries: photos) }
 
       before do
         allow(Feedjira::Feed).to receive(:parse).with(mrss_xml) { feed }
@@ -141,9 +141,7 @@ describe MrssPhotosImporter do
         expect(already_exists.title).to eq('initial title')
         expect(already_exists.description).to eq('initial description')
         expect(already_exists.tags).to match_array(%w[tag1 tag2])
-        expect(already_exists.mrss_names).to match_array(
-          ['existing_mrss_name', mrss_profile.name]
-        )
+        expect(already_exists.mrss_names).to contain_exactly('existing_mrss_name', mrss_profile.name)
       end
     end
 
