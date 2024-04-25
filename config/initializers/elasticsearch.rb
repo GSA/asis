@@ -8,9 +8,10 @@ Elasticsearch::Persistence.client = Elasticsearch::Client.new(ES_CONFIG.merge({ 
                                                                                 reload_on_failure: false,
                                                                                 transport_options: {
                                                                                   ssl: {
-                                                                                    verify: ENV['SSL_VERIFY'] || 'false'
+                                                                                    verify: false
                                                                                   }
                                                                                 } }))
+
 
 if Rails.configuration.elasticsearch['log']
   logger = ActiveSupport::Logger.new("log/#{Rails.env}.log")
