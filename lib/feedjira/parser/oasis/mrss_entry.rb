@@ -9,20 +9,15 @@ module Feedjira
 
         element :guid, as: :entry_id
         element :'dc:identifier', as: :entry_id
-
         element :title
-
         element :link, as: :url
-
-        element :pubDate, as: :published
-        element :pubdate, as: :published
-        element :'dc:date', as: :published
-        element :'dc:Date', as: :published
-        element :'dcterms:created', as: :published
-        element :issued, as: :published
-
+        element :pubDate, as: :pub_date
+        element :pubdate, as: :pub_date
+        element :'dc:date', as: :pub_date
+        element :'dc:Date', as: :pub_date
+        element :'dcterms:created', as: :pub_date
+        element :issued, as: :pub_date
         element 'media:thumbnail', value: :url, as: :thumbnail_url
-
         element :description, as: :summary
         element 'media:description', as: :summary
         element 'content:encoded', as: :summary
