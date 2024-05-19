@@ -93,7 +93,7 @@ jobs:
       - run: docker build -t asis .
       - run: docker tag asis:latest 213305845712.dkr.ecr.us-east-1.amazonaws.com/asis:latest
       - run: docker tag asis:latest 213305845712.dkr.ecr.us-east-1.amazonaws.com/asis:${CIRCLE_BUILD_NUM}
-      - run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 213305845712.dkr.ecr.us-east-2.amazonaws.com
+      - run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 213305845712.dkr.ecr.us-east-1.amazonaws.com
       - run: docker push 213305845712.dkr.ecr.us-east-1.amazonaws.com/asis:latest
       - run: docker push 213305845712.dkr.ecr.us-east-1.amazonaws.com/asis:${CIRCLE_BUILD_NUM}
       - kubernetes/install-kubectl
