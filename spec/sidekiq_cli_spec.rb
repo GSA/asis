@@ -14,7 +14,7 @@ describe 'sidekiq CLI' do
     Open3.popen2e('bundle exec sidekiq') do |_stdin, stdout_and_stderr, wait_thread|
       thread = wait_thread
       sleep 30
-
+      # Use system-specific tools or Ruby methods to check if the process is alive
       if process_alive?(wait_thread.pid)
         Process.kill('KILL', wait_thread.pid)
       end
