@@ -36,7 +36,7 @@ group :development, :test do
   gem 'puma', '~> 5.6'
   gem 'binding_of_caller'
   gem 'pry-rails'
-  gem 'rspec-rails', '~> 4.0'
+  gem 'rspec-rails', '~> 5.0'
   gem 'debug'
 end
 
