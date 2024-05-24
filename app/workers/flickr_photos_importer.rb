@@ -14,22 +14,17 @@ class FlickrPhotosImporter
     pages = 1
     min_ts = days_ago.present? ? days_ago.days.ago.to_i : 0
     oldest_retrieved_ts = Time.now.to_i
+    while page <= pages && oldest_retrieved_ts >= min_ts
+      photos = get_photos(id, profile_type, OPTIONS.merge(page: page))
+      return if photos.nil?
 
-    begin
-      while page <= pages && oldest_retrieved_ts >= min_ts
-        photos = get_photos(id, profile_type, OPTIONS.merge(page: page))
-        break if photos.nil?
-
-        Rails.logger.info("Storing #{photos.count} photos from page #{page} of #{pages} for Flickr #{profile_type} profile #{id}")
-        group_id = (profile_type == 'group' ? id : nil)
-        stored_photos = store_photos(photos, group_id)
-        stored_photos.each { |photo| AlbumDetector.detect_albums!(photo) }
-        pages = photos.pages
-        page += 1
-        oldest_retrieved_ts = last_uploaded_ts(photos)
-      end
-    rescue StandardError => e
-      Rails.logger.warn("Error during processing: #{e.message}")
+      Rails.logger.info("Storing #{photos.count} photos from page #{page} of #{pages} for Flickr #{profile_type} profile #{id}")
+      group_id = (profile_type == 'group' ? id : nil)
+      stored_photos = store_photos(photos, group_id)
+      stored_photos.each { |photo| AlbumDetector.detect_albums!(photo) }
+      pages = photos.pages
+      page += 1
+      oldest_retrieved_ts = last_uploaded_ts(photos)
     end
   end
 
