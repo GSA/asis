@@ -103,9 +103,6 @@ class FlickrPhotosImporter
 
     Rails.logger.warn('No photos available to retrieve the last uploaded timestamp.')
     Time.now.to_i
-  rescue StandardError => e
-    Rails.logger.warn("Trouble getting oldest upload date from photo #{photos.to_a.last}: #{e}")
-    Time.now.to_i
   end
 
   def strip_irrelevant_tags(tags)
