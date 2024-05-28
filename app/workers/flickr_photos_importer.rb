@@ -101,8 +101,10 @@ class FlickrPhotosImporter
     last_photo = photo_array.last
     return last_photo.dateupload.to_i if last_photo
 
+    Rails.logger.warn('No photos available to retrieve the last uploaded timestamp.')
+    Time.now.to_i
   rescue StandardError => e
-    Rails.logger.warn("Trouble getting oldest upload date from photo: #{e.message}")
+    Rails.logger.warn("Trouble getting oldest upload date from photo #{photos.to_a.last}: #{e}")
     Time.now.to_i
   end
 
