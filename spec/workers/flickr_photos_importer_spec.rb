@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'ostruct'
 
 describe FlickrPhotosImporter do
   it { is_expected.to be_retryable true }
