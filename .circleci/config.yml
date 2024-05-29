@@ -70,13 +70,12 @@ jobs:
       - run: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 213305845712.dkr.ecr.us-east-2.amazonaws.com
       - run: docker push 213305845712.dkr.ecr.us-east-2.amazonaws.com/asis:latest
       - run: docker push 213305845712.dkr.ecr.us-east-2.amazonaws.com/asis:${CIRCLE_BUILD_NUM}
-      # - kubernetes/install-kubectl
       - run: 
           name: get pem key from secret manager
           command: |
             aws secretsmanager get-secret-value --secret-id search/packer/staging-ec2-pem-key --region us-east-2 --query 'SecretString' --output text > $CIRCLE_BRANCH.pem
             chmod 400 $CIRCLE_BRANCH.pem
-            # sudo apt update && apt install wget
+            sudo apt update && apt install wget
       - run: 
           name: updating security group
           command: |
