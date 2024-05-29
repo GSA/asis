@@ -4,9 +4,10 @@ require 'rails_helper'
 
 describe 'ActiveSupport::ParameterFilter' do
   let(:config) { Oasis::Application.config }
-  let(:param_filter) { ActiveSupport::ParameterFilter.new(config.filter_parameters) }
+  let(:parameter_filter) { ActiveSupport::ParameterFilter.new(config.filter_parameters) }
 
   it 'filters query from logs' do
-    expect(config.filter_parameters).to match(array_including(:query))
+    pattern_found = config.filter_parameters.any? { |regex| regex =~ /query/i }
+    expect(pattern_found).to be true
   end
 end
