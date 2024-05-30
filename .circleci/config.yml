@@ -62,7 +62,7 @@ jobs:
       - setup_remote_docker
       - aws-cli/setup:
           aws-region: STAGING_AWS_REGION
-          aws-access-key-id: CIRCLE_CI_USER_ACCESS_KEY_ID # added in circle ci org settings 
+          aws-access-key-id: CIRCLE_CI_USER_ACCESS_KEY_ID 
           aws-secret-access-key: CIRCLE_CI_USER_SECRET_ACCESS_KEY
       - run: docker build -t asis .
       - run: docker tag asis:latest 213305845712.dkr.ecr.us-east-2.amazonaws.com/asis:latest
@@ -70,33 +70,39 @@ jobs:
       - run: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 213305845712.dkr.ecr.us-east-2.amazonaws.com
       - run: docker push 213305845712.dkr.ecr.us-east-2.amazonaws.com/asis:latest
       - run: docker push 213305845712.dkr.ecr.us-east-2.amazonaws.com/asis:${CIRCLE_BUILD_NUM}
-      # - run: 
-      #     name: get pem key from secret manager
-      #     command: |
-      #       aws secretsmanager get-secret-value --secret-id search/packer/staging-ec2-pem-key --region us-east-2 --query 'SecretString' --output text > $CIRCLE_BRANCH.pem
-      #       chmod 400 $CIRCLE_BRANCH.pem
-      #       sudo apt update && apt install wget
-      # - run: 
-      #     name: updating security group
-      #     command: |
-      #       public_ip_address=$(wget -qO- http://checkip.amazonaws.com)
-      #       ansible_sg=$(aws ec2 describe-security-groups --query "SecurityGroups[?GroupName=='ansible-staging-sg'].[GroupId]" --output text --region us-east-2)
-      #       echo "this container's public ip address is $public_ip_address"
-      #       aws ec2 authorize-security-group-ingress --group-id $ansible_sg --protocol tcp --port 22 --cidr $public_ip_address/32 --region us-east-2
-      # - run: ssh -o "StrictHostKeyChecking no" -i $CIRCLE_BRANCH.pem ubuntu@$public_ip_address 'kubectl rollout restart deployment search-staging-asis-deploy -n search'
-      # - run: 
-      #     name: remove security group rule at end of job
-      #     command: |
-      #       public_ip_address=$(wget -qO- http://checkip.amazonaws.com)
-      #       ansible_sg=$(aws ec2 describe-security-groups --query "SecurityGroups[?GroupName=='ansible-staging-sg'].[GroupId]" --output text --region us-east-2)
-      #       aws ec2 revoke-security-group-ingress --group-id $ansible_sg --protocol tcp --port 22 --cidr $public_ip_address/32 --region us-east-2
-      # - run: 
-      #     name: remove security group if the pipeline fails
-      #     command: |
-      #       public_ip_address=$(wget -qO- http://checkip.amazonaws.com)
-      #       ansible_sg=$(aws ec2 describe-security-groups --query "SecurityGroups[?GroupName=='ansible-staging-sg'].[GroupId]" --output text --region us-east-2)
-      #       aws ec2 revoke-security-group-ingress --group-id $ansible_sg --protocol tcp --port 22 --cidr $public_ip_address/32 --region us-east-2
-      #     when: on_fail
+      - run: 
+          name: update asis k8s deployment
+          command: |
+            aws ssm send-command \
+            --document-name "searchgov-deployment-ssm-document" \
+            --targets "Key=tag:Name,Values=jumphost-staging-search-instance" \
+            --parameters '{"DeploymentName":["search-staging-asis-deploy"], "Namespace":["search"]}' \
+            --comment "restart asis staging deployment"
+  update-prod:
+    docker:
+      - image: cimg/aws:2023.01
+    steps:
+      - checkout
+      - setup_remote_docker
+      - aws-cli/setup:
+          aws-region: PROD_AWS_REGION
+          aws-access-key-id: CIRCLE_CI_USER_ACCESS_KEY_ID 
+          aws-secret-access-key: CIRCLE_CI_USER_SECRET_ACCESS_KEY
+      - run: docker build -t asis .
+      - run: docker tag asis:latest 213305845712.dkr.ecr.us-east-1.amazonaws.com/asis:latest
+      - run: docker tag asis:latest 213305845712.dkr.ecr.us-east-1.amazonaws.com/asis:${CIRCLE_BUILD_NUM}
+      - run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 213305845712.dkr.ecr.us-east-1.amazonaws.com
+      - run: docker push 213305845712.dkr.ecr.us-east-1.amazonaws.com/asis:latest
+      - run: docker push 213305845712.dkr.ecr.us-east-1.amazonaws.com/asis:${CIRCLE_BUILD_NUM}
+      - run: 
+          name: update asis k8s deployment
+          command: |
+            aws ssm send-command \
+            --document-name "searchgov-deployment-ssm-document" \
+            --targets "Key=tag:Name,Values=jumphost-prod-search-instance" \
+            --parameters '{"DeploymentName":["search-prod-asis-deploy"], "Namespace":["search"]}' \
+            --comment "restart asis prod deployment"
+  
 
 workflows:
   build_and_test:
@@ -121,3 +127,11 @@ workflows:
               only:
                 - main
                 - SRCH-5020-image-pipeline
+      - update-prod:
+          context:
+            - aws-client-keys
+          filters:
+            branches:
+              only:
+                - production
+                
