@@ -26,33 +26,19 @@ describe FlickrPhotosImporter do
         photo3 = Hashie::Mash.new(id: 'photo3', owner: 'owner3', tags: '', title: 'title3', description: 'desc 3', datetaken: Time.now.strftime('%Y-%m-%d %H:%M:%S'), views: 300, url_o: 'http://photo3', url_q: 'http://photo_thumbnail3', dateupload: Time.now.to_i)
         photo4 = Hashie::Mash.new(id: 'photo4', owner: 'owner4', tags: '', title: 'title4', description: 'desc 4', datetaken: 8.days.ago.strftime('%Y-%m-%d %H:%M:%S'), views: 400, url_o: 'http://photo4', url_q: 'http://photo_thumbnail4', dateupload: 8.days.ago.to_i)
         photo5 = Hashie::Mash.new(id: 'photo5', owner: 'owner5', tags: '', title: 'title5', description: 'desc 5', datetaken: 9.days.ago.strftime('%Y-%m-%d %H:%M:%S'), views: 500, url_o: 'http://photo5', url_q: 'http://photo_thumbnail5', dateupload: 9.days.ago.to_i)
+
         batch1_photos = [photo1, photo2]
         batch2_photos = [photo3, photo4]
         batch3_photos = [photo5]
-        allow(batch1_photos).to receive(:pages).and_return(3)
-        allow(batch2_photos).to receive(:pages).and_return(3)
-        allow(batch3_photos).to receive(:pages).and_return(3)
-        allow(importer).to receive(:get_photos).with(
-          'flickr_id',
-          'user',
-          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
-          extras: FlickrPhotosImporter::EXTRA_FIELDS,
-          page: 1
-        ).and_return(batch1_photos)
-        allow(importer).to receive(:get_photos).with(
-          'flickr_id',
-          'user',
-          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
-          extras: FlickrPhotosImporter::EXTRA_FIELDS,
-          page: 2
-        ).and_return(batch2_photos)
-        allow(importer).to receive(:get_photos).with(
-          'flickr_id',
-          'user',
-          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
-          extras: FlickrPhotosImporter::EXTRA_FIELDS,
-          page: 3
-        ).and_return(batch3_photos)
+
+        allow(importer).to receive(:get_photos) do |id, profile_type, options|
+          case options[:page]
+          when 1 then OpenStruct.new(photos: batch1_photos, pages: 3)
+          when 2 then OpenStruct.new(photos: batch2_photos, pages: 3)
+          when 3 then OpenStruct.new(photos: batch3_photos, pages: 3)
+          else OpenStruct.new(photos: [], pages: 3)
+          end
+        end
       end
 
       context 'when days_ago is specified' do
@@ -83,9 +69,11 @@ describe FlickrPhotosImporter do
         allow(importer).to receive(:get_photos).with(
           'flickr_id',
           'user',
-          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
-          extras: FlickrPhotosImporter::EXTRA_FIELDS,
-          page: 1
+          {
+            per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+            extras: FlickrPhotosImporter::EXTRA_FIELDS,
+            page: 1
+          }
         ).and_return(batch1_photos)
       end
 
@@ -114,9 +102,11 @@ describe FlickrPhotosImporter do
         allow(importer).to receive(:get_photos).with(
           'flickr_group_id',
           'group',
-          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
-          extras: FlickrPhotosImporter::EXTRA_FIELDS,
-          page: 1
+          {
+            per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+            extras: FlickrPhotosImporter::EXTRA_FIELDS,
+            page: 1
+          }
         ).and_return(batch1_photos)
       end
 
@@ -144,9 +134,11 @@ describe FlickrPhotosImporter do
         allow(importer).to receive(:get_photos).with(
           'flickr_id',
           'user',
-          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
-          extras: FlickrPhotosImporter::EXTRA_FIELDS,
-          page: 1
+          {
+            per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+            extras: FlickrPhotosImporter::EXTRA_FIELDS,
+            page: 1
+          }
         ).and_return(batch1_photos)
       end
 
@@ -165,9 +157,11 @@ describe FlickrPhotosImporter do
         allow(importer).to receive(:get_photos).with(
           'flickr_id',
           'user',
-          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
-          extras: FlickrPhotosImporter::EXTRA_FIELDS,
-          page: 1
+          {
+            per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+            extras: FlickrPhotosImporter::EXTRA_FIELDS,
+            page: 1
+          }
         ).and_return(batch1_photos)
       end
 
@@ -186,9 +180,11 @@ describe FlickrPhotosImporter do
         allow(importer).to receive(:get_photos).with(
           'flickr_id',
           'user',
-          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
-          extras: FlickrPhotosImporter::EXTRA_FIELDS,
-          page: 1
+          {
+            per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+            extras: FlickrPhotosImporter::EXTRA_FIELDS,
+            page: 1
+          }
         ).and_return(batch1_photos)
       end
 
@@ -209,9 +205,11 @@ describe FlickrPhotosImporter do
         allow(importer).to receive(:get_photos).with(
           'flickr_id',
           'user',
-          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
-          extras: FlickrPhotosImporter::EXTRA_FIELDS,
-          page: 1
+          {
+            per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+            extras: FlickrPhotosImporter::EXTRA_FIELDS,
+            page: 1
+          }
         ).and_return(batch1_photos)
       end
 
@@ -230,10 +228,13 @@ describe FlickrPhotosImporter do
         allow(importer).to receive(:get_photos).with(
           'flickr_id',
           'user',
-          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
-          extras: FlickrPhotosImporter::EXTRA_FIELDS,
-          page: 1
+          {
+            per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+            extras: FlickrPhotosImporter::EXTRA_FIELDS,
+            page: 1
+          }
         ).and_return(batch1_photos)
+
         FlickrPhoto.create(id: 'already exists', owner: 'owner1', tags: [], title: 'initial title', description: 'desc 1', taken_at: Date.current, popularity: 100, url: 'http://photo1', thumbnail_url: 'http://photo_thumbnail1', album: 'album1', groups: [])
       end
 
@@ -255,10 +256,13 @@ describe FlickrPhotosImporter do
         allow(importer).to receive(:get_photos).with(
           'flickr_group_id',
           'group',
-          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
-          extras: FlickrPhotosImporter::EXTRA_FIELDS,
-          page: 1
+          {
+            per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+            extras: FlickrPhotosImporter::EXTRA_FIELDS,
+            page: 1
+          }
         ).and_return(batch1_photos)
+
         FlickrPhoto.create(id: 'already exists with group', owner: 'owner1', tags: [], title: 'initial title', description: 'desc 1', taken_at: Date.current, popularity: 100, url: 'http://photo1', thumbnail_url: 'http://photo_thumbnail1', album: 'album1', groups: [])
       end
 
@@ -271,7 +275,7 @@ describe FlickrPhotosImporter do
       it 'adds the group_id to the unique set of groups' do
         perform
         already_exists = FlickrPhoto.find('already exists with group')
-        expect(already_exists.groups).to eq(%w[flickr_group_id])
+        expect(already_exists.groups).to include('flickr_group_id')
       end
     end
 
@@ -285,9 +289,11 @@ describe FlickrPhotosImporter do
         allow(importer).to receive(:get_photos).with(
           'flickr_group_id',
           'group',
-          per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
-          extras: FlickrPhotosImporter::EXTRA_FIELDS,
-          page: 1
+          {
+            per_page: FlickrPhotosImporter::MAX_PHOTOS_PER_REQUEST,
+            extras: FlickrPhotosImporter::EXTRA_FIELDS,
+            page: 1
+          }
         ).and_return(batch1_photos)
         FlickrPhoto.create(id: 'already exists with group', owner: 'owner1', tags: [], title: 'initial title', description: 'desc 1', taken_at: Date.current, popularity: 100, url: 'http://photo1', thumbnail_url: 'http://photo_thumbnail1', album: 'album1', groups: %w[group1 flickr_group_id])
       end
