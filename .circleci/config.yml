@@ -67,10 +67,10 @@ jobs:
           aws-secret-access-key: CIRCLE_CI_USER_SECRET_ACCESS_KEY
       - run: docker build -t asis .
       - run: docker tag asis:latest 213305845712.dkr.ecr.us-east-2.amazonaws.com/asis:latest
-      - run: docker tag asis:latest 213305845712.dkr.ecr.us-east-2.amazonaws.com/asis:${CIRCLE_SHA1}
+      - run: docker tag asis:latest 213305845712.dkr.ecr.us-east-2.amazonaws.com/asis:${CIRCLE_SHA1:0:7}
       - run: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 213305845712.dkr.ecr.us-east-2.amazonaws.com
       - run: docker push 213305845712.dkr.ecr.us-east-2.amazonaws.com/asis:latest
-      - run: docker push 213305845712.dkr.ecr.us-east-2.amazonaws.com/asis:${CIRCLE_SHA1}
+      - run: docker push 213305845712.dkr.ecr.us-east-2.amazonaws.com/asis:${CIRCLE_SHA1:0:7}
       - run: 
           name: update asis k8s deployment
           command: |
@@ -92,10 +92,10 @@ jobs:
           aws-secret-access-key: CIRCLE_CI_USER_SECRET_ACCESS_KEY
       - run: docker build -t asis .
       - run: docker tag asis:latest 213305845712.dkr.ecr.us-east-1.amazonaws.com/asis:latest
-      - run: docker tag asis:latest 213305845712.dkr.ecr.us-east-1.amazonaws.com/asis:${CIRCLE_SHA1}
+      - run: docker tag asis:latest 213305845712.dkr.ecr.us-east-1.amazonaws.com/asis:${CIRCLE_SHA1:0:7}
       - run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 213305845712.dkr.ecr.us-east-1.amazonaws.com
       - run: docker push 213305845712.dkr.ecr.us-east-1.amazonaws.com/asis:latest
-      - run: docker push 213305845712.dkr.ecr.us-east-1.amazonaws.com/asis:${CIRCLE_SHA1}
+      - run: docker push 213305845712.dkr.ecr.us-east-1.amazonaws.com/asis:${CIRCLE_SHA1:0:7}
       - run: 
           name: update asis k8s deployment
           command: |
