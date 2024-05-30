@@ -121,6 +121,8 @@ workflows:
       - update-staging:
           context:
             - aws-client-keys
+          requires:
+            - build_and_test
           filters:
             branches:
               only:
@@ -128,6 +130,8 @@ workflows:
       - update-prod:
           context:
             - aws-client-keys
+          requires:
+            - build_and_test
           filters:
             branches:
               only:
