@@ -5,6 +5,11 @@ version: 2.1
 
 orbs:
   ruby: circleci/ruby@1.7.1
+  aws-ecr: circleci/aws-ecr@8.2.1
+  aws-eks: circleci/aws-eks@1.1.0
+  aws-cli: circleci/aws-cli@3.1.4
+  kubernetes: circleci/kubernetes@1.3.1
+  docker: circleci/docker@1.5.0
 
 jobs:
   build_and_test:
@@ -13,7 +18,6 @@ jobs:
         type: string
       elasticsearch_version:
         type: string
-
     docker:
       - image: cimg/ruby:<< parameters.ruby_version >>
       - image: redis:6.2
@@ -21,9 +25,7 @@ jobs:
         environment:
           - xpack.security.enabled: false
           - discovery.type: single-node
-
     working_directory: ~/app
-
     steps:
       - checkout
       - run:
@@ -52,6 +54,49 @@ jobs:
           name: Report Test Results
           command: |
             ./cc-test-reporter after-build
+  update-staging:
+    docker:
+      - image: cimg/aws:2023.01
+    steps:
+      - checkout
+      - setup_remote_docker
+      - aws-cli/setup:
+          aws-region: STAGING_AWS_REGION
+          aws-access-key-id: CIRCLE_CI_USER_ACCESS_KEY_ID # added in circle ci org settings 
+          aws-secret-access-key: CIRCLE_CI_USER_SECRET_ACCESS_KEY
+      - run: docker build -t asis .
+      - run: docker tag asis:latest 213305845712.dkr.ecr.us-east-2.amazonaws.com/asis:latest
+      - run: docker tag asis:latest 213305845712.dkr.ecr.us-east-2.amazonaws.com/asis:${CIRCLE_BUILD_NUM}
+      - run: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 213305845712.dkr.ecr.us-east-2.amazonaws.com
+      - run: docker push 213305845712.dkr.ecr.us-east-2.amazonaws.com/asis:latest
+      - run: docker push 213305845712.dkr.ecr.us-east-2.amazonaws.com/asis:${CIRCLE_BUILD_NUM}
+      - run: 
+          name: get pem key from secret manager
+          command: |
+            aws secretsmanager get-secret-value --secret-id search/packer/staging-ec2-pem-key --region us-east-2 --query 'SecretString' --output text > $CIRCLE_BRANCH.pem
+            chmod 400 $CIRCLE_BRANCH.pem
+            sudo apt update && apt install wget
+      - run: 
+          name: updating security group
+          command: |
+            public_ip_address=$(wget -qO- http://checkip.amazonaws.com)
+            ansible_sg=$(aws ec2 describe-security-groups --query "SecurityGroups[?GroupName=='ansible-staging-sg'].[GroupId]" --output text --region us-east-2)
+            echo "this container's public ip address is $public_ip_address"
+            aws ec2 authorize-security-group-ingress --group-id $ansible_sg --protocol tcp --port 22 --cidr $public_ip_address/32 --region us-east-2
+      - run: ssh -o "StrictHostKeyChecking no" -i $CIRCLE_BRANCH.pem ubuntu@$public_ip_address 'kubectl rollout restart deployment search-staging-asis-deploy -n search'
+      - run: 
+          name: remove security group rule at end of job
+          command: |
+            public_ip_address=$(wget -qO- http://checkip.amazonaws.com)
+            ansible_sg=$(aws ec2 describe-security-groups --query "SecurityGroups[?GroupName=='ansible-staging-sg'].[GroupId]" --output text --region us-east-2)
+            aws ec2 revoke-security-group-ingress --group-id $ansible_sg --protocol tcp --port 22 --cidr $public_ip_address/32 --region us-east-2
+      - run: 
+          name: remove security group if the pipeline fails
+          command: |
+            public_ip_address=$(wget -qO- http://checkip.amazonaws.com)
+            ansible_sg=$(aws ec2 describe-security-groups --query "SecurityGroups[?GroupName=='ansible-staging-sg'].[GroupId]" --output text --region us-east-2)
+            aws ec2 revoke-security-group-ingress --group-id $ansible_sg --protocol tcp --port 22 --cidr $public_ip_address/32 --region us-east-2
+          when: on_fail
 
 workflows:
   build_and_test:
@@ -65,3 +110,10 @@ workflows:
               elasticsearch_version:
                 - 7.17.7
                 # not yet compatible with Elasticsearch 8
+  build_image_and_deploy:
+    jobs:
+      - update-staging:
+          filters:
+            branches:
+              only:
+                - main
