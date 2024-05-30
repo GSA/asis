@@ -121,11 +121,11 @@ workflows:
       - update-staging:
           context:
             - aws-client-keys
-          filters:
-            branches:
-              only:
-                - main
-                - SRCH-5020-image-pipleine
+          # filters:
+          #   branches:
+          #     only:
+          #       - main
+          #       - SRCH-5020-image-pipleine
       - update-prod:
           context:
             - aws-client-keys
