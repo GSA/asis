@@ -57,6 +57,7 @@ jobs:
   update-staging:
     docker:
       - image: cimg/aws:2023.01
+    resource_class: xlarge
     steps:
       - checkout
       - setup_remote_docker
@@ -81,6 +82,7 @@ jobs:
   update-prod:
     docker:
       - image: cimg/aws:2023.01
+    resource_class: xlarge
     steps:
       - checkout
       - setup_remote_docker
