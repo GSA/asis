@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 7.0.8'
+gem 'rails', '~> 7.1.0'
 
 gem 'rake', '~> 13.0.6'
 
@@ -36,7 +36,7 @@ group :development, :test do
   gem 'puma', '~> 5.6'
   gem 'binding_of_caller'
   gem 'pry-rails'
-  gem 'rspec-rails', '~> 3.8.2'
+  gem 'rspec-rails', '~> 5.0'
   gem 'debug'
 end
 

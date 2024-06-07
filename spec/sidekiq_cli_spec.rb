@@ -9,13 +9,28 @@ describe 'sidekiq CLI' do
     # Inspired by: https://github.com/sidekiq/sidekiq/issues/3214
     # Kick off sidekiq, wait a bit, and make sure the output doesn't include errors.
     # It's slow, but appears to be the only way to detect errors outside the workers.
-    errors = Open3.popen2e('bundle exec sidekiq') do |_stdin, stdout_and_stderr, wait_thread|
+    errors = []
+    thread = nil
+    Open3.popen2e('bundle exec sidekiq') do |_stdin, stdout_and_stderr, wait_thread|
+      thread = wait_thread
       sleep 30
-      Process.kill('KILL', wait_thread.pid)
-      # certain errors are written to STDOUT, so we look at both STDOUT and STDERR
-      stdout_and_stderr.select { |line| line.include?('ERROR') }
+      # Use system-specific tools or Ruby methods to check if the process is alive
+      if process_alive?(wait_thread.pid)
+        Process.kill('KILL', wait_thread.pid)
+      end
+
+      errors = stdout_and_stderr.read.split("\n").select { |line| line.include?('ERROR') }
     end
 
+    Process.kill('KILL', thread.pid) if process_alive?(thread.pid)
+
     expect(errors).to be_empty
+  end
+
+  def process_alive?(pid)
+    Process.getpgid(pid)
+    true
+  rescue Errno::ESRCH
+    false
   end
 end
