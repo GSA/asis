@@ -40,5 +40,7 @@ module Oasis
     config.sidekiq       = config_for(:sidekiq)
     config.flickr        = config_for(:flickr)
     config.hosts         << "asis" if ENV["DOCKER"]
+
+    config.semantic_logger.application = ENV.fetch('APP_NAME', APP_NAME)
   end
 end

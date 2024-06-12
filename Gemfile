@@ -27,10 +27,10 @@ gem 'sidekiq', '~> 7.1.3'
 gem 'sidekiq-failures', '~> 1.0.0'
 gem 'sidekiq-unique-jobs', '~> 8.0.9'
 gem 'whenever', '~> 0.9.4', require: false
-
 gem 'newrelic_rpm', '~> 8.16'
-
 gem 'feedjira', '~> 2.2.0'
+
+gem 'rails_semantic_logger', '~> 4.14'
 
 group :development, :test do
   gem 'puma', '~> 5.6'
@@ -57,3 +57,4 @@ group :test do
   gem 'simplecov', '~> 0.16.1'
   gem 'webmock', '~> 3.18'
 end
+
