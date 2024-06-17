@@ -227,7 +227,7 @@ GEM
       timeout
     net-smtp (0.5.0)
       net-protocol
-    newrelic_rpm (8.16.0)
+    newrelic_rpm (9.10.2)
     nio4r (2.7.0)
     nokogiri (1.16.5)
       mini_portile2 (~> 2.8.2)
@@ -429,7 +429,7 @@ DEPENDENCIES
   jbuilder (~> 2.11.5)
   listen (~> 3.8.0)
   mock_redis (~> 0.17.3)
-  newrelic_rpm (~> 8.16)
+  newrelic_rpm (~> 9.10)
   pry-rails
   puma (~> 5.6)
   rails (~> 7.1.0)
