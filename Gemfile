@@ -27,7 +27,7 @@ gem 'sidekiq', '~> 7.1.3'
 gem 'sidekiq-failures', '~> 1.0.0'
 gem 'sidekiq-unique-jobs', '~> 8.0.9'
 gem 'whenever', '~> 0.9.4', require: false
-gem 'newrelic_rpm', '~> 8.16'
+gem 'newrelic_rpm', '~> 9.10'
 gem 'feedjira', '~> 2.2.0'
 
 gem 'rails_semantic_logger', '~> 4.14'
