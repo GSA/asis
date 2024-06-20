@@ -10,6 +10,7 @@ class TermsFilter
     builder = Jbuilder.new do |json|
       filtered_query(json)
     end
+
     builder.attributes!
   end
 

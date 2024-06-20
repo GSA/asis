@@ -12,7 +12,6 @@ module Feedjira
         element :title
         element :link
         element :description
-
         elements :item, as: :entries, class: Oasis::MrssEntry
 
         attr_accessor :feed_url
