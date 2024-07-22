@@ -38,4 +38,12 @@ set :deploy_to, ENV.fetch('DEPLOYMENT_PATH')
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 
+before :updated, :symlink_puma_service
+
+task :symlink_puma_service do
+  on roles(:app) do
+    execute :ln, "-s", "#{release_path}/puma.service", "/etc/systemd/system/puma.service"
+  end
+end
+
 before 'deploy:finished', 'newrelic:notice_deployment'
