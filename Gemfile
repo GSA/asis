@@ -31,13 +31,18 @@ gem 'newrelic_rpm', '~> 9.10'
 gem 'feedjira', '~> 2.2.0'
 
 gem 'rails_semantic_logger', '~> 4.14'
+gem 'puma', '~> 5.6'
 
 group :development, :test do
-  gem 'puma', '~> 5.6'
   gem 'binding_of_caller'
   gem 'pry-rails'
   gem 'rspec-rails', '~> 5.0'
   gem 'debug'
+  gem 'capistrano',          require: false
+  gem 'capistrano-newrelic', require: false
+  gem 'capistrano-rails',    require: false
+  gem 'capistrano-sidekiq',  require: false
+  gem 'capistrano3-puma',    require: false
 end
 
 group :development do
