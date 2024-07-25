@@ -47,6 +47,13 @@ server ENV.fetch('SERVER_ADDRESS'), user: ENV.fetch('SERVER_DEPLOYMENT_USER'), r
 #    forward_agent: false,
 #    auth_methods: %w(password)
 #  }
+
+set :ssh_options, {
+	keys: [ENV['SSH_KEY_PATH']],
+	forward_agent: false,
+	auth_methods: %w(publickey)
+}
+
 #
 # The server-based syntax can be used to override options:
 # ------------------------------------
