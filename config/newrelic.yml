@@ -9,22 +9,22 @@
 
 common: &default_settings
   # Required license key associated with your New Relic account.
-  license_key: <%= ENV['NEWRELIC_LICENSE_KEY'] || (Rails.application.secrets.newrelic[:license_key] rescue nil) %>
+  license_key: <%= ENV['NEWRELIC_LICENSE_KEY'] %>
 
   # Your application name. Renaming here affects where data displays in New
   # Relic. For more details, see https://docs.newrelic.com/docs/apm/new-relic-apm/maintenance/renaming-applications
-  app_name: <%= ENV['NEWRELIC_APP_NAME'] || (Rails.application.secrets.newrelic[:app_name] rescue 'Asis Application') %>
+  app_name: <%= ENV['NEWRELIC_APP_NAME'] %>
 
   # FedRAMP-compliant endpoint
   # https://docs.newrelic.com/docs/security/security-privacy/compliance/fedramp-compliant-endpoints/
-  host: <%= ENV['NEWRELIC_HOST'] || (Rails.application.secrets.newrelic[:host] rescue 'collector.newrelic.com') %>
+  host: <%= ENV['NEWRELIC_HOST'] %>
 
   # To disable the agent regardless of other settings, uncomment the following:
   # agent_enabled: false
 
   # Logging level for log/newrelic_agent.log; options are error, warn, info, or
   # debug.
-  log_level: <%= ENV['NEWRELIC_LOG_LEVEL'] || (Rails.application.secrets.newrelic[:log_level] rescue 'info') %>
+  log_level: <%= ENV['NEWRELIC_LOG_LEVEL'] %>
 
   # All of the following configuration options are optional. Review them, and
   # uncomment or edit them if they appear relevant to your application needs.
@@ -500,7 +500,7 @@ common: &default_settings
   # elasticsearch.obfuscate_queries: true
 
   # When true, the agent transmits data about your app to the New Relic collector.
-  monitor_mode: <%= ENV['NEWRELIC_ENABLED'] || (Rails.application.secrets.newrelic[:enabled] rescue 'false') %>
+  monitor_mode: <%= ENV['NEWRELIC_ENABLED'] %>
 
   # If true, uses Module#prepend rather than alias_method for Active Record
   # instrumentation.
