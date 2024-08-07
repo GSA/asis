@@ -10,12 +10,12 @@ set :user, :search
 # Set deploy directory
 set :deploy_to, ENV.fetch('DEPLOYMENT_PATH')
 
-# set :puma_user, fetch(:user)
+set :puma_user, fetch(:user)
 # set :puma_service_unit_env_files, []
 # set :puma_service_unit_env_vars, []
 
-# set :systemctl_user, fetch(:user)
-# set :puma_systemctl_user, :search
+set :systemctl_user, fetch(:user)
+set :puma_systemctl_user, :search
 
 # set :puma_bind, "tcp://0.0.0.0:3000"
 
