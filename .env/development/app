@@ -1,2 +1,0 @@
-ES_HOSTS=elasticsearch7:9200
-REDIS_HOST=redis://redis:6379
