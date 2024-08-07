@@ -68,7 +68,4 @@ set :ssh_options, {
 #     # password: "please use keys"
 #   }
 
-# Systemd socket activation starts your app upon first request if it is not already running
-set :puma_enable_socket_service, true
-
 set :rails_env, 'production'

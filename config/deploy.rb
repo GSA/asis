@@ -10,16 +10,16 @@ set :user, :search
 # Set deploy directory
 set :deploy_to, ENV.fetch('DEPLOYMENT_PATH')
 
-set :puma_user, fetch(:user)
-set :puma_service_unit_env_files, []
-set :puma_service_unit_env_vars, []
+# set :puma_user, fetch(:user)
+# set :puma_service_unit_env_files, []
+# set :puma_service_unit_env_vars, []
 
-set :systemctl_user, fetch(:user)
-set :puma_systemctl_user, :search
+# set :systemctl_user, fetch(:user)
+# set :puma_systemctl_user, :search
 
-set :puma_bind, "tcp://0.0.0.0:3000"
+# set :puma_bind, "tcp://0.0.0.0:3000"
 
-SSHKit.config.command_map[:bundle] = 'bin/bundle'
+# SSHKit.config.command_map[:bundle] = 'bin/bundle'
 
 # set :rbenv_custom_path, "/usr"
 
@@ -54,9 +54,9 @@ SSHKit.config.command_map[:bundle] = 'bin/bundle'
 before 'deploy:finished', 'newrelic:notice_deployment'
 
 # Systemd socket activation starts your app upon first request if it is not already running
-set :puma_enable_socket_service, true
+# set :puma_enable_socket_service, true
 
-set :puma_user, fetch(:user)
-set :puma_role, :web
-set :puma_service_unit_env_files, []
-set :puma_service_unit_env_vars, []
+# set :puma_user, fetch(:user)
+# set :puma_role, :web
+# set :puma_service_unit_env_files, []
+# set :puma_service_unit_env_vars, []
