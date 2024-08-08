@@ -17,7 +17,7 @@ set :puma_user, fetch(:user)
 set :systemctl_user, fetch(:user)
 set :puma_systemctl_user, :search
 
-# set :puma_bind, "tcp://0.0.0.0:3000"
+set :puma_bind, "tcp://0.0.0.0:3300"
 
 # SSHKit.config.command_map[:bundle] = 'bin/bundle'
 
