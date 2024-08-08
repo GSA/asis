@@ -51,7 +51,7 @@ set :puma_bind, "tcp://0.0.0.0:3300"
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 
-before 'deploy:finished', 'newrelic:notice_deployment'
+# before 'deploy:finished', 'newrelic:notice_deployment'
 
 # Systemd socket activation starts your app upon first request if it is not already running
 # set :puma_enable_socket_service, true
