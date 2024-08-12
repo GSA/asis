@@ -7,3 +7,4 @@
 .ruby-gemset
 config/instagram.yml
 /coverage
+.env

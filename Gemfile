@@ -27,7 +27,7 @@ gem 'newrelic_rpm', '~> 9.10'
 gem 'feedjira', '~> 2.2.0'
 gem 'rails_semantic_logger', '~> 4.14'
 gem 'puma', '~> 5.6'
-gem "dotenv", "~> 3.1"
+gem 'dotenv', '~> 3.1'
 
 group :development, :test do
   gem 'binding_of_caller'

@@ -4,7 +4,7 @@ lock "~> 3.19.1"
 set :application, "asis"
 set :repo_url,    "https://github.com/GSA/asis.git"
 
-set :branch, "SRCH-5369-asis-capistrano-setup"
+set :branch, "staging"
 # set :user, :search
 
 # Set deploy directory
