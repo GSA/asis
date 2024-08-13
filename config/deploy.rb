@@ -5,7 +5,7 @@ set :application, "asis"
 set :repo_url,    "https://github.com/GSA/asis.git"
 
 set :branch, "staging"
-# set :user, :search
+set :user, :search
 
 # Set deploy directory
 set :deploy_to, ENV.fetch('DEPLOYMENT_PATH')
