@@ -3,29 +3,15 @@ lock "~> 3.19.1"
 
 set :application, "asis"
 set :repo_url,    "https://github.com/GSA/asis.git"
-
-set :branch, "staging"
-set :user, :search
-
-# Set deploy directory
+set :rails_env,   'production'
+set :branch,      'staging'
+set :user,        :search
 set :deploy_to, ENV.fetch('DEPLOYMENT_PATH')
 
-# set :rbenv_ruby, '3.1.4'
 set :rbenv_type, :user
-
-# set :puma_user, fetch(:user)
-# set :puma_service_unit_env_files, []
-# set :puma_service_unit_env_vars, []
-
-# set :systemctl_user, fetch(:user)
-# set :puma_systemctl_user, :search
 
 set :puma_bind, 'tcp://0.0.0.0:3300'
 set :puma_preload_app, false
-
-# SSHKit.config.command_map[:bundle] = 'bin/bundle'
-
-# set :rbenv_custom_path, "/usr"
 
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
@@ -41,7 +27,7 @@ set :puma_preload_app, false
 append :linked_files, '.env'
 
 # Default value for linked_dirs is []
-# append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system", "vendor", "storage"
+append :linked_dirs, 'log', 'tmp'
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -56,11 +42,3 @@ append :linked_files, '.env'
 # set :ssh_options, verify_host_key: :secure
 
 # before 'deploy:finished', 'newrelic:notice_deployment'
-
-# Systemd socket activation starts your app upon first request if it is not already running
-# set :puma_enable_socket_service, true
-
-# set :puma_user, fetch(:user)
-# set :puma_role, :web
-# set :puma_service_unit_env_files, []
-# set :puma_service_unit_env_vars, []
