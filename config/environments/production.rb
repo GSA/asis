@@ -63,4 +63,6 @@ Rails.application.configure do
   config.hosts << "asis.staging.search.usa.gov"
  
   config.rails_semantic_logger.format = :json
+
+  config.secret_key_base = ENV["ASIS_SECRET_KEY_BASE"]
 end
