@@ -39,7 +39,7 @@ module Oasis
     config.elasticsearch = config_for(:elasticsearch)
     config.sidekiq       = config_for(:sidekiq)
     config.flickr        = config_for(:flickr)
-    config.hosts         << ENV['DOMAIN_HOSTS']
+    config.hosts         << "asis.staging.search.usa.gov"
 
     config.semantic_logger.application = ENV.fetch('APP_NAME', APP_NAME)
   end
