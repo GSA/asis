@@ -60,7 +60,7 @@ Rails.application.configure do
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
-  config.hosts << "asis.staging.search.usa.gov"
- 
+  config.hosts << /.*\.usa\.gov/
+
   config.rails_semantic_logger.format = :json
 end
