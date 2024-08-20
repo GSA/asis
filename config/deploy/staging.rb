@@ -69,3 +69,11 @@ set :ssh_options, {
 #   }
 
 set :rails_env, 'production'
+set :keep_releases, 5
+set :puma_threads, [0, 8]
+set :puma_workers, 0
+set :puma_worker_timeout, nil
+set :puma_init_active_record, true
+set :puma_preload_app, false
+set :puma_bind, 'tcp://0.0.0.0:3300'
+

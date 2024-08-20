@@ -10,9 +10,6 @@ set :deploy_to, ENV.fetch('DEPLOYMENT_PATH')
 
 set :rbenv_type, :user
 
-set :puma_bind, 'tcp://0.0.0.0:3300'
-set :puma_preload_app, false
-
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
 
