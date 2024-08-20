@@ -69,6 +69,7 @@ set :ssh_options, {
 #   }
 
 set :rails_env, 'production'
+set :bundle_without, %w{development test}.join(' ')
 set :keep_releases, 5
 set :puma_threads, [0, 8]
 set :puma_workers, 0
