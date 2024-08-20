@@ -28,6 +28,7 @@ gem 'feedjira', '~> 2.2.0'
 gem 'rails_semantic_logger', '~> 4.14'
 gem 'puma', '~> 5.6'
 gem 'dotenv', '~> 3.1'
+gem 'listen', '~> 3.8.0'
 
 group :development, :test do
   gem 'binding_of_caller'
@@ -40,7 +41,6 @@ group :development, :test do
   gem 'capistrano-rbenv',    require: false
   gem 'capistrano-sidekiq',  require: false
   gem 'capistrano3-puma',    require: false
-  gem 'listen', '~> 3.8.0'
 end
 
 group :development do
