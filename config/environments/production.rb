@@ -60,10 +60,7 @@ Rails.application.configure do
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
-    $stdout.sync = true
-    config.rails_semantic_logger.add_file_appender = false
-    config.rails_semantic_logger.format = :json
-    config.semantic_logger.add_appender(io: $stdout, formatter: config.rails_semantic_logger.format)
-  end
+  config.hosts << "asis.staging.search.usa.gov"
+
+  config.rails_semantic_logger.format = :json
 end
