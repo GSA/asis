@@ -55,12 +55,9 @@ aws ssm get-parameter --name "LOGIN_DOT_GOV_PEM" --region us-east-2 --with-decry
 [ ! -f /home/search/asis/shared/log/puma_error.log ] && touch /home/search/asis/shared/log/puma_error.log
 
 
-# Set ownership and permissions
 chown -R search:search /home/search/asis/
 chmod -R 777 /home/search/asis/
 
-# Set setgid bit on directories - new files or directories created will inherit the group ownership of the parent directory.
 find /home/search/asis/ -type d -exec chmod 2777 {} \;
 
-# Ensure new files are created with rwxrwxrw- permissions
 umask 000
