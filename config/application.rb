@@ -41,6 +41,5 @@ module Oasis
     config.flickr        = config_for(:flickr)
 
     config.semantic_logger.application = ENV.fetch('APP_NAME', APP_NAME)
-    config.secret_key_base = ENV["ASIS_SECRET_KEY_BASE"]
   end
 end
