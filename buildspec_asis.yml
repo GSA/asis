@@ -38,7 +38,7 @@ phases:
       - cap staging puma:config puma:systemd:config puma:systemd:enable
       - cap staging deploy
       - cap staging --tasks
-      - cap staging resque:start
+      # - cap staging resque:start
       - cap staging puma:restart
 
 artifacts:
