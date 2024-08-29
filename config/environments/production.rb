@@ -62,5 +62,8 @@ Rails.application.configure do
 
   config.hosts << "asis.staging.search.usa.gov"
 
+  # Skip DNS rebinding protection for the default health check endpoint.
+  config.host_authorization = { exclude: ->(request) { request.path == "/healthcheck" } }
+
   config.rails_semantic_logger.format = :json
 end
