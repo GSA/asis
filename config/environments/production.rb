@@ -66,7 +66,7 @@ Rails.application.configure do
   config.hosts << "localhost:3300"
 
   # Skip DNS rebinding protection for the default health check endpoint.
-  config.host_authorization = { exclude: ->(request) { request.path == "/healthcheck" } }
+  config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
   config.rails_semantic_logger.format = :json
 end
