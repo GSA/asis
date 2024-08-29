@@ -8,3 +8,5 @@
 config/instagram.yml
 /coverage
 .env
+
+/config/master.key
