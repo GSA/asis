@@ -25,6 +25,7 @@ append :linked_dirs, 'log', 'tmp'
 
 set :linked_files, %w{
   config/secrets.yml
+  config/sidekiq.yml
   .env
   config/master.key
 }

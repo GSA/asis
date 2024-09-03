@@ -109,6 +109,8 @@ GEM
       capistrano (>= 3.9.0)
       capistrano-bundler
       sidekiq (>= 6.0)
+    capistrano-sidekiq-systemd (0.2.0)
+      capistrano (>= 3.9.0)
     capistrano3-puma (5.2.0)
       capistrano (~> 3.7)
       capistrano-bundler
@@ -461,6 +463,7 @@ DEPENDENCIES
   capistrano-rails
   capistrano-rbenv
   capistrano-sidekiq
+  capistrano-sidekiq-systemd
   capistrano3-puma
   debug
   dotenv (~> 3.1)

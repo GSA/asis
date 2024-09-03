@@ -35,12 +35,14 @@ group :development, :test do
   gem 'pry-rails'
   gem 'rspec-rails', '~> 5.0'
   gem 'debug'
-  gem 'capistrano',          require: false
-  gem 'capistrano-newrelic', require: false
-  gem 'capistrano-rails',    require: false
-  gem 'capistrano-rbenv',    require: false
-  gem 'capistrano-sidekiq',  require: false
-  gem 'capistrano3-puma',    require: false
+  gem 'capistrano',                 require: false
+  gem 'capistrano-newrelic',        require: false
+  gem 'capistrano-rails',           require: false
+  gem 'capistrano-rbenv',           require: false
+  gem 'capistrano-sidekiq',         require: false
+  gem 'capistrano3-puma',           require: false
+  gem 'capistrano-sidekiq',         require: false
+  gem 'capistrano-sidekiq-systemd', require: false
 end
 
 group :development do
