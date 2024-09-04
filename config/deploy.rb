@@ -28,6 +28,7 @@ set :linked_files, %w{
   config/sidekiq.yml
   .env
   config/master.key
+  log/sidekiq.log
 }
 
 # Default value for default_env is {}
