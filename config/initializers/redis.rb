@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
-if Rails.env.production?
-  sidekiq = Rails.application.config_for(:sidekiq)
-else
-  sidekiq = Rails.configuration.sidekiq
-end
+redis_url = ENV['REDIS_HOST'] || 'redis://localhost:6379'
+$redis = Redis.new(url: redis_url)
 
-# rubocop:disable Style/GlobalVars
-$redis = Redis.new(url: sidekiq['url'])
-# rubocop:enable Style/GlobalVars
+# Log the Redis URL to confirm it's set correctly
+Rails.logger.info "Redis URL: #{redis_url}"

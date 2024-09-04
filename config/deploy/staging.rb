@@ -87,4 +87,4 @@ set :sidekiq_processes, 1
 set :sidekiq_service_unit_name, -> { "sidekiq_#{fetch(:application)}_#{fetch(:stage)}" }
 
 # Ensure Sidekiq is restarted with Puma
-after 'deploy:published', 'sidekiq:restart'
+# after 'deploy:published', 'sidekiq:restart'
