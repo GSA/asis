@@ -41,7 +41,6 @@ group :development, :test do
   gem 'capistrano-rbenv',           require: false
   gem 'capistrano-sidekiq',         require: false
   gem 'capistrano3-puma',           require: false
-  gem 'capistrano-sidekiq',         require: false
   gem 'capistrano-sidekiq-systemd', require: false
 end
 
