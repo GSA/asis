@@ -16,8 +16,8 @@ set :whenever_roles, :cron
 append :linked_files, '.env'
 append :linked_dirs,  'log', 'tmp'
 
-role :app,  JSON.parse(ENV.fetch('CRON_SERVER_ADDRESSES', '[]')),  user: ENV['SERVER_DEPLOYMENT_USER']
-role :cron, JSON.parse(ENV.fetch('API_SERVER_ADDRESSES', '[]')), user: ENV['SERVER_DEPLOYMENT_USER']
+role :app,  JSON.parse(ENV.fetch('APP_SERVER_ADDRESSES', '[]')),  user: ENV['SERVER_DEPLOYMENT_USER']
+role :cron, JSON.parse(ENV.fetch('CRON_SERVER_ADDRESSES', '[]')), user: ENV['SERVER_DEPLOYMENT_USER']
 role :db,   JSON.parse(ENV.fetch('API_SERVER_ADDRESSES', '[]')),  user: ENV['SERVER_DEPLOYMENT_USER']
 role :web,  JSON.parse(ENV.fetch('API_SERVER_ADDRESSES', '[]')),  user: ENV['SERVER_DEPLOYMENT_USER']
 
