@@ -13,7 +13,7 @@ set :repo_url,       'https://github.com/GSA/asis.git'
 set :user,           ENV.fetch('SERVER_DEPLOYMENT_USER', 'search')
 set :whenever_roles, :cron
 
-append :linked_files, '.env', "#{shared_path}/config/sidekiq.yml" 
+append :linked_files, '.env'
 append :linked_dirs,  'log', 'tmp'
 
 role :app,  JSON.parse(ENV.fetch('CRON_SERVER_ADDRESSES', '[]')),  user: ENV['SERVER_DEPLOYMENT_USER']

@@ -59,7 +59,7 @@
 
 # Set the Sidekiq configuration
 set :sidekiq_roles, :app
-set :sidekiq_config, -> { "#{shared_path}/config/sidekiq.yml" }
+set :sidekiq_config, -> { "/config/sidekiq.yml" }
 set :sidekiq_processes, 1
 
 # Set the Sidekiq Systemd Service configuration
