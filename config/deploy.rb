@@ -1,46 +1,29 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.19.1"
 
-set :application, "asis"
-set :repo_url,    "https://github.com/GSA/asis.git"
-set :rails_env,   'production'
-set :branch,      'staging'
-set :user,        :search
-set :deploy_to, ENV.fetch('DEPLOYMENT_PATH')
+set :application,    'asis'
+set :branch,         'staging'
+set :bundle_roles,   :all
+set :deploy_to,      ENV.fetch('DEPLOYMENT_PATH')
+set :format,         :pretty
+set :puma_bind,      'tcp://0.0.0.0:3300'
+set :rails_env,      'production'
+set :rbenv_type,     :user
+set :repo_url,       'https://github.com/GSA/asis.git'
+set :user,           ENV.fetch('SERVER_DEPLOYMENT_USER', 'search')
+set :whenever_roles, :cron
 
-set :rbenv_type, :user
+append :linked_files, '.env', "#{shared_path}/config/sidekiq.yml" 
+append :linked_dirs,  'log', 'tmp'
 
-# Default value for :format is :airbrussh.
-# set :format, :airbrussh
+role :app,  JSON.parse(ENV.fetch('CRON_SERVER_ADDRESSES', '[]')),  user: ENV['SERVER_DEPLOYMENT_USER']
+role :cron, JSON.parse(ENV.fetch('API_SERVER_ADDRESSES', '[]')), user: ENV['SERVER_DEPLOYMENT_USER']
+role :db,   JSON.parse(ENV.fetch('API_SERVER_ADDRESSES', '[]')),  user: ENV['SERVER_DEPLOYMENT_USER']
+role :web,  JSON.parse(ENV.fetch('API_SERVER_ADDRESSES', '[]')),  user: ENV['SERVER_DEPLOYMENT_USER']
 
-# You can configure the Airbrussh format using :format_options.
-# These are the defaults.
-# set :format_options, command_output: true, log_file: "log/capistrano.log", color: :auto, truncate: :auto
-
-# Default value for :pty is false
-# set :pty, true
-
-# Default value for linked_dirs is []
-append :linked_dirs, 'log', 'tmp'
-
-set :linked_files, %w{
-  config/secrets.yml
-  config/sidekiq.yml
-  .env
-  config/master.key
-  log/sidekiq.log
+set :ssh_options, {
+  auth_methods:  %w(publickey),
+  forward_agent: false,
+  keys:          [ENV['SSH_KEY_PATH']],
+  user:          ENV['SERVER_DEPLOYMENT_USER']
 }
-
-# Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
-
-# Default value for local_user is ENV['USER']
-# set :local_user, -> { `git config user.name`.chomp }
-
-# Default value for keep_releases is 5
-# set :keep_releases, 5
-
-# Uncomment the following to require manually verifying the host key before first deploy.
-# set :ssh_options, verify_host_key: :secure
-
-# before 'deploy:finished', 'newrelic:notice_deployment'

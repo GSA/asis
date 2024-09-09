@@ -8,8 +8,6 @@
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
-server ENV.fetch('SERVER_ADDRESS'), user: ENV.fetch('SERVER_DEPLOYMENT_USER'), roles: %w{app db web}
-
 # role-based syntax
 # ==================
 
@@ -22,8 +20,6 @@ server ENV.fetch('SERVER_ADDRESS'), user: ENV.fetch('SERVER_DEPLOYMENT_USER'), r
 # role :web, %w{user1@primary.com user2@additional.com}, other_property: :other_value
 # role :db,  %w{deploy@example.com}
 
-
-
 # Configuration
 # =============
 # You can set any configuration variable like in config/deploy.rb
@@ -31,7 +27,6 @@ server ENV.fetch('SERVER_ADDRESS'), user: ENV.fetch('SERVER_DEPLOYMENT_USER'), r
 # For available Capistrano configuration variables see the documentation page.
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
-
 
 
 # Custom SSH Options
@@ -48,12 +43,6 @@ server ENV.fetch('SERVER_ADDRESS'), user: ENV.fetch('SERVER_DEPLOYMENT_USER'), r
 #    auth_methods: %w(password)
 #  }
 
-set :ssh_options, {
-	keys: [ENV['SSH_KEY_PATH']],
-	forward_agent: false,
-	auth_methods: %w(publickey)
-}
-
 #
 # The server-based syntax can be used to override options:
 # ------------------------------------
@@ -67,16 +56,6 @@ set :ssh_options, {
 #     auth_methods: %w(publickey password)
 #     # password: "please use keys"
 #   }
-
-set :rails_env, 'production'
-set :bundle_without, %w{development test}.join(' ')
-set :keep_releases, 5
-set :puma_threads, [0, 8]
-set :puma_workers, 0
-set :puma_worker_timeout, nil
-set :puma_init_active_record, true
-set :puma_preload_app, false
-set :puma_bind, 'tcp://0.0.0.0:3300'
 
 # Set the Sidekiq configuration
 set :sidekiq_roles, :app

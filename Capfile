@@ -19,6 +19,8 @@ require 'capistrano/puma'
 install_plugin Capistrano::Puma, load_hooks: false
 install_plugin Capistrano::Puma::Systemd
 
+require 'whenever/capistrano'
+
 require 'capistrano/sidekiq'
 require 'capistrano/sidekiq/systemd'
 
