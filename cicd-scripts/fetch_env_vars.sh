@@ -37,9 +37,9 @@ for PARAM in $PARAM_KEYS; do
 done
 
 # Output the result
-echo ".env file created with the following content:"
-cat .env
-cp /home/search/cicd_temp/.env /home/search/asis/shared
+# echo ".env file created with the following content:"
+# cat .env
+cp /home/search/cicd_temp/.env /home/search/asis/shared/
 
 
 # create puma folders and files
