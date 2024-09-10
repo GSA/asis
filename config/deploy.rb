@@ -2,7 +2,7 @@
 lock "~> 3.19.1"
 
 set :application,     'asis'
-set :branch,          'staging'
+set :branch,          ENV.fetch('SEARCH_ENV', 'staging')
 set :bundle_roles,    :all
 set :deploy_to,       ENV.fetch('DEPLOYMENT_PATH')
 set :format,          :pretty
