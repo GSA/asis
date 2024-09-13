@@ -1,6 +1,7 @@
 default: &DEFAULT
   namespace: oasis
-  url: <%= ENV['REDIS_HOST'] || 'redis://localhost:6379/0' %>
+  host: <%= ENV['REDIS_HOST'] || 'localhost' %>
+  port: <%= ENV['REDIS_PORT'] || '6379' %>
   :concurrency: 5
   :queues:
     - [ default, '3' ]
