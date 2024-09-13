@@ -20,11 +20,8 @@ phases:
     runtime-versions:
       python: 3.x
     commands:
-      # - rbenv install 3.1.4  
-      # - rbenv global 3.1.4   
-      # - rbenv rehash 
-      # - ruby -v
-      - echo "checking runtime"
+       - export PATH="$HOME/.rbenv/bin:$PATH"
+       - eval "$(rbenv init -)"
 
   pre_build:
     commands:
