@@ -3,7 +3,7 @@ version: 0.2
 env:
   parameter-store:
     # env_used_in_app: "env_in_param_store"
-    SERVER_ADDRESS: "DEPLOY_ASIS_SERVER_ADDRESS"
+    API_SERVER_ADDRESSES: "DEPLOY_ASIS_SERVER_ADDRESS"
     DEPLOYMENT_PATH: "DEPLOY_ASIS_DEPLOYMENT_PATH"
     SERVER_DEPLOYMENT_USER: "DEPLOY_SERVER_DEPLOYMENT_USER"
     # SSH_KEY_PATH: "DEPLOY_SSH_KEY_PATH" - defined below
@@ -20,10 +20,8 @@ phases:
     runtime-versions:
       python: 3.x
     commands:
-      # - rbenv install 3.1.4  
-      # - rbenv global 3.1.4   
-      # - rbenv rehash 
-      - ruby -v
+       - export PATH="$HOME/.rbenv/bin:$PATH"
+       - eval "$(rbenv init -)"
 
   pre_build:
     commands:
