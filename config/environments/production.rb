@@ -38,7 +38,7 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'info')
+  config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'debug')
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]
@@ -61,9 +61,6 @@ Rails.application.configure do
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
   config.hosts << "asis.staging.search.usa.gov"
-
-  # Allow requests from localhost on port 3300
-  config.hosts << "localhost:3300"
 
   # Skip DNS rebinding protection for the default health check endpoint.
   config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
