@@ -34,11 +34,11 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  config.force_ssl = false
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'info')
+  config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'debug')
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]
@@ -60,10 +60,10 @@ Rails.application.configure do
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
-    $stdout.sync = true
-    config.rails_semantic_logger.add_file_appender = false
-    config.rails_semantic_logger.format = :json
-    config.semantic_logger.add_appender(io: $stdout, formatter: config.rails_semantic_logger.format)
-  end
+  config.hosts << "asis.staging.search.usa.gov"
+
+  # Skip DNS rebinding protection for the default health check endpoint.
+  config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  config.rails_semantic_logger.format = :json
 end
