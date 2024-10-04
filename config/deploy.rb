@@ -11,6 +11,7 @@ set :rails_env,      'production'
 set :rbenv_type,     :user
 set :repo_url,       'https://github.com/GSA/asis.git'
 set :user,           ENV.fetch('SERVER_DEPLOYMENT_USER', 'search')
+set :systemctl_user, :system
 set :whenever_roles, :cron
 
 append :linked_files, '.env'
