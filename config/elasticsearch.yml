@@ -1,5 +1,8 @@
 default: &DEFAULT
-  hosts: <%= ENV['ES_HOSTS'] || 'localhost:9200' %>
+  hosts:
+  <% ENV.fetch('ES_HOSTS', 'localhost:9200').split(',').each do |host| %>
+    - <%= host %>
+  <% end %>
   user: <%= ENV['ES_USERNAME'] || 'elastic' %>
   password: <%= ENV['ES_PASSWORD'] || 'changeme' %>
   number_of_shards: 1
