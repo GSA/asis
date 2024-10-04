@@ -62,6 +62,9 @@ Rails.application.configure do
 
   config.hosts << "asis.staging.search.usa.gov"
 
+  # Allow requests from localhost on port 3300
+  config.hosts << "localhost:3300"
+
   # Skip DNS rebinding protection for the default health check endpoint.
   config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 

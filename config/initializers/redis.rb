@@ -5,3 +5,4 @@ $redis = Redis.new(url: redis_url)
 
 # Log the Redis URL to confirm it's set correctly
 Rails.logger.info "Redis URL: #{ENV.fetch('REDIS_HOST', 'localhost')}"
+

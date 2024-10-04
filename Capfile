@@ -1,32 +1,27 @@
-# Load DSL and set up stages
-require "capistrano/setup"
+# frozen_string_literal: true
 
-require "capistrano/deploy"
+require 'capistrano/setup'
 
-require "capistrano/scm/git"
+require 'capistrano/deploy'
+
+require 'capistrano/scm/git'
 install_plugin Capistrano::SCM::Git
 
-require "capistrano/rbenv"
-set :rbenv_ruby, '3.1.4'
-set :rbenv_type, :user
+require 'capistrano/rbenv'
 
-SSHKit.config.command_map[:bundle] = 'bin/bundle'
-
-require "capistrano/bundler"
-require 'capistrano/newrelic'
+require 'capistrano/bundler'
+require 'capistrano/rails/assets'
+require 'capistrano/rails/migrations'
 
 require 'capistrano/puma'
-install_plugin Capistrano::Puma, load_hooks: false
-install_plugin Capistrano::Puma::Systemd
-
-require 'whenever/capistrano'
-
 require 'capistrano/sidekiq'
 require 'capistrano/sidekiq/systemd'
 
-# require 'capistrano/sidekiq'
-# install_plugin Capistrano::Sidekiq
-# install_plugin Capistrano::Sidekiq::Systemd
+install_plugin Capistrano::Puma
+install_plugin Capistrano::Puma::Systemd
+
+require 'capistrano-resque'
+require 'whenever/capistrano'
 
 # Load custom tasks from `lib/capistrano/tasks` if you have any defined
-Dir.glob("lib/capistrano/tasks/*.rake").each { |r| import r }
+Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
