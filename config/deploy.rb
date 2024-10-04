@@ -10,6 +10,7 @@ set :puma_bind,      'tcp://0.0.0.0:3300'
 set :puma_access_log, "#{release_path}/log/puma.access.log"
 set :puma_error_log, "#{release_path}/log/puma.error.log"
 set :rails_env,      'production'
+set :rbenv_ruby, '3.1.4'
 set :rbenv_type,     :user
 set :repo_url,       'https://github.com/GSA/asis.git'
 set :user,           ENV.fetch('SERVER_DEPLOYMENT_USER', 'search')
