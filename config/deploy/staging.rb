@@ -58,12 +58,10 @@
 #   }
 
 # Set the Sidekiq configuration
-set :sidekiq_roles, :app
-set :sidekiq_config, -> { "/config/sidekiq.yml" }
-set :sidekiq_processes, 1
+# set :sidekiq_processes, 1
 
 # Set the Sidekiq Systemd Service configuration
-set :sidekiq_service_unit_name, -> { "sidekiq_#{fetch(:application)}_#{fetch(:stage)}" }
+# set :sidekiq_service_unit_name, -> { "sidekiq_#{fetch(:application)}_#{fetch(:stage)}" }
 
 # Ensure Sidekiq is restarted with Puma
 # after 'deploy:published', 'sidekiq:restart'

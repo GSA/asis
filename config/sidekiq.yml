@@ -3,7 +3,7 @@ default: &DEFAULT
   url: <%= ENV['REDIS_SYSTEM_URL'] || 'redis://localhost:6379/0' %>
   :concurrency: 5
   :queues:
-    - [ default, '3' ]
+    - default
 
 development:
   <<: *DEFAULT

@@ -13,11 +13,12 @@ require "capistrano/rbenv"
 require "capistrano/bundler"
 
 require 'capistrano/puma'
-require 'capistrano/sidekiq'
-require 'capistrano/sidekiq/systemd'
-
 install_plugin Capistrano::Puma, load_hooks: false
 install_plugin Capistrano::Puma::Systemd
+
+require 'capistrano/sidekiq'
+install_plugin Capistrano::Sidekiq
+install_plugin Capistrano::Sidekiq::Systemd
 
 require 'whenever/capistrano'
 
