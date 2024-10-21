@@ -7,14 +7,10 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 7.0.8'
-
+gem 'rails', '~> 7.1.0'
 gem 'rake', '~> 13.0.6'
-
 gem 'grape', '~> 1.7.0'
-
 gem 'jbuilder', '~> 2.11.5'
-
 gem 'elasticsearch-api', '~> 6.0'
 gem 'elasticsearch-model', '~> 5.0'
 gem 'elasticsearch-persistence', '~> 5.0', require: 'elasticsearch/persistence/model'
@@ -27,21 +23,28 @@ gem 'sidekiq', '~> 7.1.3'
 gem 'sidekiq-failures', '~> 1.0.0'
 gem 'sidekiq-unique-jobs', '~> 8.0.9'
 gem 'whenever', '~> 0.9.4', require: false
-
-gem 'newrelic_rpm', '~> 8.16'
-
+gem 'newrelic_rpm', '~> 9.10'
 gem 'feedjira', '~> 2.2.0'
+gem 'rails_semantic_logger', '~> 4.14'
+gem 'puma', '~> 5.6'
+gem 'dotenv', '~> 3.1'
+gem 'listen', '~> 3.8.0'
 
 group :development, :test do
-  gem 'puma', '~> 5.6'
   gem 'binding_of_caller'
   gem 'pry-rails'
-  gem 'rspec-rails', '~> 3.8.2'
+  gem 'rspec-rails', '~> 5.0'
   gem 'debug'
+  gem 'capistrano',                 require: false
+  gem 'capistrano-newrelic',        require: false
+  gem 'capistrano-rails',           require: false
+  gem 'capistrano-rbenv',           require: false
+  gem 'capistrano-sidekiq',         require: false
+  gem 'capistrano3-puma',           require: false
+  gem 'capistrano-sidekiq-systemd', require: false
 end
 
 group :development do
-  gem 'listen', '~> 3.8.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
@@ -57,3 +60,5 @@ group :test do
   gem 'simplecov', '~> 0.16.1'
   gem 'webmock', '~> 3.18'
 end
+
+

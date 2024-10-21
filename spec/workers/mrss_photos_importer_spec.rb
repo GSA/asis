@@ -56,19 +56,19 @@ describe MrssPhotosImporter do
         )
 
         expect(photo.id).to eq(
-          'http://www.nasa.gov/archive/archive/content/samantha-cristoforettis-birthday-celebration'
-        )
+                              'http://www.nasa.gov/archive/archive/content/samantha-cristoforettis-birthday-celebration'
+                            )
         expect(photo.mrss_names.first).to eq(mrss_profile.name)
         expect(photo.title).to eq("Samantha Cristoforetti's Birthday Celebration")
         expect(photo.description).to match(/ISS043E142528/)
         expect(photo.taken_at).to eq(Date.parse('2015-05-04'))
         expect(photo.popularity).to eq(0)
         expect(photo.url).to eq(
-          'http://www.nasa.gov/archive/archive/content/samantha-cristoforettis-birthday-celebration'
-        )
+                               'http://www.nasa.gov/archive/archive/content/samantha-cristoforettis-birthday-celebration'
+                             )
         expect(photo.thumbnail_url).to eq(
-          'http://www.nasa.gov/sites/default/files/styles/100x75/public/thumbnails/image/17147956078_0b4b9761d6_k.jpg?itok=BmnIF3ZZ'
-        )
+                                         'http://www.nasa.gov/sites/default/files/styles/100x75/public/thumbnails/image/17147956078_0b4b9761d6_k.jpg?itok=BmnIF3ZZ'
+                                       )
       end
     end
 
@@ -92,7 +92,7 @@ describe MrssPhotosImporter do
       let(:feed) { instance_double(Feedjira::Parser::Oasis::Mrss, entries: photos) }
 
       before do
-        allow(Feedjira::Feed).to receive(:parse).with(mrss_xml) { feed }
+        allow(Feedjira::Feed).to receive(:parse).and_return(feed)
       end
 
       it 'logs the issue and moves on to the next photo' do
@@ -115,10 +115,10 @@ describe MrssPhotosImporter do
         [photo1]
       end
 
-      let(:feed) { double(Feedjira::Parser::Oasis::Mrss, entries: photos) }
+      let(:feed) { instance_double(Feedjira::Parser::Oasis::Mrss, entries: photos) }
 
       before do
-        allow(Feedjira::Feed).to receive(:parse).with(mrss_xml) { feed }
+        allow(Feedjira::Feed).to receive(:parse).and_return(feed)
 
         MrssPhoto.create(id: 'already exists',
                          mrss_names: %w[existing_mrss_name],

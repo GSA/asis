@@ -25,7 +25,7 @@ module Oasis
   APP_NAME = 'asis'
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 7.1
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -33,12 +33,13 @@ module Oasis
     # the framework and any gems in your application.
 
     # Set default cache format
-    config.active_support.cache_format_version = 7.0
+    config.active_support.cache_format_version = 7.1
     config.active_support.disable_to_s_conversion = false
     config.generators.system_tests = nil
     config.elasticsearch = config_for(:elasticsearch)
     config.sidekiq       = config_for(:sidekiq)
     config.flickr        = config_for(:flickr)
-    config.hosts         << "asis" if ENV["DOCKER"]
+
+    config.semantic_logger.application = ENV.fetch('APP_NAME', APP_NAME)
   end
 end

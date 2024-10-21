@@ -1,4 +1,4 @@
-ARG RUBY_VERSION=3.1.4
+ARG RUBY_VERSION=3.3.4
 FROM public.ecr.aws/docker/library/ruby:$RUBY_VERSION-slim as base
 
 WORKDIR /rails
@@ -8,9 +8,12 @@ RUN apt-get update -qq && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Set production environment
 ENV RAILS_ENV="production" \
+    RAILS_LOG_TO_STDOUT="1" \
     BUNDLE_DEPLOYMENT="1" \
-    BUNDLE_PATH="/usr/local/bundle"
+    BUNDLE_PATH="/usr/local/bundle" \
+    BUNDLE_WITHOUT="development"
 
 FROM base as build
 

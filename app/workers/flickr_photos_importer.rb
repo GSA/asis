@@ -36,7 +36,7 @@ class FlickrPhotosImporter
 
   private
 
-  def get_photos(id, profile_type, options)
+  def get_photos(id, profile_type, options = {})
     method = "get_#{profile_type}_photos"
     send(method, id, options)
   rescue StandardError => e
@@ -53,9 +53,11 @@ class FlickrPhotosImporter
   end
 
   def store_photos(flickr_photo_structures, group_id)
-    flickr_photo_structures.collect do |flickr_photo_structure|
+    photo_structures = flickr_photo_structures.respond_to?(:photos) ? flickr_photo_structures.photos : flickr_photo_structures
+
+    photo_structures.filter_map do |flickr_photo_structure|
       store_photo(flickr_photo_structure, group_id)
-    end.compact.select(&:persisted?)
+    end.select(&:persisted?)
   end
 
   def store_photo(flickr_photo_structure, group_id)
@@ -94,9 +96,12 @@ class FlickrPhotosImporter
   end
 
   def last_uploaded_ts(photos)
-    photos.to_a.last.dateupload.to_i
-  rescue StandardError => e
-    Rails.logger.warn("Trouble getting oldest upload date from photo #{photos.to_a.last}: #{e}")
+    photo_array = photos.respond_to?(:photos) ? photos.photos.to_a : photos.to_a
+
+    last_photo = photo_array.last
+    return last_photo.dateupload.to_i if last_photo
+
+    Rails.logger.warn('No photos available to retrieve the last uploaded timestamp.')
     Time.now.to_i
   end
 
