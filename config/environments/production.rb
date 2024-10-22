@@ -60,8 +60,6 @@ Rails.application.configure do
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
-
-
   # Allow requests from localhost on port 3300
   config.hosts += ENV['ASIS_ALLOWED_HOSTS'] if ENV['ASIS_ALLOWED_HOSTS'].present?
 
