@@ -60,10 +60,8 @@ Rails.application.configure do
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
-  config.hosts << "asis.staging.search.usa.gov"
-
   # Allow requests from localhost on port 3300
-  config.hosts << "localhost:3300"
+  config.hosts += ENV['ASIS_ALLOWED_HOSTS'] if ENV['ASIS_ALLOWED_HOSTS'].present?
 
   # Skip DNS rebinding protection for the default health check endpoint.
   config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
