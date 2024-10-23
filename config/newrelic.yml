@@ -41,7 +41,7 @@ common: &default_settings
   # application_logging.enabled: true
 
   # If `true`, the agent captures log records emitted by this application.
-  # application_logging.forwarding.enabled: true
+  application_logging.forwarding.enabled: <%= ENV.fetch('NEW_RELIC_APPLICATION_LOGGING_FORWARDING_ENABLED', 'false') %>
 
   # Defines the maximum number of log records to buffer in memory at a time.
   # application_logging.forwarding.max_samples_stored: 10000
@@ -501,7 +501,7 @@ common: &default_settings
   # elasticsearch.obfuscate_queries: true
 
   # When true, the agent transmits data about your app to the New Relic collector.
-  # Can be controlled using NEW_RELIC_MONITOR_MODE
+  # Gem supports the use of the NEW_RELIC_MONITOR_MODE environment variable instead!
   # monitor_mode: true
 
   # If true, uses Module#prepend rather than alias_method for Active Record
