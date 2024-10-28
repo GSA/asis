@@ -16,6 +16,8 @@ exported-variables:
     - DEPLOYMENT_PATH
     - SERVER_DEPLOYMENT_USER
     - SSH_KEY_PATH
+    - ASIS_THREADS
+    - ASIS_WORKERS
 
 phases:
   install:
