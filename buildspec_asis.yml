@@ -7,7 +7,8 @@ env:
     DEPLOYMENT_PATH: "DEPLOY_ASIS_DEPLOYMENT_PATH"
     SERVER_DEPLOYMENT_USER: "DEPLOY_SERVER_DEPLOYMENT_USER"
     CRON_SERVER_ADDRESSES: "DEPLOY_CRON_SERVER_ADDRESSES"
-    # SSH_KEY_PATH: "DEPLOY_SSH_KEY_PATH" - defined below
+    ASIS_THREADS: "ASIS_THREADS"
+    ASIS_WORKERS: "ASIS_WORKERS"
 
     # shared deployment variables with subsequent stages - might not to export as this is the final stage
 exported-variables:
