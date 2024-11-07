@@ -13,7 +13,7 @@ common: &default_settings
 
   # Your application name. Renaming here affects where data displays in New
   # Relic. For more details, see https://docs.newrelic.com/docs/apm/new-relic-apm/maintenance/renaming-applications
-  app_name: <%= ENV['NEWRELIC_APP_NAME'] %>
+  app_name: OASIS Search API (<%= ENV.fetch('SEARCH_ENV', 'dev') %>)
 
   # FedRAMP-compliant endpoint
   # https://docs.newrelic.com/docs/security/security-privacy/compliance/fedramp-compliant-endpoints/
@@ -24,7 +24,7 @@ common: &default_settings
 
   # Logging level for log/newrelic_agent.log; options are error, warn, info, or
   # debug.
-  log_level: <%= ENV['NEWRELIC_LOG_LEVEL'] %>
+  log_level: <%= ENV.fetch('NEWRELIC_LOG_LEVEL', 'debug') %>
 
   # All of the following configuration options are optional. Review them, and
   # uncomment or edit them if they appear relevant to your application needs.
@@ -41,7 +41,7 @@ common: &default_settings
   # application_logging.enabled: true
 
   # If `true`, the agent captures log records emitted by this application.
-  # application_logging.forwarding.enabled: true
+  application_logging.forwarding.enabled: <%= ENV.fetch('NEW_RELIC_APPLICATION_LOGGING_FORWARDING_ENABLED', 'false') %>
 
   # Defines the maximum number of log records to buffer in memory at a time.
   # application_logging.forwarding.max_samples_stored: 10000
@@ -256,7 +256,8 @@ common: &default_settings
   # error_collector.capture_events: true
 
   # If true, the agent captures traced errors and error count metrics.
-  error_collector.enabled: false
+  # Gem accepts value from NEW_RELIC_ERROR_COLLECTOR_ENABLED environment variable already
+  # error_collector.enabled: false
 
   # A list of error classes that the agent should treat as expected.
   # error_collector.expected_classes: []
@@ -500,7 +501,8 @@ common: &default_settings
   # elasticsearch.obfuscate_queries: true
 
   # When true, the agent transmits data about your app to the New Relic collector.
-  monitor_mode: <%= ENV['NEWRELIC_ENABLED'] %>
+  # Gem supports the use of the NEW_RELIC_MONITOR_MODE environment variable instead!
+  # monitor_mode: true
 
   # If true, uses Module#prepend rather than alias_method for Active Record
   # instrumentation.
@@ -642,7 +644,8 @@ common: &default_settings
   # transaction_tracer.attributes.include: []
 
   # If true, enables collection of transaction traces.
-  transaction_tracer.enabled: false
+  # Gem uses NEW_RELIC_TRANSACTION_TRACER_ENABLED environmet variable already
+  # transaction_tracer.enabled: true
 
   # Threshold (in seconds) above which the agent will collect explain plans.
   # Relevant only when explain.enabled is true.

@@ -1,6 +1,8 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.19.1"
 
+ASIS_THREADS = ENV.fetch('ASIS_THREADS') { 5 }
+
 set :application,            'asis'
 set :branch,                 ENV.fetch('SEARCH_ENV', 'staging')
 set :bundle_roles,           :all
@@ -9,6 +11,8 @@ set :format,                 :pretty
 set :puma_access_log,        "#{release_path}/log/puma.access.log"
 set :puma_bind,              'tcp://0.0.0.0:3300'
 set :puma_error_log,         "#{release_path}/log/puma.error.log"
+set :puma_threads,            [ENV.fetch('ASIS_MIN_THREADS', ASIS_THREADS), ASIS_THREADS]
+set :puma_workers,            ENV.fetch('ASIS_WORKERS') { 0 }
 set :rails_env,              'production'
 set :rbenv_ruby,             '3.1.4'
 set :rbenv_type,             :user
