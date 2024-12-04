@@ -7,7 +7,7 @@ default: &DEFAULT
   password: <%= ENV['ES_PASSWORD'] || 'changeme' %>
   number_of_shards: 1
   log: true
-  log_level: <%= ENV.fetch('ES_LOG_LEVEL') %>
+  log_level: <%= ENV.fetch('ES_LOG_LEVEL', 'ERROR') %>
 
 development:
   <<: *DEFAULT
