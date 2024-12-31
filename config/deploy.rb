@@ -14,7 +14,7 @@ set :puma_error_log,         "#{release_path}/log/puma.error.log"
 set :puma_threads,            [ENV.fetch('ASIS_MIN_THREADS', ASIS_THREADS), ASIS_THREADS]
 set :puma_workers,            ENV.fetch('ASIS_WORKERS') { 0 }
 set :rails_env,              'production'
-set :rbenv_ruby,             '3.1.4'
+set :rbenv_ruby,             '3.3.4'
 set :rbenv_type,             :user
 set :repo_url,               'https://github.com/GSA/asis.git'
 set :sidekiq_roles,          :app
