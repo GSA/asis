@@ -109,16 +109,16 @@ GEM
     capistrano-rbenv (2.2.0)
       capistrano (~> 3.1)
       sshkit (~> 1.3)
-    capistrano-sidekiq (3.0.0)
+    capistrano-sidekiq (2.3.1)
       capistrano (>= 3.9.0)
       capistrano-bundler
-      sidekiq (>= 6.0.6)
+      sidekiq (>= 6.0)
     capistrano-sidekiq-systemd (0.2.0)
       capistrano (>= 3.9.0)
-    capistrano3-puma (6.0.0)
+    capistrano3-puma (5.2.0)
       capistrano (~> 3.7)
       capistrano-bundler
-      puma (>= 5.1, < 7.0)
+      puma (>= 4.0, < 6.0)
     chronic (0.10.2)
     coderay (1.1.3)
     coercible (1.0.0)
@@ -482,9 +482,9 @@ DEPENDENCIES
   capistrano-newrelic
   capistrano-rails
   capistrano-rbenv
-  capistrano-sidekiq
+  capistrano-sidekiq (~> 2.3)
   capistrano-sidekiq-systemd
-  capistrano3-puma
+  capistrano3-puma (~> 5.2)
   debug
   dotenv (~> 3.1)
   elasticsearch-api (~> 6.0)

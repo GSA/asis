@@ -39,8 +39,8 @@ group :development, :test do
   gem 'capistrano-newrelic',        require: false
   gem 'capistrano-rails',           require: false
   gem 'capistrano-rbenv',           require: false
-  gem 'capistrano-sidekiq',         require: false
-  gem 'capistrano3-puma',           require: false
+  gem 'capistrano-sidekiq',         '~> 2.3', require: false
+  gem 'capistrano3-puma',           '~>5.2',  require: false
   gem 'capistrano-sidekiq-systemd', require: false
 end
 
@@ -60,5 +60,3 @@ group :test do
   gem 'simplecov', '~> 0.16.1'
   gem 'webmock', '~> 3.18'
 end
-
-
