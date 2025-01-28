@@ -62,7 +62,7 @@ jobs:
       - setup_remote_docker
       - aws-cli/setup:
           aws-region: STAGING_AWS_REGION
-          aws-access-key-id: CIRCLE_CI_USER_ACCESS_KEY_ID 
+          aws-access-key-id: CIRCLE_CI_USER_ACCESS_KEY_ID
           aws-secret-access-key: CIRCLE_CI_USER_SECRET_ACCESS_KEY
       - run: docker build -t asis .
       - run: docker tag asis:latest 213305845712.dkr.ecr.us-east-2.amazonaws.com/asis:latest
@@ -70,7 +70,7 @@ jobs:
       - run: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 213305845712.dkr.ecr.us-east-2.amazonaws.com
       - run: docker push 213305845712.dkr.ecr.us-east-2.amazonaws.com/asis:latest
       - run: docker push 213305845712.dkr.ecr.us-east-2.amazonaws.com/asis:${CIRCLE_BUILD_NUM}
-      - run: 
+      - run:
           name: update asis k8s deployment
           command: |
             aws ssm send-command \
@@ -86,7 +86,7 @@ jobs:
       - setup_remote_docker
       - aws-cli/setup:
           aws-region: PROD_AWS_REGION
-          aws-access-key-id: CIRCLE_CI_USER_ACCESS_KEY_ID 
+          aws-access-key-id: CIRCLE_CI_USER_ACCESS_KEY_ID
           aws-secret-access-key: CIRCLE_CI_USER_SECRET_ACCESS_KEY
       - run: docker build -t asis .
       - run: docker tag asis:latest 213305845712.dkr.ecr.us-east-1.amazonaws.com/asis:latest
@@ -94,7 +94,7 @@ jobs:
       - run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 213305845712.dkr.ecr.us-east-1.amazonaws.com
       - run: docker push 213305845712.dkr.ecr.us-east-1.amazonaws.com/asis:latest
       - run: docker push 213305845712.dkr.ecr.us-east-1.amazonaws.com/asis:${CIRCLE_BUILD_NUM}
-      - run: 
+      - run:
           name: update asis k8s deployment
           command: |
             aws ssm send-command \
@@ -102,7 +102,7 @@ jobs:
             --targets "Key=tag:Name,Values=jumphost-prod-search-instance" \
             --parameters '{"DeploymentName":["search-prod-asis-deploy"], "Namespace":["search"]}' \
             --comment "restart asis prod deployment"
-  
+
 
 workflows:
   build_and_test:
@@ -112,8 +112,7 @@ workflows:
           matrix:
             parameters:
               ruby_version:
-                - 3.1.4
-                - 3.3.4
+                - 3.3.7
               elasticsearch_version:
                 - 7.17.7
                 # not yet compatible with Elasticsearch 8
@@ -133,4 +132,3 @@ workflows:
             branches:
               only:
                 - production
-                
