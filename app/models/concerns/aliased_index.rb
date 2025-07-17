@@ -34,8 +34,18 @@ module AliasedIndex
         },
         include_type_name: true
       )
+      Rails.logger.info("Creating index: #{current_name}")
       create_index!(index: current_name)
       Elasticsearch::Persistence.client.indices.put_alias(index: current_name, name: alias_name)
+    end
+
+    def delete_index_and_alias!
+      indices = Elasticsearch::Persistence.client.indices.get_alias(name: alias_name).keys
+      Rails.logger.debug("Deleting indices: #{indices.join(',')}")
+      puts "Deleting indices: #{indices.join(',')}"
+      Elasticsearch::Persistence.client.indices.delete(index: indices.join(','))
+    rescue Elasticsearch::Transport::Transport::Errors::NotFound
+      # If the alias doesn't exist, there is nothing to delete.
     end
 
     def alias_exists?
